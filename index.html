@@ -31,7 +31,7 @@ img{display:block}
 .wrap{max-width:1360px;margin:0 auto;padding:0 clamp(16px,4vw,44px)}
 
 /* ===== AMBIENT BACKGROUND (cambia por sección) ===== */
-#ambient{position:fixed;inset:0;z-index:-2;background:var(--void);transition:opacity .6s}
+#ambient{position:fixed;inset:0;z-index:0;background:transparent;transition:opacity .6s}
 #ambient::before{content:"";position:absolute;inset:-10%;opacity:.5;filter:blur(1px);transition:background .6s, opacity .6s;
   background:radial-gradient(1000px 700px at 50% -10%, rgba(212,175,55,.10), transparent 60%);}
 #ambient::after{content:"";position:absolute;inset:0;background:
@@ -240,13 +240,14 @@ a.m-title .arr{font-size:.5em;color:var(--gold);transform:translateY(-2px)}
 .foot .sync b{color:var(--fig)}
 
 /* ===== CIRCUITRY BG ===== */
-#circuit{position:fixed;inset:0;width:100%;height:100%;z-index:-3;display:block;pointer-events:none}
+#circuit{position:fixed;inset:0;width:100%;height:100%;z-index:0;display:block;pointer-events:none}
 
 /* ===== VIEWS (SPA) ===== */
 .view{display:none;animation:viewIn .45s ease both}
 .view.active{display:block}
 @keyframes viewIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
-main{min-height:70vh}
+main{min-height:70vh;position:relative;z-index:1}
+.foot{position:relative;z-index:1}
 .sec-pad{padding-top:clamp(20px,3vw,34px)}
 .home-block{margin-top:clamp(34px,5vw,56px)}
 .block-head{display:flex;align-items:baseline;justify-content:space-between;gap:18px;flex-wrap:wrap;margin-bottom:18px}
