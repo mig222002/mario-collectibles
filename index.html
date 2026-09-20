@@ -142,6 +142,17 @@ body[data-cat="Figuras y Réplicas"] #ambient::before{opacity:.55;background:
 
 /* ===== GRID + CARDS ===== */
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:17px;padding-bottom:80px}
+/* ===== RENDIMIENTO ===== */
+.grid .card{content-visibility:auto;contain-intrinsic-size:auto 330px}
+.card.noanim{animation:none}
+.more-wrap{grid-column:1/-1;display:flex;justify-content:center;padding:6px 0 26px}
+.more-btn{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--gold-hi);background:rgba(212,175,55,.07);border:1px solid var(--gold-deep);border-radius:10px;padding:11px 22px;cursor:pointer}
+.more-btn:hover{background:rgba(212,175,55,.15)}
+@media (max-width:820px){
+  *{backdrop-filter:none !important}
+  .card{animation:none}
+  .card:hover{transform:none;box-shadow:none}
+}
 .card{position:relative;background:var(--panel);border:1px solid var(--line);border-radius:var(--r);overflow:hidden;display:flex;flex-direction:column;cursor:pointer;transition:transform .22s cubic-bezier(.2,.7,.2,1),border-color .22s,box-shadow .22s;animation:rise .5s both}
 .card:hover{transform:translateY(-5px);border-color:var(--cc,var(--gold-deep));box-shadow:0 20px 40px -26px #000,0 0 22px -8px var(--cc,rgba(212,175,55,.5))}
 .card:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
@@ -561,11 +572,11 @@ function searchLinks(d){const parts=d.categoria==="Figuras y Réplicas"?[d.marca
   return [{t:"Google Imágenes",u:`https://www.google.com/search?udm=2&q=${q}`,c:"#37D0C4"},{t:"eBay",u:`https://www.ebay.es/sch/i.html?_nkw=${q}`,c:"#F2A73B"},{t:"Amazon",u:`https://www.amazon.es/s?k=${q}`,c:"#FF6FA3"},{t:"Web",u:`https://www.google.com/search?q=${q}`,c:"#D4AF37"}]}
 
 function cardHTML(d,i){
-  const img=d.imagen?`<img src="${esc(d.imagen)}" alt="${esc(d.nombre)}" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span class="ph" style="display:none">${ICONS[d.categoria]}</span>`:`<span class="ph">${ICONS[d.categoria]}</span>`;
+  const img=d.imagen?`<img src="${esc(d.imagen)}" alt="${esc(d.nombre)}" loading="lazy" decoding="async" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span class="ph" style="display:none">${ICONS[d.categoria]}</span>`:`<span class="ph">${ICONS[d.categoria]}</span>`;
   const fr=d.franquicia&&FR_SHORT[d.franquicia]?`<span class="fr-tag">${FR_SHORT[d.franquicia]}</span>`:"";
   const sub=d.categoria==="Figuras y Réplicas"?`<span class="brand">${esc(d.marca)}</span><span>${esc(d.tipo)}${d.linea?" · "+esc(d.linea):""}</span>`:`<span class="brand">${esc(d.marca)}</span><span>${esc(d.autores)||"&nbsp;"}</span>`;
   const buy=d.link?`<a class="buy" href="${esc(d.link)}" target="_blank" rel="noopener" onclick="event.stopPropagation()">Comprar ↗</a>`:"";
-  return `<article class="card${!d.imagen?" pending":""}" data-cat="${d.categoria}" tabindex="0" data-id="${d.id}" style="animation-delay:${Math.min(i,24)*20}ms">
+  return `<article class="card${!d.imagen?" pending":""}${i<0?" noanim":""}" data-cat="${d.categoria}" tabindex="0" data-id="${d.id}" style="animation-delay:${Math.max(0,Math.min(i,24))*20}ms">
       <div class="card-strip"></div>
       <div class="thumb"><span class="ref">${d.ref}</span>${fr}${img}</div>
       <div class="card-body"><div class="card-name">${esc(d.nombre)}</div><div class="card-meta">${sub}</div>
@@ -574,14 +585,34 @@ function cardHTML(d,i){
 }
 function wireCards(container){container.querySelectorAll(".card").forEach(c=>{const open=()=>openModal(DATA.find(d=>d.id==c.dataset.id));c.onclick=open;c.onkeydown=e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();open()}}});}
 
+const PAGE=60;let pageList=[],pageN=0,moreObs=null;
+function moreHTML(){const rest=pageList.length-pageN;return rest>0?`<div class="more-wrap"><button class="more-btn" id="moreBtn">Ver ${Math.min(PAGE,rest)} más · quedan ${rest}</button></div>`:""}
+function wireMore(){
+  if(moreObs){moreObs.disconnect();moreObs=null}
+  const b=document.getElementById("moreBtn");if(!b)return;
+  b.onclick=appendChunk;
+  if("IntersectionObserver" in window){
+    moreObs=new IntersectionObserver(es=>{if(es.some(e=>e.isIntersecting))appendChunk()},{rootMargin:"600px"});
+    moreObs.observe(b);
+  }
+}
+function appendChunk(){
+  const grid=document.getElementById("grid");if(!grid)return;
+  const w=grid.querySelector(".more-wrap");if(w)w.remove();
+  const next=pageList.slice(pageN,pageN+PAGE);pageN+=next.length;
+  grid.insertAdjacentHTML("beforeend",next.map(d=>cardHTML(d,-1)).join("")+moreHTML());
+  wireCards(grid);wireMore();
+}
 function render(){
   const list=current(),grid=document.getElementById("grid");
   document.getElementById("shownCount").textContent=list.length;
   document.getElementById("shownVal").textContent=eur(list.reduce((a,d)=>a+(d.precio||0),0));
   document.getElementById("ctxNote").textContent=state.cat==="Todo"?"toda la colección":state.cat+(state.refine?` · ${state.refine}`:"");
+  if(moreObs){moreObs.disconnect();moreObs=null}
   if(!list.length){grid.innerHTML=`<div class="empty"><h3>Sin resultados</h3><p>Prueba con otra búsqueda o quita los filtros.</p></div>`;return}
-  grid.innerHTML=list.map((d,i)=>cardHTML(d,i)).join("");
-  wireCards(grid);
+  pageList=list;pageN=Math.min(PAGE,list.length);
+  grid.innerHTML=list.slice(0,pageN).map((d,i)=>cardHTML(d,i)).join("")+moreHTML();
+  wireCards(grid);wireMore();
 }
 
 /* ===== NOVEDADES (Home) ===== */
@@ -653,10 +684,11 @@ window.addEventListener("hashchange",()=>showView((location.hash||"#home").slice
 function initCircuit(){
   const cv=document.getElementById("circuit");if(!cv)return;const ctx=cv.getContext("2d");
   const reduce=matchMedia("(prefers-reduced-motion:reduce)").matches;
-  let W,H,DPR,traces,pulses,base;
+  const small=innerWidth<820;
+  let W,H,DPR,traces,pulses,base,lastT=0;
   const GAP=52;
   function build(){
-    DPR=Math.min(devicePixelRatio||1,2);W=innerWidth;H=innerHeight;
+    DPR=Math.min(devicePixelRatio||1,small?1:2);W=innerWidth;H=innerHeight;
     cv.width=W*DPR;cv.height=H*DPR;cv.style.width=W+"px";cv.style.height=H+"px";ctx.setTransform(DPR,0,0,DPR,0,0);
     const cols=Math.ceil(W/GAP)+2, rows=Math.ceil(H/GAP)+2;
     traces=[];const nT=Math.round((W*H)/48000);
@@ -674,12 +706,15 @@ function initCircuit(){
     b.lineWidth=1;b.strokeStyle="rgba(212,175,55,0.10)";b.fillStyle="rgba(212,175,55,0.16)";
     traces.forEach(t=>{b.beginPath();b.moveTo(t[0][0],t[0][1]);for(let i=1;i<t.length;i++)b.lineTo(t[i][0],t[i][1]);b.stroke();
       b.beginPath();b.arc(t[0][0],t[0][1],2,0,7);b.fill();b.beginPath();b.arc(t[t.length-1][0],t[t.length-1][1],2,0,7);b.fill();});
-    pulses=[];const nP=reduce?0:Math.min(26,Math.round(nT/3));
+    pulses=[];const nP=reduce?0:Math.min(small?7:26,Math.round(nT/3));
     for(let i=0;i<nP;i++)pulses.push({t:Math.floor(Math.random()*traces.length),p:Math.random(),sp:0.0016+Math.random()*0.0032});
   }
   function segAt(tr,p){const n=tr.length-1;const f=p*n;let i=Math.min(n-1,Math.floor(f));const u=f-i;
     return [tr[i][0]+(tr[i+1][0]-tr[i][0])*u, tr[i][1]+(tr[i+1][1]-tr[i][1])*u];}
-  function frame(){
+  function frame(ts){
+    raf=requestAnimationFrame(frame);
+    if(document.hidden)return;
+    if(small){if(ts-lastT<33)return;lastT=ts}
     ctx.clearRect(0,0,W,H);ctx.drawImage(base,0,0,W,H);
     for(const pu of pulses){const tr=traces[pu.t];if(!tr){continue}
       pu.p+=pu.sp;if(pu.p>=1){pu.p=0;pu.t=Math.floor(Math.random()*traces.length);}
@@ -690,7 +725,6 @@ function initCircuit(){
       ctx.beginPath();ctx.fillStyle="rgba(255,240,200,0.95)";ctx.arc(pos[0],pos[1],2.3,0,7);ctx.fill();
       ctx.beginPath();ctx.fillStyle="rgba(240,212,138,0.18)";ctx.arc(pos[0],pos[1],6,0,7);ctx.fill();
     }
-    raf=requestAnimationFrame(frame);
   }
   let raf;
   function start(){cancelAnimationFrame(raf);build();if(reduce){ctx.clearRect(0,0,W,H);ctx.drawImage(base,0,0,W,H);}else frame();}
