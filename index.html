@@ -2,8 +2,17 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Mario Collectibles — La Bóveda</title>
+<meta name="theme-color" content="#0B0B0D">
+<meta name="description" content="La colección de Mario Collectibles: figuras, réplicas, cómics y manga.">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="apple-mobile-web-app-title" content="Mario Coll.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Instrument+Sans:wght@400;500;600&family=Saira+Stencil+One&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
@@ -245,6 +254,122 @@ a.m-title .arr{font-size:.5em;color:var(--gold);transform:translateY(-2px)}
 .btn{display:inline-flex;align-items:center;gap:7px;font-family:var(--mono);font-size:11.5px;padding:9px 15px;border-radius:999px;border:1px solid var(--line);background:var(--panel-2);color:var(--muted);transition:all .16s}
 .btn:hover{color:var(--text);border-color:var(--muted-2)}
 .btn.on{color:#0b0b0d;background:var(--gold);border-color:var(--gold);font-weight:700}
+/* ===== NAV EXTRA / TABBAR ===== */
+.nav-dice,.nav-install{display:inline-flex;align-items:center;justify-content:center;border:1px solid var(--line);background:var(--panel);color:var(--gold-hi);border-radius:999px;cursor:pointer;transition:all .16s}
+.nav-dice{width:38px;height:38px;margin-left:auto}
+.nav-dice svg{width:19px;height:19px}
+.nav-dice:hover{border-color:var(--gold);transform:rotate(-12deg)}
+.nav-install{font-family:var(--mono);font-size:11.5px;padding:9px 14px}
+.nav-install[hidden]{display:none}
+.nav-links+.nav-dice{margin-left:auto}
+.nav-in .nav-cta{margin-left:0}
+.tabbar{display:none}
+@media(max-width:640px){
+  .tabbar{display:grid;grid-template-columns:repeat(6,1fr);position:fixed;left:0;right:0;bottom:0;z-index:90;background:rgba(10,10,12,.96);border-top:1px solid var(--line);padding:6px 4px calc(6px + env(safe-area-inset-bottom))}
+  .tabbar a{display:flex;flex-direction:column;align-items:center;gap:3px;padding:5px 0;color:var(--muted-2);font-family:var(--mono);font-size:9.5px;letter-spacing:.02em}
+  .tabbar a svg{width:21px;height:21px}
+  .tabbar a.on{color:var(--gold-hi)}
+  body{padding-bottom:calc(66px + env(safe-area-inset-bottom))}
+  .overlay{padding-bottom:calc(76px + env(safe-area-inset-bottom))}
+  .nav-cta{display:none}
+}
+.hcta svg{width:17px;height:17px;vertical-align:-3px;margin-right:8px}
+/* ===== SEG / KPIs ===== */
+.seg{display:inline-flex;gap:3px;padding:3px;border-radius:999px;background:var(--panel);border:1px solid var(--line)}
+.seg button{border:0;background:transparent;color:var(--muted);font-family:var(--mono);font-size:11.5px;letter-spacing:.06em;padding:8px 14px;border-radius:999px;cursor:pointer}
+.seg button.on{background:var(--gold);color:#1a1400;font-weight:700}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin:6px 0 26px}
+.kpi{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px 16px}
+.kpi .v{font-family:var(--disp);font-weight:800;font-size:clamp(22px,3vw,30px);letter-spacing:-.02em;color:var(--text)}
+.kpi .v small{font-size:.55em;color:var(--muted);font-weight:600;margin-left:4px}
+.kpi .k{font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-top:2px}
+.kpi.gold .v{color:var(--gold-hi)}
+.kpi .bar{height:4px;border-radius:4px;background:var(--line);margin-top:9px;overflow:hidden}
+.kpi .bar i{display:block;height:100%;background:var(--gold);border-radius:4px}
+/* ===== FIRMAS ===== */
+.fw-group{margin-bottom:34px}
+.fw-head{display:flex;align-items:baseline;gap:12px;border-bottom:1px solid var(--line);padding-bottom:10px;margin-bottom:14px}
+.fw-head h3{font-family:var(--disp);font-weight:800;font-size:clamp(18px,2.4vw,24px);letter-spacing:-.01em;display:flex;align-items:center;gap:9px}
+.fw-head h3 svg{width:18px;height:18px;color:var(--gold)}
+.fw-head span{font-family:var(--mono);font-size:11px;color:var(--muted)}
+.fw-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:12px}
+.fw-tile{position:relative;aspect-ratio:3/4;border-radius:12px;overflow:hidden;background:linear-gradient(135deg,var(--panel-2),var(--void-2));border:1px solid rgba(212,175,55,.35);cursor:pointer;padding:0;text-align:left;color:inherit;transition:transform .2s,border-color .2s,box-shadow .2s}
+.fw-tile:hover{transform:translateY(-4px);border-color:var(--gold-hi);box-shadow:0 14px 30px -16px #000,0 0 22px -8px rgba(240,212,138,.5)}
+.fw-tile img{width:100%;height:100%;object-fit:cover;display:block}
+.fw-tile .ph{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;opacity:.35}
+.fw-tile .ph svg{width:44px;height:44px}
+.fw-tile .cap{position:absolute;left:0;right:0;bottom:0;padding:34px 11px 10px;background:linear-gradient(transparent,rgba(5,5,6,.92) 55%)}
+.fw-tile .cap b{display:block;font-family:var(--disp);font-size:13.5px;line-height:1.15;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.fw-tile .cap span{display:block;margin-top:4px;font-family:var(--mono);font-size:10px;color:var(--gold-hi);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.fw-tile .cam{position:absolute;top:8px;right:8px;width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#F7E3A1,#D4AF37 50%,#9A7A24);color:#1a1405}
+.fw-tile .cam svg{width:14px;height:14px}
+.fw-empty{padding:40px 0;color:var(--muted);text-align:center}
+@media(max-width:560px){.fw-grid{grid-template-columns:repeat(2,1fr);gap:9px}}
+/* ===== STATS ===== */
+.stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:14px}
+.sc{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:18px 18px 14px}
+.sc h4{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:14px;font-weight:600}
+.hb{display:grid;grid-template-columns:minmax(0,38%) 1fr auto;align-items:center;gap:10px;padding:4px 0;cursor:pointer;border-radius:6px}
+.hb:hover .hb-l{color:var(--text)}
+.hb:hover .hb-t i{filter:brightness(1.15)}
+.hb-l{font-size:12.5px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hb-t{height:14px;position:relative}
+.hb-t i{position:absolute;left:0;top:0;bottom:0;border-radius:0 4px 4px 0;background:var(--gold);min-width:2px}
+.hb-v{font-family:var(--mono);font-size:11.5px;color:var(--text);min-width:28px;text-align:right}
+.top-list{display:flex;flex-direction:column;gap:8px}
+.tp{display:grid;grid-template-columns:22px 44px 1fr auto;align-items:center;gap:10px;cursor:pointer;padding:4px;border-radius:10px}
+.tp:hover{background:var(--panel-2)}
+.tp .n{font-family:var(--mono);font-size:11px;color:var(--muted-2)}
+.tp .im{width:44px;height:44px;border-radius:8px;overflow:hidden;background:var(--panel-2)}
+.tp .im img{width:100%;height:100%;object-fit:cover}
+.tp b{font-size:12.5px;font-weight:500;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.tp .pv{font-family:var(--mono);font-size:12px;color:var(--gold-hi)}
+.stat-note{font-size:12.5px;color:var(--muted);max-width:640px;margin-top:6px}
+.series-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,260px),1fr));gap:10px;margin-top:6px}
+.sr{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:13px 15px;cursor:pointer;transition:border-color .16s}
+.sr:hover{border-color:var(--gold-deep)}
+.sr.ok{border-color:rgba(212,175,55,.45)}
+.sr-top{display:flex;justify-content:space-between;gap:10px;align-items:baseline}
+.sr b{font-family:var(--disp);font-size:14.5px;line-height:1.2}
+.sr .cnt{font-family:var(--mono);font-size:12px;color:var(--muted);white-space:nowrap}
+.sr.ok .cnt{color:var(--gold-hi)}
+.sr .pb{height:5px;background:var(--line);border-radius:5px;overflow:hidden;margin:9px 0 7px}
+.sr .pb i{display:block;height:100%;background:var(--muted);border-radius:5px}
+.sr.ok .pb i{background:linear-gradient(90deg,var(--gold-deep),var(--gold-hi))}
+.sr .st{font-family:var(--mono);font-size:10.5px;color:var(--muted)}
+.sr.ok .st{color:var(--gold)}
+.sr .st em{font-style:normal;color:var(--com)}
+.tip{position:fixed;z-index:300;pointer-events:none;background:#0d0d10;border:1px solid var(--gold-deep);border-radius:8px;padding:7px 10px;font-family:var(--mono);font-size:11.5px;color:var(--text);opacity:0;transition:opacity .12s;max-width:260px;box-shadow:0 10px 24px -10px #000}
+.tip.on{opacity:1}
+.tip b{color:var(--gold-hi);font-weight:700}
+/* ===== MODAL EXTRAS ===== */
+.m-ref{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.m-share{display:inline-flex;align-items:center;gap:6px;font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--gold-hi);background:transparent;border:1px solid var(--gold-deep);border-radius:999px;padding:5px 11px;cursor:pointer;transition:all .16s}
+.m-share svg{width:13px;height:13px}
+.m-share:hover{background:var(--gold);color:#1a1400}
+.tl{background:none;border:0;padding:0;margin:0;font:inherit;color:inherit;cursor:pointer;text-decoration:underline;text-decoration-color:rgba(212,175,55,.35);text-underline-offset:3px;text-align:left}
+.tl:hover{color:var(--gold-hi);text-decoration-color:var(--gold-hi)}
+img.zoomable{cursor:zoom-in}
+.m-visual .zoom-hint{position:absolute;top:14px;right:14px;z-index:3;width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:rgba(6,6,7,.7);border:1px solid var(--line);color:var(--text);pointer-events:none}
+.m-visual .zoom-hint svg{width:15px;height:15px}
+/* ===== LIGHTBOX ===== */
+.lb{position:fixed;inset:0;z-index:200;background:rgba(3,3,4,.96);display:flex;align-items:center;justify-content:center;touch-action:none}
+.lb[hidden]{display:none}
+.lb-stage{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;overflow:hidden;cursor:zoom-in}
+.lb-stage.zoomed{cursor:grab}
+.lb-stage.drag{cursor:grabbing}
+.lb-stage img{max-width:94vw;max-height:86vh;object-fit:contain;transform-origin:0 0;will-change:transform;user-select:none;-webkit-user-drag:none;border-radius:4px}
+.lb-close{position:absolute;top:calc(14px + env(safe-area-inset-top));right:14px;width:42px;height:42px;border-radius:50%;background:rgba(20,20,24,.85);border:1px solid var(--line);color:var(--text);font-size:22px;cursor:pointer;z-index:2}
+.lb-arr{position:absolute;top:50%;margin-top:-24px;width:48px;height:48px;border-radius:50%;background:rgba(20,20,24,.85);border:1px solid var(--gold-deep);color:var(--gold-hi);display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:2}
+.lb-arr svg{width:22px;height:22px}
+.lb-arr.prev{left:14px}.lb-arr.next{right:14px}
+.lb-arr[hidden]{display:none}
+.lb-bar{position:absolute;left:0;right:0;bottom:calc(14px + env(safe-area-inset-bottom));display:flex;flex-direction:column;align-items:center;gap:4px;pointer-events:none;font-family:var(--mono)}
+.lb-bar #lbCap{font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--gold-hi)}
+.lb-hint{font-size:10.5px;color:var(--muted-2)}
+/* ===== TOAST ===== */
+.toast{position:fixed;left:50%;bottom:calc(90px + env(safe-area-inset-bottom));transform:translate(-50%,20px);z-index:400;background:#0d0d10;border:1px solid var(--gold-deep);color:var(--gold-hi);font-family:var(--mono);font-size:12px;padding:10px 16px;border-radius:999px;opacity:0;pointer-events:none;transition:all .25s}
+.toast.on{opacity:1;transform:translate(-50%,0)}
 /* ===== NAVEGACIÓN FICHA ===== */
 .overlay{flex-direction:column;gap:14px}
 .overlay.has-nav .modal{max-height:calc(100vh - 110px)}
@@ -283,7 +408,7 @@ a.m-title .arr{font-size:.5em;color:var(--gold);transform:translateY(-2px)}
 .sk figcaption svg{width:12px;height:12px}
 .sk-sign img{box-shadow:0 0 0 1px rgba(212,175,55,.55),0 0 30px -6px rgba(240,212,138,.45),0 18px 46px -14px rgba(0,0,0,.85)}
 .sk-sign figcaption{color:var(--gold-hi)}
-.sk[data-pos="0"]{z-index:4;transform:none}
+.sk[data-pos="0"]{z-index:4;transform:none;cursor:zoom-in}
 .sk[data-pos="1"]{z-index:3;transform:translateX(24%) rotate(6deg) scale(.8);filter:brightness(.55) saturate(.8)}
 .sk[data-pos="2"]{z-index:2;transform:translateX(-24%) rotate(-6deg) scale(.8);filter:brightness(.55) saturate(.8)}
 .sk[data-pos="3"]{z-index:1;transform:scale(.7);opacity:0;pointer-events:none}
@@ -374,12 +499,17 @@ body.public .foot .priv-only{display:none}
   <div class="nav-links">
     <a href="#home" data-view="home" class="on">Home</a>
     <a href="#coleccion" data-view="coleccion">Colección</a>
+    <a href="#firmas" data-view="firmas">Firmas</a>
+    <a href="#stats" data-view="stats">Stats</a>
     <a href="#videos" data-view="videos">Vídeos</a>
     <a href="#canal" data-view="canal">El Canal</a>
   </div>
+  <button class="nav-dice" id="navDice" title="Pieza al azar" aria-label="Pieza al azar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="4"/><circle cx="8.5" cy="8.5" r="1.3" fill="currentColor"/><circle cx="15.5" cy="15.5" r="1.3" fill="currentColor"/><circle cx="12" cy="12" r="1.3" fill="currentColor"/><circle cx="15.5" cy="8.5" r="1.3" fill="currentColor"/><circle cx="8.5" cy="15.5" r="1.3" fill="currentColor"/></svg></button>
+  <button class="nav-install" id="navInstall" hidden>Instalar app</button>
   <a class="nav-cta" id="navSub" target="_blank" rel="noopener" href="https://www.youtube.com/@mariocollectibles">Suscríbete</a>
 </div></nav>
 
+<nav class="tabbar" aria-label="Secciones"><a href="#home" data-view="home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z"/></svg><span>Inicio</span></a><a href="#coleccion" data-view="coleccion"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg><span>Colección</span></a><a href="#firmas" data-view="firmas"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 20c3-1 4.5-4 7-4s1.5 3 4 3 3-2 7-3"/><path d="M14.5 4.5l3 3L9 16l-4 1 1-4z"/></svg><span>Firmas</span></a><a href="#stats" data-view="stats"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg><span>Stats</span></a><a href="#videos" data-view="videos"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="3"/><path d="M10 9l5 3-5 3z" fill="currentColor"/></svg><span>Vídeos</span></a><a href="#canal" data-view="canal"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg><span>Canal</span></a></nav>
 <main>
 <!-- ===== HOME ===== -->
 <section class="view active" id="view-home">
@@ -406,7 +536,8 @@ body.public .foot .priv-only{display:none}
     </div>
     <div class="hero-cta">
       <button class="hcta gold" data-view="coleccion">Explorar la colección</button>
-      <button class="hcta" data-view="videos">Ver los vídeos</button>
+      <button class="hcta" id="heroDice"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="4"/><circle cx="8.5" cy="8.5" r="1.3" fill="currentColor"/><circle cx="15.5" cy="15.5" r="1.3" fill="currentColor"/><circle cx="12" cy="12" r="1.3" fill="currentColor"/><circle cx="15.5" cy="8.5" r="1.3" fill="currentColor"/><circle cx="8.5" cy="15.5" r="1.3" fill="currentColor"/></svg>Pieza al azar</button>
+      <button class="hcta" data-view="firmas">Muro de firmas</button>
     </div>
   </div></header>
 
@@ -430,7 +561,7 @@ body.public .foot .priv-only{display:none}
   <div class="controls"><div class="wrap controls-in">
     <div class="searchrow">
       <label class="search"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
-        <input id="search" type="search" placeholder="Buscar por nombre, marca, personaje, autor, código…" autocomplete="off"></label>
+        <input id="search" type="search" placeholder="Buscar: nombre, autor, personaje, firma, evento… (sin importar tildes)" autocomplete="off"></label>
       <div class="selectwrap"><select id="refine"></select></div>
       <div class="selectwrap"><select id="sort">
         <option value="ref">Orden: catálogo</option><option value="az">Nombre A → Z</option>
@@ -442,6 +573,34 @@ body.public .foot .priv-only{display:none}
   <div class="wrap">
     <div class="countbar"><span><b id="shownCount">0</b> piezas · <span id="shownVal">0 €</span></span><span class="rhs" id="ctxNote"></span></div>
     <div class="grid" id="grid"></div>
+  </div>
+</section>
+
+<!-- ===== FIRMAS ===== -->
+<section class="view" id="view-firmas">
+  <div class="wrap sec-pad">
+    <div class="eyebrow">Muro de firmas</div>
+    <div class="block-head">
+      <h2 class="sec-title">Firmados en mi colección</h2>
+      <div class="seg" id="firmasMode"><button data-m="evento" class="on">Por evento</button><button data-m="autor">Por autor</button></div>
+    </div>
+    <div class="kpis" id="firmasKpis"></div>
+    <div id="firmasWall"></div>
+  </div>
+</section>
+
+<!-- ===== STATS ===== -->
+<section class="view" id="view-stats">
+  <div class="wrap sec-pad">
+    <div class="eyebrow">Estadísticas</div>
+    <h2 class="sec-title" style="margin-bottom:18px">La bóveda en números</h2>
+    <div class="kpis" id="statKpis"></div>
+    <div class="stat-grid" id="statGrid"></div>
+    <div class="block-head" style="margin-top:44px">
+      <div><div class="eyebrow" style="margin:0">Series</div><p class="stat-note">Detectadas por la numeración del nombre (#N o N/M). Si una serie no tiene el total en el nombre, se comprueban los huecos entre el #1 y el último que tienes.</p></div>
+      <div class="seg" id="seriesMode"><button data-m="all" class="on">Todas</button><button data-m="ok">Completas</button><button data-m="gap">Con huecos</button></div>
+    </div>
+    <div class="series-grid" id="seriesGrid"></div>
   </div>
 </section>
 
@@ -480,8 +639,17 @@ body.public .foot .priv-only{display:none}
 </section>
 </main>
 
-<footer class="foot wrap"><span>Mario Collectibles · 864 piezas catalogadas</span><span class="sync">Sincronización: <b id="syncMode">datos embebidos</b></span></footer>
+<footer class="foot wrap"><span>Mario Collectibles · <span id="footCount">0</span> piezas catalogadas</span><span class="sync">Sincronización: <b id="syncMode">datos embebidos</b></span></footer>
 
+<div class="lb" id="lb" role="dialog" aria-modal="true" aria-label="Imagen ampliada" hidden>
+  <div class="lb-stage" id="lbStage"><img id="lbImg" alt=""></div>
+  <button class="lb-close" id="lbClose" aria-label="Cerrar">×</button>
+  <button class="lb-arr prev" id="lbPrev" aria-label="Anterior"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></button>
+  <button class="lb-arr next" id="lbNext" aria-label="Siguiente"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></button>
+  <div class="lb-bar"><span id="lbCap"></span><span class="lb-hint">Doble toque o rueda para ampliar</span></div>
+</div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<div class="tip" id="tip" role="tooltip"></div>
 <div class="overlay" id="overlay" role="dialog" aria-modal="true" aria-labelledby="mTitle">
   <button class="m-side prev" id="mPrev" aria-label="Anterior"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></button>
   <div class="modal" id="modal"></div>
@@ -636,9 +804,9 @@ function current(){
   if(state.refine){const k=document.getElementById("refine").dataset.key;list=list.filter(d=>d[k]===state.refine)}
   if(state.pending)list=list.filter(d=>!d.imagen);
   if(state.signed)list=list.filter(d=>d.firmado);
-  if(state.q){const q=state.q.toLowerCase();list=list.filter(d=>[d.nombre,d.marca,d.linea,d.personajes,d.autores,d.ref,d.franquicia].join(" ").toLowerCase().includes(q))}
+  if(state.q){const toks=norm(state.q).split(/\s+/).filter(Boolean);list=list.filter(d=>toks.every(t=>d._s.includes(t)))}
   const s=state.sort;
-  list.sort((a,b)=>{if(s==="az")return a.nombre.localeCompare(b.nombre,"es");if(s==="pd")return(b.precio||0)-(a.precio||0);if(s==="pa")return(a.precio||0)-(b.precio||0);return a.ref.localeCompare(b.ref,"es",{numeric:true})});
+  list.sort((a,b)=>{if(s==="az")return a.nombre.localeCompare(b.nombre,"es",{numeric:true});if(s==="pd")return(b.precio||0)-(a.precio||0);if(s==="pa")return(a.precio||0)-(b.precio||0);return a.ref.localeCompare(b.ref,"es",{numeric:true})});
   return list;
 }
 function shopUrl(d){const parts=d.categoria==="Figuras y Réplicas"?[d.marca,d.nombre,d.linea,d.tipo]:[d.marca,d.nombre,d.franquicia,d.linea];return "https://www.google.com/search?q="+encodeURIComponent(parts.filter(Boolean).join(" ")+" comprar")}
@@ -655,6 +823,7 @@ function markSigned(list){list.forEach(d=>{
   d.fotos=String(d.fotoFirma||"").split(/\s*[|\n]\s*|\s+(?=https?:|firmas\/)/).map(s=>s.trim()).filter(Boolean);
   d.fotoFirma=d.fotos[0]||"";d.lugarFirma=d.lugarFirma||"";
   d.firmado=!!m||!!d.fotoFirma||!!d.lugarFirma;d.firmante=m&&m[1]?m[1].trim():"";
+  d._s=norm([d.nombre,d.marca,d.linea,d.personajes,d.autores,d.ref,d.franquicia,d.tipo,d.categoria,m&&m[1]||"",d.lugarFirma,(m||d.fotos.length||d.lugarFirma)?"firmado":""].join(" "));
   d.titulo=m?(d.nombre||"").replace(SIGN_RE,"").replace(/\s{2,}/g," ").trim():d.nombre;
 });}
 function cardHTML(d,i){
@@ -714,7 +883,7 @@ function renderNovedades(){
 
 /* ===== MODAL ===== */
 let lastFocus=null,mList=null,mIdx=-1;
-function openModal(d,list){
+function openModal(d,list,fromRoute){_fromRoute=!!fromRoute;
   if(!d)return;
   const ovEl=document.getElementById("overlay"),already=ovEl.classList.contains("open");
   if(!already)lastFocus=document.activeElement;
@@ -729,17 +898,17 @@ function openModal(d,list){
   const bg=bgU?`<div class="bg" style="background-image:url('${esc(bgU)}')"></div>`:"";
   const img=dual?`${bg}<div class="stack">${items.map((it,k)=>`<figure class="sk${it.sign?" sk-sign":" sk-cover"}" data-k="${it.k}" data-pos="${Math.min(k,3)}"><img src="${esc(it.u)}" alt="${it.alt}"><figcaption>${it.sign?PEN_SVG:""}${it.cap}</figcaption></figure>`).join("")}</div>
     <div class="sk-tabs" role="tablist">${items.map((it,k)=>`<button data-k="${it.k}"${k?"":' class="on"'}>${it.sign?PEN_SVG:""}${it.tab}</button>`).join("")}</div>`
-   :(!d.imagen&&d.fotoFirma)?`${bg}<img class="main" src="${esc(d.fotoFirma)}" alt="${esc(d.nombre)}">`
-   :d.imagen?`${bg}<img class="main" src="${esc(d.imagen)}" alt="${esc(d.nombre)}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span class="ph" style="display:none">${ICONS[d.categoria]}</span>`:`<span class="ph">${ICONS[d.categoria]}</span>`;
+   :(!d.imagen&&d.fotoFirma)?`${bg}<img class="main zoomable" src="${esc(d.fotoFirma)}" alt="${esc(d.nombre)}">`
+   :d.imagen?`${bg}<img class="main zoomable" src="${esc(d.imagen)}" alt="${esc(d.nombre)}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span class="ph" style="display:none">${ICONS[d.categoria]}</span>`:`<span class="ph">${ICONS[d.categoria]}</span>`;
   const facts=[];facts.push(["Categoría",esc(d.categoria)]);
-  if(d.franquicia)facts.push(["Franquicia",esc(d.franquicia)]);
+  if(d.franquicia)facts.push(["Franquicia",tl(d.franquicia)]);
   if(d.tipo&&d.categoria==="Figuras y Réplicas")facts.push(["Tipo",esc(d.tipo)]);
-  if(d.marca)facts.push([d.categoria==="Figuras y Réplicas"?"Marca":"Editorial",esc(d.marca)]);
-  if(d.linea)facts.push([d.categoria==="Cómics"?"Formato":"Línea",esc(d.linea)]);
-  if(d.personajes)facts.push(["Personajes",esc(d.personajes)]);
-  if(d.autores)facts.push([d.categoria==="Manga"?"Mangaka":"Autores",esc(d.autores)]);
-  if(d.firmado)facts.push(["Firmado por",d.firmante?esc(d.firmante):"Sí","","signfact"]);
-  if(d.lugarFirma)facts.push(["Lugar de firma",`<span class="placev">${PIN_SVG}${esc(d.lugarFirma)}</span>`,"","signfact"]);
+  if(d.marca)facts.push([d.categoria==="Figuras y Réplicas"?"Marca":"Editorial",tl(d.marca)]);
+  if(d.linea)facts.push([d.categoria==="Cómics"?"Formato":"Línea",d.categoria==="Cómics"?esc(d.linea):tl(d.linea)]);
+  if(d.personajes)facts.push(["Personajes",tlList(d.personajes)]);
+  if(d.autores)facts.push([d.categoria==="Manga"?"Mangaka":"Autores",tlList(d.autores)]);
+  if(d.firmado)facts.push(["Firmado por",d.firmante?tlList(d.firmante):"Sí","","signfact"]);
+  if(d.lugarFirma)facts.push(["Lugar de firma",`<span class="placev">${PIN_SVG}${tl(d.lugarFirma)}</span>`,"","signfact"]);
   if(!document.body.classList.contains("public"))facts.push(["Precio de coste",d.precio!=null?eur(d.precio):"—",true]);
   const title=d.link
     ? `<a class="m-title" id="mTitle" href="${esc(d.link)}" target="_blank" rel="noopener">${esc(d.titulo||d.nombre)}<span class="arr">↗</span></a>`
@@ -750,11 +919,11 @@ function openModal(d,list){
    <div class="m-grid">
     <div class="m-visual${d.firmado?" signed":""}" style="--cc-a:${CAT_GLOW[d.categoria]}"><span class="m-cat" style="color:${CAT_COLORS[d.categoria]}">${esc(d.categoria)}</span><div class="glow"></div>${img}${d.firmado&&!dual?`<span class="m-seal">${PEN_SVG}Firmado</span>`:""}</div>
     <div class="m-info">
-      <div class="m-ref">${d.ref}</div>${title}
+      <div class="m-ref">${d.ref}<button class="m-share" id="mShare" title="Copiar enlace a esta pieza">${LINK_SVG}<span>Compartir</span></button></div>${title}
       <div class="m-facts">${facts.map(f=>`<div class="fact${f[2]?" pricefact":""}${f[3]?" "+f[3]:""}"><div class="k">${f[0]}</div><div class="v${f[2]?" price":""}">${f[1]}</div></div>`).join("")}</div>
       ${synHtml}
     </div></div>`;
-  m.scrollTop=0;updateNav();wireStack(m);
+  m.scrollTop=0;updateNav();wireStack(m);wireModalExtras(m,d);routeModal(d,already);
   if(already){m.classList.remove("swap");void m.offsetWidth;m.classList.add("swap")}
   else{ovEl.classList.add("open");document.body.style.overflow="hidden";m.querySelector(".m-close").focus()}
   if(mList){[mIdx-1,mIdx+1].forEach(j=>{const n=mList[(j+mList.length)%mList.length];if(n){[n.imagen,...(n.fotos||[])].forEach(u=>{if(u){const im=new Image();im.src=u}})}})}
@@ -766,7 +935,7 @@ function wireStack(m){const st=m.querySelector(".stack");if(!st)return;const bg=
     const im=f.querySelector("img");if(bg&&im)bg.style.backgroundImage=`url('${im.getAttribute("src")}')`};
   const front=k=>{const fs=figs(),cur=fs.find(x=>x.dataset.pos==="0"),nx=fs.find(x=>x.dataset.k===k);if(!nx||nx===cur)return;
     const p=nx.dataset.pos;nx.dataset.pos="0";if(cur)cur.dataset.pos=p;sync()};
-  figs().forEach(f=>f.onclick=e=>{e.stopPropagation();front(f.dataset.k)});
+  figs().forEach(f=>f.onclick=e=>{e.stopPropagation();if(f.dataset.pos==="0"){const all=figs();openLB(all.map(x=>({u:x.querySelector("img").getAttribute("src"),c:x.querySelector("figcaption").textContent})),all.indexOf(f))}else front(f.dataset.k)});
   if(tabs)tabs.querySelectorAll("button").forEach(b=>b.onclick=e=>{e.stopPropagation();front(b.dataset.k)});
   st.querySelectorAll("img").forEach(im=>im.onerror=()=>{const f=im.closest(".sk"),k=f.dataset.k,wasFront=f.dataset.pos==="0";f.remove();
     const tb=tabs&&tabs.querySelector(`button[data-k="${k}"]`);if(tb)tb.remove();
@@ -775,9 +944,14 @@ function wireStack(m){const st=m.querySelector(".stack");if(!st)return;const bg=
 function navModal(step){if(!mList)return;mIdx=(mIdx+step+mList.length)%mList.length;openModal(mList[mIdx])}
 function updateNav(){const on=!!mList;document.getElementById("overlay").classList.toggle("has-nav",on);
   const c=document.getElementById("mCount");if(c)c.textContent=on?`${mIdx+1} / ${mList.length}`:""}
-function closeModal(){mList=null;document.getElementById("overlay").classList.remove("open","has-nav");document.body.style.overflow="";if(lastFocus)lastFocus.focus()}
+function closeModal(opt){opt=opt||{};mList=null;const ov=document.getElementById("overlay");if(!ov.classList.contains("open"))return;
+  ov.classList.remove("open","has-nav");document.body.style.overflow="";if(lastFocus&&!opt.noFocus)lastFocus.focus();
+  if(opt.fromPop)return;
+  if(opt.goto){modalPushed=false;history.replaceState(null,"",hashFor(opt.goto));return}
+  if(modalPushed){modalPushed=false;history.back()}else{history.replaceState(null,"",hashFor(curView))}}
 document.getElementById("overlay").addEventListener("click",e=>{if(e.target.id==="overlay")closeModal()});
-document.addEventListener("keydown",e=>{if(!document.getElementById("overlay").classList.contains("open"))return;
+document.addEventListener("keydown",e=>{if(lbOpen()){if(e.key==="Escape")closeLB();else if(e.key==="ArrowRight")lbStep(1);else if(e.key==="ArrowLeft")lbStep(-1);return}
+  if(!document.getElementById("overlay").classList.contains("open"))return;
   if(e.key==="Escape")closeModal();else if(e.key==="ArrowRight"){e.preventDefault();navModal(1)}else if(e.key==="ArrowLeft"){e.preventDefault();navModal(-1)}});
 document.getElementById("mPrev").onclick=e=>{e.stopPropagation();navModal(-1)};
 document.getElementById("mNext").onclick=e=>{e.stopPropagation();navModal(1)};
@@ -794,16 +968,24 @@ document.getElementById("refine").addEventListener("change",e=>{state.refine=e.t
 document.getElementById("sort").addEventListener("change",e=>{state.sort=e.target.value;render()});
 {const vs=document.getElementById("vidSearch");let vt;if(vs)vs.addEventListener("input",e=>{clearTimeout(vt);vt=setTimeout(()=>{vidQ=e.target.value.trim();renderVideos()},120)});}
 /* ===== ROUTER (SPA) ===== */
-const VIEWS=["home","coleccion","videos","canal"];
-function showView(name){
-  if(!VIEWS.includes(name))name="home";
+const VIEWS=["home","coleccion","firmas","stats","videos","canal"];let curView="home",modalPushed=false;
+const hashFor=n=>n==="home"?location.pathname+location.search:"#"+n;
+function applyView(name){
+  if(!VIEWS.includes(name))name="home";curView=name;
   document.querySelectorAll(".view").forEach(v=>v.classList.toggle("active",v.id==="view-"+name));
-  document.querySelectorAll('.nav-links a').forEach(a=>a.classList.toggle("on",a.dataset.view===name));
-  if(location.hash!=="#"+name){history.replaceState(null,"",name==="home"?location.pathname:"#"+name);}
+  document.querySelectorAll('.nav-links a,.tabbar a').forEach(a=>a.classList.toggle("on",a.dataset.view===name));
+  if(name==="firmas")renderFirmas();if(name==="stats")renderStats();
   window.scrollTo({top:0,behavior:"instant" in window?"instant":"auto"});
 }
+function showView(name){if(!VIEWS.includes(name))name="home";
+  if(document.getElementById("overlay").classList.contains("open"))closeModal({goto:name,noFocus:true});
+  else if(curView!==name)history.pushState(null,"",hashFor(name));
+  applyView(name)}
 document.querySelectorAll('[data-view]').forEach(el=>el.addEventListener("click",e=>{e.preventDefault();showView(el.dataset.view)}));
-window.addEventListener("hashchange",()=>showView((location.hash||"#home").slice(1)));
+window.addEventListener("popstate",()=>{const hs=decodeURIComponent((location.hash||"").slice(1));
+  if(hs.startsWith("p/")){const d=BY_SLUG[hs.slice(2)];if(d){openModal(d,undefined,true);return}}
+  if(document.getElementById("overlay").classList.contains("open"))closeModal({fromPop:true});
+  applyView(hs||"home")});
 
 /* ===== CIRCUITRY BACKGROUND ===== */
 function initCircuit(){
@@ -876,11 +1058,197 @@ function fromCSV(text){
       fotoFirma:g("foto_firma")||g("foto firma")||g("imagen_firma")||g("foto_firmado"),
       lugarFirma:g("lugar_firma")||g("lugar firma")||g("evento_firma")||g("evento")}})}
 
+
+/* ===================== UTILIDADES ===================== */
+const norm=s=>String(s||"").normalize("NFD").replace(/[̀-ͯ]/g,"").toLowerCase();
+const LINK_SVG='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 14a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-1 1"/><path d="M14 10a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l1-1"/></svg>';
+const ZOOM_SVG='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3M11 8v6M8 11h6"/></svg>';
+const splitPeople=s=>String(s||"").split(/\s*(?:,|\/|&|\s+y\s+|\s+e\s+|;)\s*/).map(x=>x.trim().replace(/\.$/,"")).filter(x=>x&&!/^(etc|varios|otros|n\/a|-)$/i.test(x));
+const tl=v=>`<button class="tl" data-q="${esc(v)}">${esc(v)}</button>`;
+function tlList(s){const parts=splitPeople(s);if(parts.length<=1)return tl(String(s).trim());
+  return parts.map(tl).join(", ")}
+let toastT;function toast(msg){const t=document.getElementById("toast");t.textContent=msg;t.classList.add("on");clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove("on"),2200)}
+function goColeccion(){const ov=document.getElementById("overlay");if(ov.classList.contains("open"))closeModal({goto:"coleccion",noFocus:true});else if(curView!=="coleccion")history.pushState(null,"",hashFor("coleccion"));applyView("coleccion")}
+function goSearch(q){
+  state.cat="Todo";state.refine="";state.signed=false;state.q=q;document.body.dataset.cat="Todo";
+  const s=document.getElementById("search");s.value=q;buildRefine();renderChips();render();goColeccion()}
+/* tooltip */
+const tipEl=()=>document.getElementById("tip");
+function tipShow(e,html){const t=tipEl();t.innerHTML=html;t.classList.add("on");tipMove(e)}
+function tipMove(e){const t=tipEl();const x=Math.min(e.clientX+14,innerWidth-t.offsetWidth-8),y=Math.max(8,e.clientY-t.offsetHeight-12);t.style.left=x+"px";t.style.top=y+"px"}
+function tipHide(){tipEl().classList.remove("on")}
+
+/* ===================== ENLACES POR PIEZA ===================== */
+let BY_SLUG={},_fromRoute=false;
+const slugify=s=>norm(s).replace(/&/g," y ").replace(/[^a-z0-9]+/g,"-").replace(/^-+|-+$/g,"").slice(0,90)||"pieza";
+function buildSlugs(){BY_SLUG={};DATA.forEach(d=>{let b=slugify(d.nombre),s=b,n=2;while(BY_SLUG[s])s=b+"-"+(n++);d.slug=s;BY_SLUG[s]=d})}
+const pieceUrl=d=>location.origin+location.pathname+"#p/"+d.slug;
+function routeModal(d,already){if(_fromRoute){_fromRoute=false;return}
+  const hs="#p/"+d.slug;if(location.hash===hs)return;
+  if(already||modalPushed)history.replaceState(null,"",hs);else{history.pushState(null,"",hs);modalPushed=true}}
+function wireModalExtras(m,d){
+  const sh=m.querySelector("#mShare");if(sh)sh.onclick=async e=>{e.stopPropagation();const url=pieceUrl(d);
+    if(navigator.share&&matchMedia("(pointer:coarse)").matches){try{await navigator.share({title:d.titulo||d.nombre,text:(d.titulo||d.nombre)+" · Mario Collectibles",url});return}catch(_){}}
+    try{await navigator.clipboard.writeText(url);toast("Enlace copiado ✓")}catch(_){prompt("Copia el enlace:",url)}};
+  m.querySelectorAll(".tl").forEach(b=>b.onclick=e=>{e.stopPropagation();goSearch(b.dataset.q)});
+  const z=m.querySelector("img.zoomable");if(z){z.onclick=e=>{e.stopPropagation();openLB([{u:z.getAttribute("src"),c:d.titulo||d.nombre}],0)};
+    const v=m.querySelector(".m-visual");if(v&&!v.querySelector(".zoom-hint"))v.insertAdjacentHTML("beforeend",`<span class="zoom-hint">${ZOOM_SVG}</span>`)}
+}
+
+/* ===================== LIGHTBOX (zoom) ===================== */
+let LB={imgs:[],i:0,s:1,x:0,y:0};
+const lbOpen=()=>!document.getElementById("lb").hidden;
+function openLB(imgs,i){LB.imgs=imgs;LB.i=i||0;const lb=document.getElementById("lb");lb.hidden=false;lbShow()}
+function closeLB(){document.getElementById("lb").hidden=true;document.getElementById("lbImg").src=""}
+function lbStep(k){if(LB.imgs.length<2)return;LB.i=(LB.i+k+LB.imgs.length)%LB.imgs.length;lbShow()}
+function lbShow(){const it=LB.imgs[LB.i],im=document.getElementById("lbImg");im.src=it.u;im.alt=it.c||"";
+  document.getElementById("lbCap").textContent=(it.c||"")+(LB.imgs.length>1?`  ·  ${LB.i+1}/${LB.imgs.length}`:"");
+  document.getElementById("lbPrev").hidden=document.getElementById("lbNext").hidden=LB.imgs.length<2;lbReset()}
+function lbApply(){const im=document.getElementById("lbImg");im.style.transform=`translate(${LB.x}px,${LB.y}px) scale(${LB.s})`;
+  document.getElementById("lbStage").classList.toggle("zoomed",LB.s>1.01)}
+function lbReset(){LB.s=1;LB.x=0;LB.y=0;const im=document.getElementById("lbImg");im.style.transition="none";im.style.transform="";document.getElementById("lbStage").classList.remove("zoomed")}
+function lbZoomAt(cx,cy,ns){const im=document.getElementById("lbImg");ns=Math.max(1,Math.min(6,ns));
+  if(ns<=1.01){lbReset();return}
+  // coordenadas relativas a la caja sin transformar de la imagen
+  const r0=im.getBoundingClientRect();const bx=r0.left-LB.x,by=r0.top-LB.y;
+  const px=(cx-bx-LB.x)/LB.s,py=(cy-by-LB.y)/LB.s;
+  LB.x=cx-bx-px*ns;LB.y=cy-by-py*ns;LB.s=ns;lbApply()}
+(function initLB(){
+  const st=document.getElementById("lbStage"),im=document.getElementById("lbImg");
+  document.getElementById("lbClose").onclick=closeLB;
+  document.getElementById("lbPrev").onclick=e=>{e.stopPropagation();lbStep(-1)};
+  document.getElementById("lbNext").onclick=e=>{e.stopPropagation();lbStep(1)};
+  st.addEventListener("wheel",e=>{e.preventDefault();im.style.transition="none";lbZoomAt(e.clientX,e.clientY,LB.s*(e.deltaY<0?1.18:1/1.18))},{passive:false});
+  st.addEventListener("dblclick",e=>{im.style.transition="transform .25s";lbZoomAt(e.clientX,e.clientY,LB.s>1.01?1:2.6)});
+  const P=new Map();let start=null,lastTap=0,moved=false;
+  st.addEventListener("pointerdown",e=>{st.setPointerCapture(e.pointerId);P.set(e.pointerId,{x:e.clientX,y:e.clientY});moved=false;im.style.transition="none";
+    if(P.size===1)start={x:e.clientX,y:e.clientY,ox:LB.x,oy:LB.y,t:Date.now()};
+    if(P.size===2){const [a,b]=[...P.values()];start={pinch:Math.hypot(a.x-b.x,a.y-b.y),s:LB.s}}});
+  st.addEventListener("pointermove",e=>{if(!P.has(e.pointerId))return;P.set(e.pointerId,{x:e.clientX,y:e.clientY});
+    if(P.size===2&&start&&start.pinch){const [a,b]=[...P.values()];moved=true;lbZoomAt((a.x+b.x)/2,(a.y+b.y)/2,start.s*Math.hypot(a.x-b.x,a.y-b.y)/start.pinch)}
+    else if(P.size===1&&start&&!start.pinch){const dx=e.clientX-start.x,dy=e.clientY-start.y;if(Math.abs(dx)+Math.abs(dy)>6)moved=true;
+      if(LB.s>1.01){st.classList.add("drag");LB.x=start.ox+dx;LB.y=start.oy+dy;lbApply()}}});
+  const up=e=>{if(!P.has(e.pointerId))return;P.delete(e.pointerId);st.classList.remove("drag");
+    if(P.size===0&&start&&!start.pinch){const dx=e.clientX-start.x,dy=e.clientY-start.y;
+      if(LB.s<=1.01&&Math.abs(dx)>60&&Math.abs(dx)>Math.abs(dy)*1.4)lbStep(dx<0?1:-1);
+      else if(!moved&&e.pointerType!=="mouse"){const now=Date.now();if(now-lastTap<300){im.style.transition="transform .25s";lbZoomAt(e.clientX,e.clientY,LB.s>1.01?1:2.6);lastTap=0}else lastTap=now}
+      else if(!moved&&e.pointerType==="mouse"&&e.target===st&&LB.s<=1.01)closeLB()}
+    if(P.size<2&&start&&start.pinch)start=null;
+    if(P.size===1){const [a]=[...P.values()];start={x:a.x,y:a.y,ox:LB.x,oy:LB.y}}};
+  st.addEventListener("pointerup",up);st.addEventListener("pointercancel",up);
+})();
+
+/* ===================== PIEZA AL AZAR ===================== */
+function randomPiece(){const pool=DATA.filter(d=>d.imagen||d.fotoFirma);const L=(pool.length?pool:DATA).slice();
+  for(let i=L.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[L[i],L[j]]=[L[j],L[i]]}
+  if(L.length)openModal(L[0],L)}
+
+/* ===================== MURO DE FIRMAS ===================== */
+let firmasMode="evento";
+const yearOf=s=>{const m=String(s).match(/(19|20)\d{2}/);return m?+m[0]:0};
+function renderFirmas(){
+  const wall=document.getElementById("firmasWall");if(!wall)return;
+  const S=DATA.filter(d=>d.firmado);
+  const people=new Set(),events=new Set();S.forEach(d=>{splitPeople(d.firmante).forEach(p=>people.add(norm(p)));if(d.lugarFirma)events.add(norm(d.lugarFirma))});
+  const conFoto=S.filter(d=>d.fotos&&d.fotos.length).length;
+  document.getElementById("firmasKpis").innerHTML=[
+    [S.length,"Piezas firmadas",1],[people.size,"Autores"],[events.size,"Eventos"],[conFoto+`<small>/ ${S.length}</small>`,"Con foto propia"]]
+    .map(k=>`<div class="kpi${k[2]?" gold":""}"><div class="v">${k[0]}</div><div class="k">${k[1]}</div></div>`).join("");
+  const groups=new Map();const add=(key,label,d)=>{if(!groups.has(key))groups.set(key,{label,items:[]});const g=groups.get(key);if(!g.items.includes(d))g.items.push(d)};
+  if(firmasMode==="evento"){S.forEach(d=>d.lugarFirma?add(norm(d.lugarFirma),d.lugarFirma,d):add("~","Sin lugar indicado",d))}
+  else{S.forEach(d=>{const ps=splitPeople(d.firmante);ps.length?ps.forEach(p=>add(norm(p),p,d)):add("~","Firmante sin indicar",d)})}
+  let G=[...groups.entries()];
+  G.sort((a,b)=>a[0]==="~"?1:b[0]==="~"?-1:firmasMode==="evento"?(yearOf(b[1].label)-yearOf(a[1].label)||a[1].label.localeCompare(b[1].label,"es")):(b[1].items.length-a[1].items.length||a[1].label.localeCompare(b[1].label,"es")));
+  const flat=[];G.forEach(([,g])=>g.items.forEach(d=>{if(!flat.includes(d))flat.push(d)}));
+  const icon=firmasMode==="evento"?PIN_SVG:PEN_SVG;
+  wall.innerHTML=G.length?G.map(([k,g])=>`<section class="fw-group"><div class="fw-head"><h3>${k==="~"?"":icon}${esc(g.label)}</h3><span>${g.items.length} ${g.items.length===1?"pieza":"piezas"}</span></div>
+    <div class="fw-grid">${g.items.map(d=>{const u=(d.fotos&&d.fotos[0])||d.imagen;
+      return `<button class="fw-tile" data-id="${d.id}">${u?`<img src="${esc(u)}" alt="" loading="lazy" decoding="async" onerror="this.remove()">`:""}<span class="ph">${ICONS[d.categoria]}</span>
+      ${d.fotos&&d.fotos.length?`<span class="cam" title="Foto de mi ejemplar">${CAM_SVG}</span>`:""}
+      <span class="cap"><b>${esc(d.titulo||d.nombre)}</b><span>${firmasMode==="evento"?"✍ "+esc(d.firmante||"Firmado"):(d.lugarFirma?"📍 "+esc(d.lugarFirma):"✍ Firmado")}</span></span></button>`}).join("")}</div></section>`).join("")
+    :`<div class="fw-empty">Aún no hay firmados detectados. Añade “(Firmado por …)” al nombre o rellena foto_firma / lugar_firma en la hoja.</div>`;
+  wall.querySelectorAll(".fw-tile").forEach(t=>t.onclick=()=>{const d=DATA.find(x=>x.id==t.dataset.id);openModal(d,flat)});
+  const img=wall.querySelectorAll(".fw-tile img");img.forEach(i=>{if(i.complete&&i.naturalWidth)i.nextElementSibling.style.display="none";else i.onload=()=>{i.nextElementSibling.style.display="none"}});
+}
+
+/* ===================== SERIES ===================== */
+function detectSeries(){
+  const map=new Map();
+  DATA.forEach(d=>{if(d.categoria==="Figuras y Réplicas")return;const n0=d.nombre||"";if(/\(ingl[eé]s\)/i.test(n0))return;
+    const redband=/red band/i.test(n0);const n=n0.replace(/\([^)]*\)/g," ").replace(/\s+/g," ").trim();
+    let m=n.match(/^(.*?)\s+(\d{1,3})\s*\/\s*(\d{1,3})\b/),base,num,tot=0,vol="";
+    if(m){base=m[1];num=+m[2];tot=+m[3]}
+    else{m=n.match(/^(.*?)\s*#\s*(\d{1,4})\b(.*)$/);if(!m)return;base=m[1];num=+m[2];const v=m[3].match(/vol\.?\s*([ivx\d]+)/i);if(v)vol=" Vol. "+v[1].toUpperCase()}
+    base=base.replace(/[:\-–\s]+$/,"").trim();if(!base)return;
+    const label=base+vol+(redband?" (Red Band)":"");const key=norm(label);
+    if(!map.has(key))map.set(key,{label,q:base,nums:new Set(),tot:0,cat:d.categoria,items:[]});
+    const s=map.get(key);s.nums.add(num);s.tot=Math.max(s.tot,tot);s.items.push(d)});
+  const out=[];map.forEach(s=>{const nums=[...s.nums].sort((a,b)=>a-b);const max=nums[nums.length-1];
+    if(!s.tot&&nums.length<3)return;if(s.tot&&s.tot<2)return;
+    const upto=s.tot||max;const missing=[];for(let i=1;i<=upto;i++)if(!s.nums.has(i))missing.push(i);
+    out.push({...s,nums,max,upto,have:nums.filter(n=>n<=upto).length,missing,ok:missing.length===0,known:!!s.tot})});
+  out.sort((a,b)=>(b.ok-a.ok)||(b.have-a.have)||a.label.localeCompare(b.label,"es"));return out}
+let seriesMode="all";
+function renderSeries(){const g=document.getElementById("seriesGrid");if(!g)return;let S=detectSeries();
+  if(seriesMode==="ok")S=S.filter(s=>s.ok);if(seriesMode==="gap")S=S.filter(s=>!s.ok);
+  const fmtMiss=m=>m.length>8?m.slice(0,8).map(n=>"#"+n).join(", ")+` y ${m.length-8} más`:m.map(n=>"#"+n).join(", ");
+  g.innerHTML=S.length?S.map(s=>`<div class="sr${s.ok?" ok":""}" data-q="${esc(s.q)}" role="button" tabindex="0">
+    <div class="sr-top"><b>${esc(s.label)}</b><span class="cnt">${s.have} / ${s.upto}${s.ok?" ✓":""}</span></div>
+    <div class="pb"><i style="width:${Math.round(100*s.have/s.upto)}%"></i></div>
+    <div class="st">${s.ok?(s.known?"Serie completa":`Completa del #1 al #${s.max}`):`Faltan: <em>${fmtMiss(s.missing)}</em>`}</div></div>`).join("")
+    :`<div class="fw-empty">No hay series en este filtro.</div>`;
+  g.querySelectorAll(".sr").forEach(el=>{const go=()=>{state.sort="az";document.getElementById("sort").value="az";goSearch(el.dataset.q)};el.onclick=go;el.onkeydown=e=>{if(e.key==="Enter")go()}})}
+
+/* ===================== ESTADÍSTICAS ===================== */
+function countBy(list,fn){const m=new Map();list.forEach(d=>{const ks=fn(d);(Array.isArray(ks)?ks:[ks]).forEach(k=>{if(!k)return;const nk=norm(k);if(!m.has(nk))m.set(nk,{label:k,n:0,v:0});const e=m.get(nk);e.n++;e.v+=d.precio||0})});return [...m.values()].sort((a,b)=>b.n-a.n||b.v-a.v)}
+function barsCard(title,rows,opt){opt=opt||{};rows=rows.slice(0,opt.max||8);if(!rows.length)return"";const key=opt.by==="v"?"v":"n";const mx=Math.max(...rows.map(r=>r[key]))||1;
+  return `<div class="sc"><h4>${title}</h4>${rows.map(r=>`<div class="hb" data-q="${esc(r.q||r.label)}" data-tip="<b>${esc(r.label)}</b><br>${r.n} ${r.n===1?"pieza":"piezas"} · ${eur(r.v)}">
+    <span class="hb-l">${esc(r.label)}</span><span class="hb-t"><i style="width:${Math.max(1.5,100*r[key]/mx)}%;${r.color?`background:${r.color}`:""}"></i></span><span class="hb-v">${key==="v"?eur(r.v).replace(",00",""):r.n}</span></div>`).join("")}</div>`}
+function renderStats(){const kp=document.getElementById("statKpis");if(!kp)return;
+  const total=DATA.reduce((a,d)=>a+(d.precio||0),0),wp=DATA.filter(d=>d.precio!=null),avg=wp.length?total/wp.length:0;
+  const conImg=DATA.filter(d=>d.imagen).length,firm=DATA.filter(d=>d.firmado).length;
+  kp.innerHTML=[[DATA.length,"Piezas"],[eur(total).replace(/,\d\d €/," €"),"Valor total",1],[eur(avg),"Precio medio"],[firm,"Firmados",1],
+    [`${conImg}<small>/ ${DATA.length}</small>`,"Con imagen",0,conImg/DATA.length]]
+    .map(k=>`<div class="kpi${k[2]?" gold":""}"><div class="v">${k[0]}</div><div class="k">${k[1]}</div>${k[3]!=null?`<div class="bar"><i style="width:${Math.round(k[3]*100)}%"></i></div>`:""}</div>`).join("");
+  const CATS=[["Figuras y Réplicas","#37D0C4"],["Cómics","#F2A73B"],["Manga","#FF6FA3"]];
+  const catRows=CATS.map(([c,col])=>{const L=DATA.filter(d=>d.categoria===c);return{label:c,q:c,n:L.length,v:L.reduce((a,d)=>a+(d.precio||0),0),color:col}});
+  const F=DATA.filter(d=>d.categoria==="Figuras y Réplicas"),C=DATA.filter(d=>d.categoria==="Cómics"),M=DATA.filter(d=>d.categoria==="Manga");
+  const top=DATA.filter(d=>d.precio!=null).sort((a,b)=>b.precio-a.precio).slice(0,6);
+  const covC=C.filter(d=>d.imagen).length;
+  document.getElementById("statGrid").innerHTML=
+    barsCard("Piezas por categoría",catRows)+
+    barsCard("Valor por categoría",catRows.slice().sort((a,b)=>b.v-a.v),{by:"v"})+
+    `<div class="sc"><h4>Las más caras</h4><div class="top-list">${top.map((d,i)=>`<div class="tp" data-id="${d.id}"><span class="n">${i+1}</span><span class="im">${d.imagen?`<img src="${esc(d.imagen)}" alt="" loading="lazy">`:""}</span><b>${esc(d.titulo||d.nombre)}</b><span class="pv">${eur(d.precio)}</span></div>`).join("")}</div></div>`+
+    barsCard("Franquicias",countBy(DATA,d=>d.franquicia))+
+    barsCard("Marcas de figuras",countBy(F,d=>d.marca))+
+    barsCard("Líneas de figuras",countBy(F,d=>d.linea))+
+    barsCard("Autores de cómic",countBy(C,d=>splitPeople(d.autores)))+
+    barsCard("Quién más me ha firmado",countBy(DATA.filter(d=>d.firmado),d=>splitPeople(d.firmante)))+
+    barsCard("Eventos de firma",countBy(DATA.filter(d=>d.lugarFirma),d=>d.lugarFirma))+
+    barsCard("Editoriales de manga",countBy(M,d=>d.marca))+
+    barsCard(`Portadas de cómics · ${covC}/${C.length}`,[{label:"Con portada",q:"",n:covC,v:C.filter(d=>d.imagen).reduce((a,d)=>a+(d.precio||0),0),color:"#F2A73B"},{label:"Sin portada",q:"",n:C.length-covC,v:C.filter(d=>!d.imagen).reduce((a,d)=>a+(d.precio||0),0),color:"#5E5D57"}]);
+  const grid=document.getElementById("statGrid");
+  grid.querySelectorAll(".hb").forEach(b=>{b.onmouseenter=e=>tipShow(e,b.dataset.tip);b.onmousemove=tipMove;b.onmouseleave=tipHide;
+    b.onclick=()=>{tipHide();const q=b.dataset.q;if(["Figuras y Réplicas","Cómics","Manga"].includes(q)){state.cat=q;state.refine="";state.q="";state.signed=false;document.getElementById("search").value="";document.body.dataset.cat=q;buildRefine();renderChips();render();goColeccion()}else if(q)goSearch(q)}});
+  grid.querySelectorAll(".tp").forEach(t=>t.onclick=()=>openModal(DATA.find(x=>x.id==t.dataset.id),top));
+  renderSeries()}
+
+/* ===================== WIRING EXTRA ===================== */
+document.getElementById("navDice").onclick=randomPiece;
+document.getElementById("heroDice").onclick=randomPiece;
+document.querySelectorAll("#firmasMode button").forEach(b=>b.onclick=()=>{firmasMode=b.dataset.m;document.querySelectorAll("#firmasMode button").forEach(x=>x.classList.toggle("on",x===b));renderFirmas()});
+document.querySelectorAll("#seriesMode button").forEach(b=>b.onclick=()=>{seriesMode=b.dataset.m;document.querySelectorAll("#seriesMode button").forEach(x=>x.classList.toggle("on",x===b));renderSeries()});
+
+/* ===================== PWA ===================== */
+let deferredInstall=null;
+window.addEventListener("beforeinstallprompt",e=>{e.preventDefault();deferredInstall=e;document.getElementById("navInstall").hidden=false});
+document.getElementById("navInstall").onclick=async()=>{if(!deferredInstall)return;deferredInstall.prompt();try{await deferredInstall.userChoice}catch(_){}deferredInstall=null;document.getElementById("navInstall").hidden=true};
+window.addEventListener("appinstalled",()=>{document.getElementById("navInstall").hidden=true;toast("App instalada ✓")});
+if("serviceWorker" in navigator&&location.protocol==="https:"){window.addEventListener("load",()=>navigator.serviceWorker.register("sw.js").catch(()=>{}))}
+
 async function boot(){
   const params=new URLSearchParams(location.search);
-  let isPublic=!(location.hostname==="localhost"||location.hostname==="127.0.0.1"||location.protocol==="file:");
-  if(params.get("pub")==="1")isPublic=true;
-  if(params.get("priv")==="1")isPublic=false;
+  let isPublic=params.get("pub")==="1";
   document.body.classList.toggle("public",isPublic);
   const dataUrl=(isPublic&&DATA_URL_PUBLIC)?DATA_URL_PUBLIC:DATA_URL;
   DATA=(typeof COLLECTION!=="undefined")?COLLECTION.slice():[];
@@ -888,11 +1256,14 @@ async function boot(){
   if(dataUrl){try{const u=dataUrl+(dataUrl.includes("?")?"&":"?")+"_="+Date.now();const r=await fetch(u,{cache:"no-store"});if(r.ok){const parsed=fromCSV(await r.text());if(parsed.length){DATA=parsed;synced=true;document.getElementById("syncMode").textContent="sincronizado con Google Sheets ✓"}}else{document.getElementById("syncMode").textContent="sin conexión con la hoja (datos locales)"}}catch(e){document.getElementById("syncMode").textContent="sin conexión con la hoja (datos locales)";console.warn("Sync no disponible:",e)}}
   loadOverrides();
   if(!synced)applyOverrides();
-  markSigned(DATA);
+  markSigned(DATA);buildSlugs();
+  document.getElementById("footCount").textContent=DATA.length;
   renderCanal();renderVideos();renderHero();renderChips();buildRefine();render();
   renderNovedades();
   initCircuit();
-  showView((location.hash||"#home").slice(1));
+  const hs=decodeURIComponent((location.hash||"").slice(1));
+  if(hs.startsWith("p/")&&BY_SLUG[hs.slice(2)]){history.replaceState(null,"",hashFor("coleccion"));applyView("coleccion");openModal(BY_SLUG[hs.slice(2)],pageList)}
+  else{applyView(hs||"home");history.replaceState(null,"",hashFor(curView))}
 }
 boot();
 </script>
