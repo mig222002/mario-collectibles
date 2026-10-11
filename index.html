@@ -271,6 +271,7 @@ a.m-title .arr{font-size:.5em;color:var(--gold);transform:translateY(-2px)}
 .card.has-alt .thumb img:not(.alt){position:relative;z-index:0}
 @media (hover:hover) and (min-width:821px){.card.has-alt:hover .thumb img.alt{opacity:1;z-index:1}}
 .seal .cam{display:inline-flex;margin-left:2px;padding-left:6px;border-left:1px solid rgba(26,20,5,.3)}
+.seal .cam{gap:2px;font-size:9px}
 .seal .cam svg{width:12px;height:12px}
 .signplace{display:flex;align-items:center;gap:4px;color:var(--gold);font-family:var(--mono);font-size:10.5px;letter-spacing:.04em;margin-top:2px;opacity:.9}
 .signplace svg,.placev svg{width:12px;height:12px;flex:none}
@@ -282,12 +283,14 @@ a.m-title .arr{font-size:.5em;color:var(--gold);transform:translateY(-2px)}
 .sk figcaption svg{width:12px;height:12px}
 .sk-sign img{box-shadow:0 0 0 1px rgba(212,175,55,.55),0 0 30px -6px rgba(240,212,138,.45),0 18px 46px -14px rgba(0,0,0,.85)}
 .sk-sign figcaption{color:var(--gold-hi)}
-.stack[data-front="firma"] .sk-sign,.stack[data-front="cover"] .sk-cover{z-index:2;transform:none}
-.stack[data-front="firma"] .sk-cover{z-index:1;transform:translateX(-24%) rotate(-6deg) scale(.8);filter:brightness(.55) saturate(.8)}
-.stack[data-front="cover"] .sk-sign{z-index:1;transform:translateX(24%) rotate(6deg) scale(.8);filter:brightness(.55) saturate(.8)}
-.stack[data-front="firma"] .sk-cover:hover,.stack[data-front="cover"] .sk-sign:hover{filter:brightness(.8)}
+.sk[data-pos="0"]{z-index:4;transform:none}
+.sk[data-pos="1"]{z-index:3;transform:translateX(24%) rotate(6deg) scale(.8);filter:brightness(.55) saturate(.8)}
+.sk[data-pos="2"]{z-index:2;transform:translateX(-24%) rotate(-6deg) scale(.8);filter:brightness(.55) saturate(.8)}
+.sk[data-pos="3"]{z-index:1;transform:scale(.7);opacity:0;pointer-events:none}
+.sk[data-pos="1"]:hover,.sk[data-pos="2"]:hover{filter:brightness(.8)}
+.sk-tabs{max-width:calc(100% - 24px);overflow-x:auto;scrollbar-width:none}
+.sk-tabs button{white-space:nowrap}
 .stack.solo .sk{transform:none!important;filter:none!important}
-.stack.solo .sk:not([data-k]){display:none}
 .sk-tabs{position:absolute;left:50%;bottom:14px;transform:translateX(-50%);z-index:3;display:flex;gap:3px;padding:3px;border-radius:999px;background:rgba(10,10,12,.85);border:1px solid var(--gold-deep)}
 .sk-tabs button{display:inline-flex;align-items:center;gap:6px;border:0;background:transparent;color:var(--muted);font-family:var(--mono);font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:6px 12px;border-radius:999px;cursor:pointer}
 .sk-tabs button svg{width:12px;height:12px}
@@ -649,7 +652,8 @@ const PIN_SVG='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke
 const SIGN_RE=/\(\s*(?:firmad[oa]s?|autografiad[oa]s?|signed)(?:\s+(?:por|by)\s+([^)]*))?\)/i;
 function markSigned(list){list.forEach(d=>{
   const src=[d.nombre,d.descripcion].join(" ");const m=src.match(SIGN_RE);
-  d.fotoFirma=d.fotoFirma||"";d.lugarFirma=d.lugarFirma||"";
+  d.fotos=String(d.fotoFirma||"").split(/\s*[|\n]\s*|\s+(?=https?:|firmas\/)/).map(s=>s.trim()).filter(Boolean);
+  d.fotoFirma=d.fotos[0]||"";d.lugarFirma=d.lugarFirma||"";
   d.firmado=!!m||!!d.fotoFirma||!!d.lugarFirma;d.firmante=m&&m[1]?m[1].trim():"";
   d.titulo=m?(d.nombre||"").replace(SIGN_RE,"").replace(/\s{2,}/g," ").trim():d.nombre;
 });}
@@ -658,7 +662,7 @@ function cardHTML(d,i){
   const fr=d.franquicia&&FR_SHORT[d.franquicia]?`<span class="fr-tag">${FR_SHORT[d.franquicia]}</span>`:"";
   const sub=d.categoria==="Figuras y Réplicas"?`<span class="brand">${esc(d.marca)}</span><span>${esc(d.tipo)}${d.linea?" · "+esc(d.linea):""}</span>`:`<span class="brand">${esc(d.marca)}</span><span>${esc(d.autores)||"&nbsp;"}</span>${d.firmado?`<span class="signer">✍ ${d.firmante?"Firmado por "+esc(d.firmante):"Firmado"}</span>`:""}${d.lugarFirma?`<span class="signplace">${PIN_SVG}${esc(d.lugarFirma)}</span>`:""}`;
   const alt=d.fotoFirma?`<img class="alt" src="${esc(d.fotoFirma)}" alt="" loading="lazy" decoding="async" onerror="this.remove()">`:"";
-  const seal=d.firmado?`${alt}<span class="seal" title="${d.firmante?"Firmado por "+esc(d.firmante):"Firmado"}">${PEN_SVG}Firmado${d.fotoFirma?`<i class="cam">${CAM_SVG}</i>`:""}</span><span class="sheen"></span>`:"";
+  const seal=d.firmado?`${alt}<span class="seal" title="${d.firmante?"Firmado por "+esc(d.firmante):"Firmado"}">${PEN_SVG}Firmado${d.fotoFirma?`<i class="cam">${CAM_SVG}${d.fotos.length>1?d.fotos.length:""}</i>`:""}</span><span class="sheen"></span>`:"";
   const buy=d.link?`<a class="buy" href="${esc(d.link)}" target="_blank" rel="noopener" onclick="event.stopPropagation()">Comprar ↗</a>`:"";
   return `<article class="card${!d.imagen?" pending":""}${d.firmado?" signed":""}${d.fotoFirma&&d.imagen?" has-alt":""}${i<0?" noanim":""}" data-cat="${d.categoria}" tabindex="0" data-id="${d.id}" style="animation-delay:${Math.max(0,Math.min(i,24))*20}ms">
       <div class="card-strip"></div>
@@ -717,13 +721,14 @@ function openModal(d,list){
   if(list!==undefined){mList=list&&list.length>1?list:null}
   mIdx=mList?mList.indexOf(d):-1;if(mIdx<0)mList=null;
   const m=document.getElementById("modal");
-  const dual=!!(d.fotoFirma&&d.imagen);
-  const bg=d.imagen?`<div class="bg" style="background-image:url('${esc(dual?d.fotoFirma:d.imagen)}')"></div>`:(d.fotoFirma?`<div class="bg" style="background-image:url('${esc(d.fotoFirma)}')"></div>`:"");
-  const img=dual?`${bg}<div class="stack" data-front="firma">
-      <figure class="sk sk-cover" data-k="cover"><img src="${esc(d.imagen)}" alt="Portada de ${esc(d.titulo||d.nombre)}"><figcaption>Portada</figcaption></figure>
-      <figure class="sk sk-sign" data-k="firma"><img src="${esc(d.fotoFirma)}" alt="Ejemplar firmado de ${esc(d.titulo||d.nombre)}"><figcaption>${PEN_SVG}Mi ejemplar</figcaption></figure>
-    </div>
-    <div class="sk-tabs" role="tablist"><button data-k="firma" class="on">${PEN_SVG}Firmado</button><button data-k="cover">Portada</button></div>`
+  const fotos=d.fotos||[],multi=fotos.length>1,T=esc(d.titulo||d.nombre);
+  const items=fotos.map((u,k)=>({k:"f"+k,u,sign:1,cap:multi?`Firma ${k+1}`:"Mi ejemplar",tab:multi?`Firma ${k+1}`:"Firmado",alt:`Ejemplar firmado de ${T}${multi?" ("+(k+1)+")":""}`}));
+  if(d.imagen)items.push({k:"cover",u:d.imagen,cap:"Portada",tab:"Portada",alt:`Portada de ${T}`});
+  const dual=items.length>1&&fotos.length>0;
+  const bgU=fotos[0]||d.imagen;
+  const bg=bgU?`<div class="bg" style="background-image:url('${esc(bgU)}')"></div>`:"";
+  const img=dual?`${bg}<div class="stack">${items.map((it,k)=>`<figure class="sk${it.sign?" sk-sign":" sk-cover"}" data-k="${it.k}" data-pos="${Math.min(k,3)}"><img src="${esc(it.u)}" alt="${it.alt}"><figcaption>${it.sign?PEN_SVG:""}${it.cap}</figcaption></figure>`).join("")}</div>
+    <div class="sk-tabs" role="tablist">${items.map((it,k)=>`<button data-k="${it.k}"${k?"":' class="on"'}>${it.sign?PEN_SVG:""}${it.tab}</button>`).join("")}</div>`
    :(!d.imagen&&d.fotoFirma)?`${bg}<img class="main" src="${esc(d.fotoFirma)}" alt="${esc(d.nombre)}">`
    :d.imagen?`${bg}<img class="main" src="${esc(d.imagen)}" alt="${esc(d.nombre)}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span class="ph" style="display:none">${ICONS[d.categoria]}</span>`:`<span class="ph">${ICONS[d.categoria]}</span>`;
   const facts=[];facts.push(["Categoría",esc(d.categoria)]);
@@ -752,14 +757,21 @@ function openModal(d,list){
   m.scrollTop=0;updateNav();wireStack(m);
   if(already){m.classList.remove("swap");void m.offsetWidth;m.classList.add("swap")}
   else{ovEl.classList.add("open");document.body.style.overflow="hidden";m.querySelector(".m-close").focus()}
-  if(mList){[mIdx-1,mIdx+1].forEach(j=>{const n=mList[(j+mList.length)%mList.length];if(n){[n.imagen,n.fotoFirma].forEach(u=>{if(u){const im=new Image();im.src=u}})}})}
+  if(mList){[mIdx-1,mIdx+1].forEach(j=>{const n=mList[(j+mList.length)%mList.length];if(n){[n.imagen,...(n.fotos||[])].forEach(u=>{if(u){const im=new Image();im.src=u}})}})}
 }
-function wireStack(m){const st=m.querySelector(".stack");if(!st)return;const bg=m.querySelector(".m-visual .bg");
-  const set=k=>{st.dataset.front=k;m.querySelectorAll(".sk-tabs button").forEach(b=>b.classList.toggle("on",b.dataset.k===k));
-    const im=st.querySelector(`.sk[data-k="${k}"] img`);if(bg&&im)bg.style.backgroundImage=`url('${im.getAttribute("src")}')`};
-  st.querySelectorAll(".sk").forEach(f=>f.onclick=e=>{e.stopPropagation();if(st.dataset.front!==f.dataset.k)set(f.dataset.k)});
-  m.querySelectorAll(".sk-tabs button").forEach(b=>b.onclick=e=>{e.stopPropagation();set(b.dataset.k)});
-  st.querySelectorAll("img").forEach(im=>im.onerror=()=>{const k=im.closest(".sk").dataset.k;st.classList.add("solo");set(k==="firma"?"cover":"firma");m.querySelector(".sk-tabs").remove()});}
+function wireStack(m){const st=m.querySelector(".stack");if(!st)return;const bg=m.querySelector(".m-visual .bg"),tabs=m.querySelector(".sk-tabs");
+  const figs=()=>[...st.querySelectorAll(".sk")];
+  const sync=()=>{const f=figs().find(x=>x.dataset.pos==="0");if(!f)return;const k=f.dataset.k;
+    if(tabs)tabs.querySelectorAll("button").forEach(b=>b.classList.toggle("on",b.dataset.k===k));
+    const im=f.querySelector("img");if(bg&&im)bg.style.backgroundImage=`url('${im.getAttribute("src")}')`};
+  const front=k=>{const fs=figs(),cur=fs.find(x=>x.dataset.pos==="0"),nx=fs.find(x=>x.dataset.k===k);if(!nx||nx===cur)return;
+    const p=nx.dataset.pos;nx.dataset.pos="0";if(cur)cur.dataset.pos=p;sync()};
+  figs().forEach(f=>f.onclick=e=>{e.stopPropagation();front(f.dataset.k)});
+  if(tabs)tabs.querySelectorAll("button").forEach(b=>b.onclick=e=>{e.stopPropagation();front(b.dataset.k)});
+  st.querySelectorAll("img").forEach(im=>im.onerror=()=>{const f=im.closest(".sk"),k=f.dataset.k,wasFront=f.dataset.pos==="0";f.remove();
+    const tb=tabs&&tabs.querySelector(`button[data-k="${k}"]`);if(tb)tb.remove();
+    const rest=figs();rest.forEach((x,i)=>{if(wasFront||+x.dataset.pos>0)x.dataset.pos=String(Math.min(i,3))});
+    if(rest.length<2){st.classList.add("solo");if(tabs)tabs.remove()}sync()});}
 function navModal(step){if(!mList)return;mIdx=(mIdx+step+mList.length)%mList.length;openModal(mList[mIdx])}
 function updateNav(){const on=!!mList;document.getElementById("overlay").classList.toggle("has-nav",on);
   const c=document.getElementById("mCount");if(c)c.textContent=on?`${mIdx+1} / ${mList.length}`:""}
