@@ -245,6 +245,56 @@ a.m-title .arr{font-size:.5em;color:var(--gold);transform:translateY(-2px)}
 .btn{display:inline-flex;align-items:center;gap:7px;font-family:var(--mono);font-size:11.5px;padding:9px 15px;border-radius:999px;border:1px solid var(--line);background:var(--panel-2);color:var(--muted);transition:all .16s}
 .btn:hover{color:var(--text);border-color:var(--muted-2)}
 .btn.on{color:#0b0b0d;background:var(--gold);border-color:var(--gold);font-weight:700}
+/* ===== NAVEGACIÓN FICHA ===== */
+.overlay{flex-direction:column;gap:14px}
+.overlay.has-nav .modal{max-height:calc(100vh - 110px)}
+.overlay .m-side,.overlay .m-pager{display:none}
+.overlay.has-nav .m-pager{display:flex}
+.m-pager{align-items:center;gap:4px;padding:4px;border-radius:999px;background:rgba(14,14,17,.92);border:1px solid var(--gold-deep);box-shadow:0 10px 30px -10px #000;flex:none}
+.m-pager span{font-family:var(--mono);font-size:12px;letter-spacing:.08em;color:var(--gold-hi);min-width:74px;text-align:center}
+.m-pager button,.m-side{display:flex;align-items:center;justify-content:center;border-radius:50%;color:var(--gold-hi);cursor:pointer;transition:background .16s,color .16s,transform .16s}
+.m-pager button{width:36px;height:36px;background:transparent;border:0}
+.m-pager button:hover{background:var(--gold);color:#1a1400}
+.m-pager svg{width:18px;height:18px}
+.m-side{position:fixed;top:50%;width:52px;height:52px;margin-top:-26px;background:rgba(14,14,17,.85);border:1px solid var(--gold-deep);z-index:101}
+.m-side svg{width:24px;height:24px}
+.m-side.prev{left:max(16px,calc(50% - 460px - 76px))}
+.m-side.next{right:max(16px,calc(50% - 460px - 76px))}
+.m-side:hover{background:var(--gold);color:#1a1400;transform:scale(1.06)}
+@media (min-width:1100px){.overlay.has-nav .m-side{display:flex}}
+.modal.swap .m-grid{animation:mswap .26s ease-out}
+@keyframes mswap{from{opacity:.2}to{opacity:1}}
+@media (max-width:680px){.m-pager span{min-width:64px}}
+/* ===== FOTO FIRMADA ===== */
+.thumb .ref,.thumb .fr-tag{z-index:2}
+.thumb img.alt{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .45s ease;z-index:0}
+.card.has-alt .thumb img:not(.alt){position:relative;z-index:0}
+@media (hover:hover) and (min-width:821px){.card.has-alt:hover .thumb img.alt{opacity:1;z-index:1}}
+.seal .cam{display:inline-flex;margin-left:2px;padding-left:6px;border-left:1px solid rgba(26,20,5,.3)}
+.seal .cam svg{width:12px;height:12px}
+.signplace{display:flex;align-items:center;gap:4px;color:var(--gold);font-family:var(--mono);font-size:10.5px;letter-spacing:.04em;margin-top:2px;opacity:.9}
+.signplace svg,.placev svg{width:12px;height:12px;flex:none}
+.placev{display:inline-flex;align-items:center;gap:6px}
+.stack{position:relative;z-index:1;display:grid;place-items:center;width:100%;height:min(66vh,540px);margin:0 auto}
+.sk{grid-area:1/1;margin:0;position:relative;max-width:82%;max-height:100%;display:flex;flex-direction:column;align-items:center;cursor:pointer;transition:transform .55s cubic-bezier(.2,.8,.2,1),filter .4s,opacity .4s;will-change:transform}
+.sk img{display:block;max-width:100%;max-height:calc(min(66vh,540px) - 34px);width:auto;height:auto;object-fit:contain;border-radius:6px;box-shadow:0 18px 46px -14px rgba(0,0,0,.85)}
+.sk figcaption{display:inline-flex;align-items:center;gap:6px;margin-top:9px;font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.sk figcaption svg{width:12px;height:12px}
+.sk-sign img{box-shadow:0 0 0 1px rgba(212,175,55,.55),0 0 30px -6px rgba(240,212,138,.45),0 18px 46px -14px rgba(0,0,0,.85)}
+.sk-sign figcaption{color:var(--gold-hi)}
+.stack[data-front="firma"] .sk-sign,.stack[data-front="cover"] .sk-cover{z-index:2;transform:none}
+.stack[data-front="firma"] .sk-cover{z-index:1;transform:translateX(-24%) rotate(-6deg) scale(.8);filter:brightness(.55) saturate(.8)}
+.stack[data-front="cover"] .sk-sign{z-index:1;transform:translateX(24%) rotate(6deg) scale(.8);filter:brightness(.55) saturate(.8)}
+.stack[data-front="firma"] .sk-cover:hover,.stack[data-front="cover"] .sk-sign:hover{filter:brightness(.8)}
+.stack.solo .sk{transform:none!important;filter:none!important}
+.stack.solo .sk:not([data-k]){display:none}
+.sk-tabs{position:absolute;left:50%;bottom:14px;transform:translateX(-50%);z-index:3;display:flex;gap:3px;padding:3px;border-radius:999px;background:rgba(10,10,12,.85);border:1px solid var(--gold-deep)}
+.sk-tabs button{display:inline-flex;align-items:center;gap:6px;border:0;background:transparent;color:var(--muted);font-family:var(--mono);font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:6px 12px;border-radius:999px;cursor:pointer}
+.sk-tabs button svg{width:12px;height:12px}
+.sk-tabs button.on{background:linear-gradient(135deg,#F7E3A1,#D4AF37 50%,#9A7A24);color:#1a1405}
+.m-visual:has(.stack){padding-bottom:60px}
+@media (max-width:680px){.stack{height:min(52vh,420px)}.sk img{max-height:calc(min(52vh,420px) - 34px)}}
+@media (prefers-reduced-motion:reduce){.sk{transition:none}}
 /* ===== FIRMADOS ===== */
 .card.signed{border-color:rgba(212,175,55,.55);box-shadow:0 0 0 1px rgba(212,175,55,.18) inset,0 0 18px -10px rgba(240,212,138,.55)}
 .card.signed .card-strip{background:linear-gradient(90deg,var(--gold-deep),var(--gold-hi),var(--gold),var(--gold-hi),var(--gold-deep));background-size:200% 100%}
@@ -293,15 +343,6 @@ main{min-height:70vh;position:relative;z-index:1}
 .hcta.gold{background:var(--gold);color:#1a1400;border-color:var(--gold);font-weight:700}
 .hcta.gold:hover{box-shadow:0 12px 28px -12px rgba(212,175,55,.6)}
 
-/* Novedades tabs */
-.nov-tabs{display:flex;gap:8px;flex-wrap:wrap}
-.nov-tab{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:12px;padding:8px 15px;border-radius:999px;border:1px solid var(--line);background:var(--panel);color:var(--muted);transition:all .16s}
-.nov-tab:hover{color:var(--text)}
-.nov-tab .dot{width:8px;height:8px;border-radius:50%}
-.nov-tab.on{color:#0b0b0d;font-weight:700;border-color:transparent}
-.nov-tab.on[data-cat="Figuras y Réplicas"]{background:var(--fig)}
-.nov-tab.on[data-cat="Cómics"]{background:var(--com)}
-.nov-tab.on[data-cat="Manga"]{background:var(--man)}
 
 /* Redes */
 .socials{display:flex;gap:12px;flex-wrap:wrap}
@@ -374,7 +415,7 @@ body.public .foot .priv-only{display:none}
   <div class="wrap home-block">
     <div class="block-head">
       <div class="eyebrow" style="margin:0">Novedades en la bóveda</div>
-      <div class="nov-tabs" id="novTabs"></div>
+      
     </div>
     <div class="grid" id="novedades"></div>
   </div>
@@ -438,7 +479,12 @@ body.public .foot .priv-only{display:none}
 
 <footer class="foot wrap"><span>Mario Collectibles · 864 piezas catalogadas</span><span class="sync">Sincronización: <b id="syncMode">datos embebidos</b></span></footer>
 
-<div class="overlay" id="overlay" role="dialog" aria-modal="true" aria-labelledby="mTitle"><div class="modal" id="modal"></div></div>
+<div class="overlay" id="overlay" role="dialog" aria-modal="true" aria-labelledby="mTitle">
+  <button class="m-side prev" id="mPrev" aria-label="Anterior"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></button>
+  <div class="modal" id="modal"></div>
+  <button class="m-side next" id="mNext" aria-label="Siguiente"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></button>
+  <div class="m-pager"><button id="mPrev2" aria-label="Anterior"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></button><span id="mCount"></span><button id="mNext2" aria-label="Siguiente"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></button></div>
+</div>
 
 <script>
 /* ====== CONFIG DEL CANAL — edita esto ====== */
@@ -598,26 +644,30 @@ function searchLinks(d){const parts=d.categoria==="Figuras y Réplicas"?[d.marca
 
 /* ===== FIRMADOS ===== */
 const PEN_SVG='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 20c3-1 4.5-4 7-4s1.5 3 4 3 3-2 7-3"/><path d="M14.5 4.5l3 3L9 16l-4 1 1-4z"/></svg>';
+const CAM_SVG='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg>';
+const PIN_SVG='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>';
 const SIGN_RE=/\(\s*(?:firmad[oa]s?|autografiad[oa]s?|signed)(?:\s+(?:por|by)\s+([^)]*))?\)/i;
 function markSigned(list){list.forEach(d=>{
   const src=[d.nombre,d.descripcion].join(" ");const m=src.match(SIGN_RE);
-  d.firmado=!!m;d.firmante=m&&m[1]?m[1].trim():"";
+  d.fotoFirma=d.fotoFirma||"";d.lugarFirma=d.lugarFirma||"";
+  d.firmado=!!m||!!d.fotoFirma||!!d.lugarFirma;d.firmante=m&&m[1]?m[1].trim():"";
   d.titulo=m?(d.nombre||"").replace(SIGN_RE,"").replace(/\s{2,}/g," ").trim():d.nombre;
 });}
 function cardHTML(d,i){
   const img=d.imagen?`<img src="${esc(d.imagen)}" alt="${esc(d.nombre)}" loading="lazy" decoding="async" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span class="ph" style="display:none">${ICONS[d.categoria]}</span>`:`<span class="ph">${ICONS[d.categoria]}</span>`;
   const fr=d.franquicia&&FR_SHORT[d.franquicia]?`<span class="fr-tag">${FR_SHORT[d.franquicia]}</span>`:"";
-  const sub=d.categoria==="Figuras y Réplicas"?`<span class="brand">${esc(d.marca)}</span><span>${esc(d.tipo)}${d.linea?" · "+esc(d.linea):""}</span>`:`<span class="brand">${esc(d.marca)}</span><span>${esc(d.autores)||"&nbsp;"}</span>${d.firmado?`<span class="signer">✍ ${d.firmante?"Firmado por "+esc(d.firmante):"Firmado"}</span>`:""}`;
-  const seal=d.firmado?`<span class="seal" title="${d.firmante?"Firmado por "+esc(d.firmante):"Firmado"}">${PEN_SVG}Firmado</span><span class="sheen"></span>`:"";
+  const sub=d.categoria==="Figuras y Réplicas"?`<span class="brand">${esc(d.marca)}</span><span>${esc(d.tipo)}${d.linea?" · "+esc(d.linea):""}</span>`:`<span class="brand">${esc(d.marca)}</span><span>${esc(d.autores)||"&nbsp;"}</span>${d.firmado?`<span class="signer">✍ ${d.firmante?"Firmado por "+esc(d.firmante):"Firmado"}</span>`:""}${d.lugarFirma?`<span class="signplace">${PIN_SVG}${esc(d.lugarFirma)}</span>`:""}`;
+  const alt=d.fotoFirma?`<img class="alt" src="${esc(d.fotoFirma)}" alt="" loading="lazy" decoding="async" onerror="this.remove()">`:"";
+  const seal=d.firmado?`${alt}<span class="seal" title="${d.firmante?"Firmado por "+esc(d.firmante):"Firmado"}">${PEN_SVG}Firmado${d.fotoFirma?`<i class="cam">${CAM_SVG}</i>`:""}</span><span class="sheen"></span>`:"";
   const buy=d.link?`<a class="buy" href="${esc(d.link)}" target="_blank" rel="noopener" onclick="event.stopPropagation()">Comprar ↗</a>`:"";
-  return `<article class="card${!d.imagen?" pending":""}${d.firmado?" signed":""}${i<0?" noanim":""}" data-cat="${d.categoria}" tabindex="0" data-id="${d.id}" style="animation-delay:${Math.max(0,Math.min(i,24))*20}ms">
+  return `<article class="card${!d.imagen?" pending":""}${d.firmado?" signed":""}${d.fotoFirma&&d.imagen?" has-alt":""}${i<0?" noanim":""}" data-cat="${d.categoria}" tabindex="0" data-id="${d.id}" style="animation-delay:${Math.max(0,Math.min(i,24))*20}ms">
       <div class="card-strip"></div>
       <div class="thumb"><span class="ref">${d.ref}</span>${fr}${img}${seal}</div>
       <div class="card-body"><div class="card-name">${esc(d.titulo||d.nombre)}</div><div class="card-meta">${sub}</div>
       <div class="card-foot"><span class="price">${d.precio!=null?eur(d.precio):'<span class="np">sin precio</span>'}</span><span class="foot-r">${buy}</span></div></div>
     </article>`;
 }
-function wireCards(container){container.querySelectorAll(".card").forEach(c=>{const open=()=>openModal(DATA.find(d=>d.id==c.dataset.id));c.onclick=open;c.onkeydown=e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();open()}}});}
+function wireCards(container,list){container.querySelectorAll(".card").forEach(c=>{const open=()=>{const L=typeof list==="function"?list():list;const d=DATA.find(d=>d.id==c.dataset.id);openModal(d,L&&L.includes(d)?L:null)};c.onclick=open;c.onkeydown=e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();open()}}});}
 
 const PAGE=60;let pageList=[],pageN=0,moreObs=null;
 function moreHTML(){const rest=pageList.length-pageN;return rest>0?`<div class="more-wrap"><button class="more-btn" id="moreBtn">Ver ${Math.min(PAGE,rest)} más · quedan ${rest}</button></div>`:""}
@@ -635,7 +685,7 @@ function appendChunk(){
   const w=grid.querySelector(".more-wrap");if(w)w.remove();
   const next=pageList.slice(pageN,pageN+PAGE);pageN+=next.length;
   grid.insertAdjacentHTML("beforeend",next.map(d=>cardHTML(d,-1)).join("")+moreHTML());
-  wireCards(grid);wireMore();
+  wireCards(grid,()=>pageList);wireMore();
 }
 function render(){
   const list=current(),grid=document.getElementById("grid");
@@ -646,30 +696,36 @@ function render(){
   if(!list.length){grid.innerHTML=`<div class="empty"><h3>Sin resultados</h3><p>Prueba con otra búsqueda o quita los filtros.</p></div>`;return}
   pageList=list;pageN=Math.min(PAGE,list.length);
   grid.innerHTML=list.slice(0,pageN).map((d,i)=>cardHTML(d,i)).join("")+moreHTML();
-  wireCards(grid);wireMore();
+  wireCards(grid,()=>pageList);wireMore();
 }
 
 /* ===== NOVEDADES (Home) ===== */
-let novCat="Figuras y Réplicas";
-function renderNovTabs(){
-  const cats=["Figuras y Réplicas","Cómics","Manga"];const el=document.getElementById("novTabs");if(!el)return;
-  el.innerHTML=cats.map(c=>`<button class="nov-tab${novCat===c?" on":""}" data-cat="${c}"><span class="dot" style="background:${CAT_COLORS[c]}"></span>${c==="Figuras y Réplicas"?"Figuras":c}</button>`).join("");
-  el.querySelectorAll(".nov-tab").forEach(b=>b.onclick=()=>{novCat=b.dataset.cat;renderNovTabs();renderNovedades()});
-}
+let novItems=[];
 function renderNovedades(){
   const box=document.getElementById("novedades");if(!box)return;
-  const items=DATA.filter(d=>d.categoria===novCat).slice(-10).reverse();
+  const items=DATA.filter(d=>d.categoria==="Figuras y Réplicas").slice(-10).reverse();novItems=items;
   box.innerHTML=items.map((d,i)=>cardHTML(d,i)).join("");
-  wireCards(box);
+  wireCards(box,()=>novItems);
 }
 
 /* ===== MODAL ===== */
-let lastFocus=null;
-function openModal(d){
-  if(!d)return;lastFocus=document.activeElement;
+let lastFocus=null,mList=null,mIdx=-1;
+function openModal(d,list){
+  if(!d)return;
+  const ovEl=document.getElementById("overlay"),already=ovEl.classList.contains("open");
+  if(!already)lastFocus=document.activeElement;
+  if(list!==undefined){mList=list&&list.length>1?list:null}
+  mIdx=mList?mList.indexOf(d):-1;if(mIdx<0)mList=null;
   const m=document.getElementById("modal");
-  const bg=d.imagen?`<div class="bg" style="background-image:url('${esc(d.imagen)}')"></div>`:"";
-  const img=d.imagen?`${bg}<img class="main" src="${esc(d.imagen)}" alt="${esc(d.nombre)}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span class="ph" style="display:none">${ICONS[d.categoria]}</span>`:`<span class="ph">${ICONS[d.categoria]}</span>`;
+  const dual=!!(d.fotoFirma&&d.imagen);
+  const bg=d.imagen?`<div class="bg" style="background-image:url('${esc(dual?d.fotoFirma:d.imagen)}')"></div>`:(d.fotoFirma?`<div class="bg" style="background-image:url('${esc(d.fotoFirma)}')"></div>`:"");
+  const img=dual?`${bg}<div class="stack" data-front="firma">
+      <figure class="sk sk-cover" data-k="cover"><img src="${esc(d.imagen)}" alt="Portada de ${esc(d.titulo||d.nombre)}"><figcaption>Portada</figcaption></figure>
+      <figure class="sk sk-sign" data-k="firma"><img src="${esc(d.fotoFirma)}" alt="Ejemplar firmado de ${esc(d.titulo||d.nombre)}"><figcaption>${PEN_SVG}Mi ejemplar</figcaption></figure>
+    </div>
+    <div class="sk-tabs" role="tablist"><button data-k="firma" class="on">${PEN_SVG}Firmado</button><button data-k="cover">Portada</button></div>`
+   :(!d.imagen&&d.fotoFirma)?`${bg}<img class="main" src="${esc(d.fotoFirma)}" alt="${esc(d.nombre)}">`
+   :d.imagen?`${bg}<img class="main" src="${esc(d.imagen)}" alt="${esc(d.nombre)}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span class="ph" style="display:none">${ICONS[d.categoria]}</span>`:`<span class="ph">${ICONS[d.categoria]}</span>`;
   const facts=[];facts.push(["Categoría",esc(d.categoria)]);
   if(d.franquicia)facts.push(["Franquicia",esc(d.franquicia)]);
   if(d.tipo&&d.categoria==="Figuras y Réplicas")facts.push(["Tipo",esc(d.tipo)]);
@@ -678,6 +734,7 @@ function openModal(d){
   if(d.personajes)facts.push(["Personajes",esc(d.personajes)]);
   if(d.autores)facts.push([d.categoria==="Manga"?"Mangaka":"Autores",esc(d.autores)]);
   if(d.firmado)facts.push(["Firmado por",d.firmante?esc(d.firmante):"Sí","","signfact"]);
+  if(d.lugarFirma)facts.push(["Lugar de firma",`<span class="placev">${PIN_SVG}${esc(d.lugarFirma)}</span>`,"","signfact"]);
   if(!document.body.classList.contains("public"))facts.push(["Precio de coste",d.precio!=null?eur(d.precio):"—",true]);
   const title=d.link
     ? `<a class="m-title" id="mTitle" href="${esc(d.link)}" target="_blank" rel="noopener">${esc(d.titulo||d.nombre)}<span class="arr">↗</span></a>`
@@ -686,17 +743,38 @@ function openModal(d){
   m.style.setProperty("--cc",CAT_COLORS[d.categoria]);
   m.innerHTML=`<button class="m-close" aria-label="Cerrar" onclick="closeModal()">×</button>
    <div class="m-grid">
-    <div class="m-visual${d.firmado?" signed":""}" style="--cc-a:${CAT_GLOW[d.categoria]}"><span class="m-cat" style="color:${CAT_COLORS[d.categoria]}">${esc(d.categoria)}</span><div class="glow"></div>${img}${d.firmado?`<span class="m-seal">${PEN_SVG}Firmado</span>`:""}</div>
+    <div class="m-visual${d.firmado?" signed":""}" style="--cc-a:${CAT_GLOW[d.categoria]}"><span class="m-cat" style="color:${CAT_COLORS[d.categoria]}">${esc(d.categoria)}</span><div class="glow"></div>${img}${d.firmado&&!dual?`<span class="m-seal">${PEN_SVG}Firmado</span>`:""}</div>
     <div class="m-info">
       <div class="m-ref">${d.ref}</div>${title}
       <div class="m-facts">${facts.map(f=>`<div class="fact${f[2]?" pricefact":""}${f[3]?" "+f[3]:""}"><div class="k">${f[0]}</div><div class="v${f[2]?" price":""}">${f[1]}</div></div>`).join("")}</div>
       ${synHtml}
     </div></div>`;
-  const ov=document.getElementById("overlay");ov.classList.add("open");document.body.style.overflow="hidden";m.querySelector(".m-close").focus();
+  m.scrollTop=0;updateNav();wireStack(m);
+  if(already){m.classList.remove("swap");void m.offsetWidth;m.classList.add("swap")}
+  else{ovEl.classList.add("open");document.body.style.overflow="hidden";m.querySelector(".m-close").focus()}
+  if(mList){[mIdx-1,mIdx+1].forEach(j=>{const n=mList[(j+mList.length)%mList.length];if(n){[n.imagen,n.fotoFirma].forEach(u=>{if(u){const im=new Image();im.src=u}})}})}
 }
-function closeModal(){document.getElementById("overlay").classList.remove("open");document.body.style.overflow="";if(lastFocus)lastFocus.focus()}
+function wireStack(m){const st=m.querySelector(".stack");if(!st)return;const bg=m.querySelector(".m-visual .bg");
+  const set=k=>{st.dataset.front=k;m.querySelectorAll(".sk-tabs button").forEach(b=>b.classList.toggle("on",b.dataset.k===k));
+    const im=st.querySelector(`.sk[data-k="${k}"] img`);if(bg&&im)bg.style.backgroundImage=`url('${im.getAttribute("src")}')`};
+  st.querySelectorAll(".sk").forEach(f=>f.onclick=e=>{e.stopPropagation();if(st.dataset.front!==f.dataset.k)set(f.dataset.k)});
+  m.querySelectorAll(".sk-tabs button").forEach(b=>b.onclick=e=>{e.stopPropagation();set(b.dataset.k)});
+  st.querySelectorAll("img").forEach(im=>im.onerror=()=>{const k=im.closest(".sk").dataset.k;st.classList.add("solo");set(k==="firma"?"cover":"firma");m.querySelector(".sk-tabs").remove()});}
+function navModal(step){if(!mList)return;mIdx=(mIdx+step+mList.length)%mList.length;openModal(mList[mIdx])}
+function updateNav(){const on=!!mList;document.getElementById("overlay").classList.toggle("has-nav",on);
+  const c=document.getElementById("mCount");if(c)c.textContent=on?`${mIdx+1} / ${mList.length}`:""}
+function closeModal(){mList=null;document.getElementById("overlay").classList.remove("open","has-nav");document.body.style.overflow="";if(lastFocus)lastFocus.focus()}
 document.getElementById("overlay").addEventListener("click",e=>{if(e.target.id==="overlay")closeModal()});
-document.addEventListener("keydown",e=>{if(e.key==="Escape")closeModal()});
+document.addEventListener("keydown",e=>{if(!document.getElementById("overlay").classList.contains("open"))return;
+  if(e.key==="Escape")closeModal();else if(e.key==="ArrowRight"){e.preventDefault();navModal(1)}else if(e.key==="ArrowLeft"){e.preventDefault();navModal(-1)}});
+document.getElementById("mPrev").onclick=e=>{e.stopPropagation();navModal(-1)};
+document.getElementById("mNext").onclick=e=>{e.stopPropagation();navModal(1)};
+document.getElementById("mPrev2").onclick=e=>{e.stopPropagation();navModal(-1)};
+document.getElementById("mNext2").onclick=e=>{e.stopPropagation();navModal(1)};
+{let sx=0,sy=0,st=0;const md=document.getElementById("modal");
+ md.addEventListener("touchstart",e=>{const t=e.touches[0];sx=t.clientX;sy=t.clientY;st=Date.now()},{passive:true});
+ md.addEventListener("touchend",e=>{const t=e.changedTouches[0],dx=t.clientX-sx,dy=t.clientY-sy;
+   if(Math.abs(dx)>55&&Math.abs(dx)>Math.abs(dy)*1.4&&Date.now()-st<700)navModal(dx<0?1:-1)},{passive:true});}
 
 /* ===== WIRING ===== */
 let t;document.getElementById("search").addEventListener("input",e=>{clearTimeout(t);t=setTimeout(()=>{state.q=e.target.value.trim();render()},120)});
@@ -782,7 +860,9 @@ function fromCSV(text){
     let precio=parseFloat((g("precio")||"").replace(/[^\d.,-]/g,"").replace(",","."));
     return {id:k+1,ref:g("ref")||`${p}-${String(cnt[p]).padStart(3,"0")}`,categoria:cat,franquicia:g("franquicia"),tipo:g("tipo"),
       nombre:g("nombre"),marca:g("marca"),linea:g("linea"),personajes:g("personajes"),autores:g("autores"),
-      precio:isNaN(precio)?null:precio,imagen:g("imagen"),link:g("link"),sinopsis:g("sinopsis"),descripcion:g("descripcion"),opinion:g("opinion")}})}
+      precio:isNaN(precio)?null:precio,imagen:g("imagen"),link:g("link"),sinopsis:g("sinopsis"),descripcion:g("descripcion"),opinion:g("opinion"),
+      fotoFirma:g("foto_firma")||g("foto firma")||g("imagen_firma")||g("foto_firmado"),
+      lugarFirma:g("lugar_firma")||g("lugar firma")||g("evento_firma")||g("evento")}})}
 
 async function boot(){
   const params=new URLSearchParams(location.search);
@@ -798,7 +878,7 @@ async function boot(){
   if(!synced)applyOverrides();
   markSigned(DATA);
   renderCanal();renderVideos();renderHero();renderChips();buildRefine();render();
-  renderNovTabs();renderNovedades();
+  renderNovedades();
   initCircuit();
   showView((location.hash||"#home").slice(1));
 }
