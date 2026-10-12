@@ -593,12 +593,12 @@ body.stark .emblem-wrap .emblem{filter:hue-rotate(150deg) saturate(1.35) brightn
 /* ===== (12) SELLO DE AUTENTICIDAD ===== */
 .ink-row{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:-2px 0 12px}
 .ink-row .ink{margin:0;flex:1;min-width:0;overflow:hidden}
-.stamp{flex:none;width:96px;height:96px;transform:rotate(-12deg) scale(.6);opacity:0;animation:stampIn .5s cubic-bezier(.3,1.6,.5,1) 1.9s forwards;color:var(--gold)}
+.stamp{flex:none;width:112px;height:112px;transform:rotate(-12deg) scale(.6);opacity:0;animation:stampIn .5s cubic-bezier(.3,1.6,.5,1) 1.2s forwards;color:var(--gold);filter:drop-shadow(0 0 8px rgba(var(--gold-rgb),.18))}
 .stamp svg{width:100%;height:100%;overflow:visible}
-.stamp text{font-family:var(--mono);font-weight:700;fill:currentColor}
+.stamp text{font-family:var(--mono);fill:currentColor}
 @keyframes stampIn{to{opacity:.92;transform:rotate(-12deg) scale(1)}}
 @media(prefers-reduced-motion:reduce){.stamp{animation:none;opacity:.92;transform:rotate(-12deg)}}
-@media(max-width:520px){.stamp{width:78px;height:78px}}
+@media(max-width:520px){.stamp{width:88px;height:88px}}
 /* ===== (13) RAREZA ===== */
 .rar{display:inline-flex;align-items:center;gap:4px;font-family:var(--mono);font-size:9.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:3px 8px;border-radius:999px;white-space:nowrap}
 .rar svg{width:10px;height:10px}
@@ -673,7 +673,16 @@ button,a,.card,.chip,.tabbar,.nav,.seg,.vsel,.az,.fw-tile,.spine{touch-action:ma
 .m-side.next{right:max(16px,calc(50% - 460px - 76px))}
 .m-side:hover{background:var(--gold);color:#1a1400;transform:scale(1.06)}
 @media (min-width:1100px){.overlay.has-nav .m-side{display:flex}}
-.modal.swap .m-grid{animation:mswap .26s ease-out}
+.modal.m-resize{transition:height .32s cubic-bezier(.2,.8,.2,1);overflow:hidden}
+.m-grid.m-out{transition:opacity .15s ease,transform .15s ease;opacity:0}
+.modal[data-dir="next"] .m-grid.m-out{transform:translateX(-26px)}
+.modal[data-dir="prev"] .m-grid.m-out{transform:translateX(26px)}
+.m-grid.m-in{animation:mIn .34s cubic-bezier(.2,.8,.2,1) both}
+.modal[data-dir="prev"] .m-grid.m-in{animation-name:mInPrev}
+@keyframes mIn{from{opacity:0;transform:translateX(30px)}to{opacity:1;transform:none}}
+@keyframes mInPrev{from{opacity:0;transform:translateX(-30px)}to{opacity:1;transform:none}}
+.m-grid.m-in .m-visual img,.m-grid.m-in .stack{animation:mImg .45s cubic-bezier(.2,.8,.2,1) both}
+@keyframes mImg{from{opacity:0;transform:scale(.96)}to{opacity:1;transform:none}}
 @keyframes mswap{from{opacity:.2}to{opacity:1}}
 @media (max-width:680px){.m-pager span{min-width:64px}}
 /* ===== FOTO FIRMADA ===== */
@@ -1248,8 +1257,8 @@ function openModal(d,list,fromRoute){_fromRoute=!!fromRoute;mCur=d;
       ${synHtml}
     </div></div>`;
   m.scrollTop=0;updateNav();wireStack(m);if(!already){flyIn(m);sfx("open")}else flyFrom=null;wireModalExtras(m,d);routeModal(d,already);
-  if(already){m.classList.remove("swap");void m.offsetWidth;m.classList.add("swap")}
-  else{ovEl.classList.add("open");document.body.style.overflow="hidden";m.querySelector(".m-close").focus()}
+
+  if(!already){ovEl.classList.add("open");document.body.style.overflow="hidden";m.querySelector(".m-close").focus()}
   if(mList){[mIdx-1,mIdx+1].forEach(j=>{const n=mList[(j+mList.length)%mList.length];if(n){[n.imagen,...(n.fotos||[])].forEach(u=>{if(u){const im=new Image();im.src=u}})}})}
 }
 function wireStack(m){const st=m.querySelector(".stack");if(!st)return;const bg=m.querySelector(".m-visual .bg"),tabs=m.querySelector(".sk-tabs");
@@ -1265,7 +1274,18 @@ function wireStack(m){const st=m.querySelector(".stack");if(!st)return;const bg=
     const tb=tabs&&tabs.querySelector(`button[data-k="${k}"]`);if(tb)tb.remove();
     const rest=figs();rest.forEach((x,i)=>{if(wasFront||+x.dataset.pos>0)x.dataset.pos=String(Math.min(i,3))});
     if(rest.length<2){st.classList.add("solo");if(tabs)tabs.remove()}sync()});}
-function navModal(step){if(!mList)return;sfx("tick");mIdx=(mIdx+step+mList.length)%mList.length;openModal(mList[mIdx])}
+let _navBusy=false;
+function navModal(step){if(!mList)return;sfx("tick");mIdx=(mIdx+step+mList.length)%mList.length;const d=mList[mIdx];
+  const m=document.getElementById("modal"),g=m.querySelector(".m-grid");
+  if(_navBusy)return;
+  if(!g||matchMedia("(prefers-reduced-motion:reduce)").matches){openModal(d);return}
+  _navBusy=true;const h0=m.offsetHeight;m.style.height=h0+"px";
+  m.dataset.dir=step>0?"next":"prev";g.classList.add("m-out");
+  setTimeout(()=>{openModal(mList?mList[mIdx]:d);const g2=m.querySelector(".m-grid");g2.classList.add("m-in");
+    m.style.height="auto";const h1=Math.min(m.scrollHeight,m.offsetHeight);m.style.height=h0+"px";void m.offsetHeight;
+    m.classList.add("m-resize");m.style.height=h1+"px";
+    const done=()=>{m.classList.remove("m-resize");m.style.height="";g2.classList.remove("m-in");_navBusy=false};
+    setTimeout(done,380)},150)}
 function updateNav(){const on=!!mList;document.getElementById("overlay").classList.toggle("has-nav",on);
   const c=document.getElementById("mCount");if(c)c.textContent=on?`${mIdx+1} / ${mList.length}`:""}
 function closeModal(opt){opt=opt||{};mList=null;const ov=document.getElementById("overlay");if(!ov.classList.contains("open"))return;flyOut();
@@ -1699,14 +1719,26 @@ function computeRarity(){["Figuras y Réplicas","Cómics","Manga"].forEach(c=>{c
   L.forEach((d,i)=>{const q=i/n;d.rar=q<.04?"leg":q<.16?"oro":q<.40?"plata":""})});DATA.forEach(d=>{if(d.rar===undefined)d.rar=""})}
 
 /* ===================== (12) SELLO ===================== */
-function stampHTML(d){const yr=(String(d.lugarFirma).match(/(19|20)\d{2}/)||[""])[0];
-  const ev=String(d.lugarFirma||"").replace(/(19|20)\d{2}/,"").trim();const evS=ev.length>16?ev.slice(0,15)+"…":ev;
-  const ini=splitPeople(d.firmante).map(n=>n.split(/\s+/).map(w=>w[0]).join("").slice(0,2).toUpperCase()).slice(0,2).join("·")||"✍";
-  return `<div class="stamp" aria-hidden="true"><svg viewBox="0 0 100 100"><defs><path id="stc" d="M50,50 m-36,0 a36,36 0 1,1 72,0 a36,36 0 1,1 -72,0"/></defs>
-  <circle cx="50" cy="50" r="46" fill="none" stroke="currentColor" stroke-width="2.4"/><circle cx="50" cy="50" r="27" fill="none" stroke="currentColor" stroke-width="1.2" stroke-dasharray="2 2.5"/>
-  <text font-size="8.6" letter-spacing="1.6"><textPath href="#stc" startOffset="0">FIRMA AUTÉNTICA ★ MARIO COLLECTIBLES ★</textPath></text>
-  <text x="50" y="${yr?47:54}" text-anchor="middle" font-size="${ini.length>4?11:15}">${esc(ini)}</text>${yr?`<text x="50" y="62" text-anchor="middle" font-size="10">${yr}</text>`:""}
-  ${evS?`<text x="50" y="${yr?71:66}" text-anchor="middle" font-size="5.2" letter-spacing=".4">${esc(evS.toUpperCase())}</text>`:""}</svg></div>`}
+let _stN=0;
+function stampHTML(d){const id="st"+(++_stN);
+  const yr=(String(d.lugarFirma).match(/(19|20)\d{2}/)||[""])[0];
+  const ev=String(d.lugarFirma||"").replace(/(19|20)\d{2}/,"").replace(/\s{2,}/g," ").trim().toUpperCase();
+  const ini=splitPeople(d.firmante).map(n=>n.split(/\s+/).filter(Boolean).map(w=>w[0]).join("").slice(0,2).toUpperCase()).slice(0,3).join("·")||"✍";
+  const iniFs=ini.length<=2?24:ini.length<=5?17:13;
+  const evFs=ev.length>18?5.2:ev.length>12?6:6.8;const evW=Math.min(54,ev.length*evFs*0.66);
+  return `<div class="stamp" aria-hidden="true"><svg viewBox="0 0 120 120">
+  <defs><path id="${id}t" d="M 15.5 60 A 44.5 44.5 0 0 1 104.5 60"/><path id="${id}b" d="M 9.6 60 A 50.4 50.4 0 0 0 110.4 60"/></defs>
+  <circle cx="60" cy="60" r="57" fill="none" stroke="currentColor" stroke-width="2.2"/>
+  <circle cx="60" cy="60" r="53.6" fill="none" stroke="currentColor" stroke-width=".7"/>
+  <circle cx="60" cy="60" r="40.5" fill="none" stroke="currentColor" stroke-width="1.1"/>
+  <circle cx="60" cy="60" r="37.6" fill="none" stroke="currentColor" stroke-width=".5" stroke-dasharray="1.6 2.2"/>
+  <text font-size="8.4" font-weight="700"><textPath href="#${id}t" startOffset="50%" text-anchor="middle" textLength="104" lengthAdjust="spacing">FIRMA AUTÉNTICA</textPath></text>
+  <text font-size="7.4" font-weight="700"><textPath href="#${id}b" startOffset="50%" text-anchor="middle" textLength="118" lengthAdjust="spacing">MARIO COLLECTIBLES</textPath></text>
+  <text x="13.2" y="62.6" text-anchor="middle" font-size="7.5">★</text><text x="106.8" y="62.6" text-anchor="middle" font-size="7.5">★</text>
+  ${ev?`<text x="60" y="${yr?46:49}" text-anchor="middle" font-size="${evFs}" letter-spacing=".3"${ev.length*evFs*0.66>54?` textLength="${evW.toFixed(1)}" lengthAdjust="spacingAndGlyphs"`:""}>${esc(ev)}</text>`:""}
+  <text x="60" y="${ev?(yr?68:71):(yr?64:67)}" text-anchor="middle" font-size="${iniFs}" font-weight="700" letter-spacing="1">${esc(ini)}</text>
+  ${yr?`<line x1="38" y1="${ev?77:73}" x2="50" y2="${ev?77:73}" stroke="currentColor" stroke-width=".7"/><line x1="70" y1="${ev?77:73}" x2="82" y2="${ev?77:73}" stroke="currentColor" stroke-width=".7"/><text x="60" y="${ev?80:76}" text-anchor="middle" font-size="9" font-weight="700" letter-spacing="1">${yr}</text>`:""}
+  </svg></div>`}
 
 /* ===================== (3) VUELO TARJETA → FICHA ===================== */
 let flyFrom=null,flyBackId=null;
