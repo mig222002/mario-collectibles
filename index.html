@@ -6,9 +6,9 @@
 <title>Mario Collectibles — La Bóveda</title>
 <meta name="theme-color" content="#0B0B0D">
 <meta name="description" content="La colección de Mario Collectibles: figuras, réplicas, cómics y manga.">
-<link rel="manifest" href="manifest.webmanifest">
-<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
-<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="manifest" id="lnkManifest" href="manifest.webmanifest">
+<link rel="icon" id="lnkIcon" type="image/png" sizes="192x192" href="icon-192.png">
+<link rel="apple-touch-icon" id="lnkApple" href="apple-touch-icon.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
@@ -377,7 +377,6 @@ body.stark .emblem-wrap{filter:drop-shadow(0 0 24px rgba(63,201,245,.35))}
 .nav-ic{display:inline-flex;align-items:center;justify-content:center;width:38px;height:38px;border-radius:999px;border:1px solid var(--line);background:var(--panel);color:var(--gold-hi);cursor:pointer;transition:all .16s;flex:none}
 .nav-ic svg{width:19px;height:19px}
 .nav-ic:hover{border-color:var(--gold)}
-#navTheme{margin-left:auto}
 #navTheme:hover svg{animation:spin 1.6s linear infinite}
 .nav-links+.nav-ic{margin-left:auto}
 .nav-dice{margin-left:0!important}
@@ -476,6 +475,153 @@ body.stark .plank{background:linear-gradient(180deg,#2b3540,#141b22)}
 .vb{width:36px;height:36px;border-radius:50%;border:1px solid var(--line);background:var(--panel-2);color:var(--gold-hi);font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center}
 .vb:hover{border-color:var(--gold)}
 @media(max-width:640px){.vit-bar{gap:6px;padding:6px;max-width:calc(100vw - 16px)}.vit-bar .seg{flex-wrap:wrap;justify-content:center}.vit-bar .seg button{padding:7px 10px;font-size:10.5px}.vb{width:32px;height:32px}.vit-stage{padding:14vh 4vw 26vh}.vit-brand span{display:none}.vit-cap{max-width:80vw}}
+/* ===== (1) ESQUELETOS ===== */
+.sk-card{pointer-events:none;animation:none!important}
+.thumb.sk,.skl,.day-sk{background:linear-gradient(100deg,var(--panel-2) 30%,#26272f 45%,var(--panel-2) 60%);background-size:300% 100%;animation:shimmer 1.4s linear infinite}
+.skl{display:block;height:11px;border-radius:6px}
+.skl.w80{width:80%;height:15px}.skl.w50{width:50%}.skl.w30{width:30%;margin-top:14px}
+@keyframes shimmer{from{background-position:100% 0}to{background-position:-50% 0}}
+/* ===== (2) IMÁGENES QUE APARECEN + MARCO ===== */
+.thumb:not(.ok)::before{content:"";position:absolute;inset:0;background:linear-gradient(100deg,transparent 30%,rgba(255,255,255,.05) 45%,transparent 60%);background-size:300% 100%;animation:shimmer 1.4s linear infinite;z-index:0}
+.thumb img.fade{opacity:0;transform:scale(1.04);filter:blur(10px);transition:opacity .5s ease,filter .6s ease,transform .6s ease}
+.thumb img.fade.ld{opacity:1;transform:none;filter:none}
+@media(max-width:820px){.thumb img.fade{filter:none;transform:none;transition:opacity .4s ease}}
+.thumb .ph.frame{display:none}
+.thumb.ok:not(:has(img.ld)) .ph.frame,.thumb.err .ph.frame,.card.pending .ph.frame{display:flex}
+.ph.frame{position:absolute;inset:10px;flex-direction:column;align-items:center;justify-content:center;gap:8px;text-align:center;padding:14px;border:1px solid rgba(var(--gold-rgb),.22);border-radius:10px;opacity:1;
+  background:radial-gradient(120% 90% at 50% 0%,color-mix(in srgb,var(--cc,var(--gold)) 14%,transparent),transparent 70%)}
+.ph.frame svg{width:38px;height:38px;opacity:.5;color:var(--cc,var(--gold))}
+.ph.frame em{font-style:normal;font-family:var(--disp);font-weight:700;font-size:13px;line-height:1.2;color:var(--text);opacity:.8;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.ph.frame small{font-family:var(--mono);font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted-2)}
+.card.pending .thumb::after{display:none}
+/* ===== (3) VUELO TARJETA → FICHA ===== */
+.fly{position:fixed;z-index:120;pointer-events:none;object-fit:cover;border-radius:8px;box-shadow:0 30px 60px -20px #000;transition:all .42s cubic-bezier(.2,.8,.2,1)}
+.fly-hide{opacity:0!important}
+/* ===== (4) VACÍO ===== */
+.empty-ic svg{width:64px;height:64px;color:var(--gold);opacity:.5;margin-bottom:10px;animation:float 3s ease-in-out infinite}
+@keyframes float{50%{transform:translateY(-6px)}}
+.empty-act{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:18px}
+.hcta.gold svg{color:#1a1400}
+/* ===== (6) PIEZA DEL DÍA ===== */
+.day{position:relative;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);min-height:340px;border:1px solid var(--line);border-radius:20px;overflow:hidden;background:var(--panel);cursor:pointer;transition:border-color .2s,box-shadow .3s}
+.day:hover{border-color:rgba(var(--gold-rgb),.55);box-shadow:0 30px 60px -36px #000,0 0 40px -18px rgba(var(--gold-rgb),.5)}
+.day-sk{grid-column:1/-1;min-height:340px}
+.day-vis{position:relative;display:flex;align-items:center;justify-content:center;padding:24px;overflow:hidden;min-height:300px}
+.day-vis .bg{position:absolute;inset:-30px;background-size:cover;background-position:center;filter:blur(30px) saturate(1.3) brightness(.55);transform:scale(1.1)}
+.day-vis img{position:relative;max-width:100%;max-height:320px;object-fit:contain;border-radius:8px;box-shadow:0 24px 50px -18px #000;transition:transform .5s cubic-bezier(.2,.8,.2,1)}
+.day:hover .day-vis img{transform:scale(1.03) rotate(-.6deg)}
+.day-info{padding:clamp(20px,3vw,36px);display:flex;flex-direction:column;justify-content:center;gap:10px;background:radial-gradient(120% 70% at 100% 0%,rgba(var(--ft,212,175,55),.12),transparent 60%)}
+.day-date{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.day-title{font-family:var(--disp);font-weight:800;font-size:clamp(22px,3vw,34px);line-height:1.08;letter-spacing:-.02em}
+.day-meta{font-size:13.5px;color:var(--muted)}
+.day-tags{display:flex;gap:8px;flex-wrap:wrap}
+.day-go{align-self:flex-start;margin-top:6px}
+@media(max-width:700px){.day{grid-template-columns:1fr}.day-vis{min-height:240px}.day-vis img{max-height:240px}}
+/* ===== (7) LOGO VIVO ===== */
+.emblem{transition:filter .25s ease}
+.emblem-wrap{--near:0}
+.emblem-wrap .emblem{filter:drop-shadow(0 4px 18px rgba(0,0,0,.55)) drop-shadow(0 0 calc(16px + var(--near)*30px) rgba(var(--gold-rgb),calc(.3 + var(--near)*.5)))}
+.reactor svg{transition:opacity .3s}
+.emblem-wrap:hover .reactor svg{opacity:.85}
+body.stark .reactor::after{animation:pulseStark 2.6s ease-in-out infinite}
+@keyframes pulseStark{0%,100%{opacity:.55;transform:scale(.92)}50%{opacity:1;transform:scale(1.08);box-shadow:0 0 60px 10px rgba(63,201,245,.25)}}
+body.stark .emblem-wrap .emblem{filter:hue-rotate(150deg) saturate(1.35) brightness(1.08) drop-shadow(0 0 calc(18px + var(--near)*34px) rgba(63,201,245,calc(.35 + var(--near)*.5)))}
+/* ===== (8) CARRUSEL ===== */
+.rail-wrap{position:relative}
+.rail{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(230px,250px);gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-behavior:smooth;padding:6px 2px 18px;scrollbar-width:none;-webkit-overflow-scrolling:touch;
+  mask-image:linear-gradient(90deg,transparent,#000 24px,#000 calc(100% - 40px),transparent)}
+.rail::-webkit-scrollbar{display:none}
+.rail .card{scroll-snap-align:start}
+.rail-arr{position:absolute;top:42%;z-index:3;width:44px;height:44px;margin-top:-22px;border-radius:50%;border:1px solid var(--gold-deep);background:rgba(14,14,17,.9);color:var(--gold-hi);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:opacity .2s,transform .2s}
+.rail-arr svg{width:20px;height:20px}
+.rail-arr.prev{left:-14px}.rail-arr.next{right:-14px}
+.rail-arr:hover{transform:scale(1.08)}
+.rail-arr[disabled]{opacity:0;pointer-events:none}
+@media(max-width:820px){.rail-arr{display:none}.rail{grid-auto-columns:72%}}
+/* ===== (9) VISTAS ===== */
+.cb-r{display:flex;align-items:center;gap:14px}
+.vsel{display:inline-flex;gap:2px;padding:3px;border-radius:999px;border:1px solid var(--line);background:var(--panel)}
+.vsel button{width:30px;height:28px;border-radius:999px;border:0;background:transparent;color:var(--muted);display:flex;align-items:center;justify-content:center;cursor:pointer}
+.vsel button svg{width:15px;height:15px}
+.vsel button.on{background:var(--gold);color:#1a1400}
+#grid.v-compact{grid-template-columns:repeat(auto-fill,minmax(165px,1fr));gap:11px}
+#grid.v-compact .card-body{padding:10px 11px 12px;gap:5px}
+#grid.v-compact .card-name{font-size:13.5px}
+#grid.v-compact .card-meta{font-size:11.5px}
+#grid.v-compact .card-meta>span:not(.brand):not(.signer){display:none}
+#grid.v-compact .ref,#grid.v-compact .fr-tag{font-size:8.5px;padding:2px 6px;top:7px}
+#grid.v-compact .ref{left:7px}#grid.v-compact .fr-tag{right:7px}
+#grid.v-compact .seal{font-size:8.5px;padding:3px 7px 3px 5px}
+#grid.v-compact .rar{display:none}
+#grid.v-compact .ph.frame em,#grid.v-compact .ph.frame small{display:none}
+#grid.v-compact .ph.frame{inset:6px}
+@media(max-width:640px){.countbar .rhs{display:none}.countbar{align-items:center}}
+#grid.v-list{grid-template-columns:1fr;gap:8px}
+#grid.v-list .card{flex-direction:row;align-items:stretch;contain-intrinsic-size:auto 104px}
+#grid.v-list .card-strip{width:3px;height:auto}
+#grid.v-list .thumb{width:84px;aspect-ratio:auto;min-height:100px;flex:none}
+#grid.v-list .thumb .ref,#grid.v-list .thumb .fr-tag,#grid.v-list .seal,#grid.v-list .thumb::after{display:none}
+#grid.v-list .ph.frame em,#grid.v-list .ph.frame small{display:none}
+#grid.v-list .card-body{flex-direction:row;align-items:center;gap:16px;padding:10px 16px}
+#grid.v-list .card-name{flex:1 1 40%;font-size:15px}
+#grid.v-list .card-meta{flex:1 1 35%}
+#grid.v-list .card-foot{margin:0;padding:0;flex-direction:column;align-items:flex-end;gap:4px;flex:none}
+#grid.v-list .holo{display:none}
+@media(max-width:640px){#grid.v-list .card-body{flex-direction:column;align-items:flex-start;gap:4px}#grid.v-list .card-foot{flex-direction:row;align-items:center;width:100%}#grid.v-compact{grid-template-columns:repeat(3,1fr);gap:7px}#grid.v-compact .card-meta,#grid.v-compact .card-foot .foot-r{display:none}#grid.v-compact .card-name{font-size:12px;-webkit-line-clamp:2;display:-webkit-box;-webkit-box-orient:vertical;overflow:hidden}#grid.v-compact .price{font-size:11.5px}}
+/* ===== (10) A–Z ===== */
+.az{touch-action:none;user-select:none;position:fixed;right:6px;top:50%;transform:translateY(-50%);z-index:55;display:flex;flex-direction:column;align-items:center;gap:1px;padding:8px 3px;border-radius:999px;background:rgba(14,14,17,.82);border:1px solid var(--line)}
+.az[hidden]{display:none}
+.az button{border:0;background:none;color:var(--muted);font-family:var(--mono);font-size:10.5px;font-weight:700;width:22px;height:min(2.6vh,20px);cursor:pointer;border-radius:6px;display:flex;align-items:center;justify-content:center}
+.az button:hover,.az button.on{color:#1a1400;background:var(--gold)}
+.az button[disabled]{opacity:.25;cursor:default;background:none;color:var(--muted)}
+.az-pop{position:fixed;right:44px;top:50%;transform:translateY(-50%);z-index:56;width:64px;height:64px;border-radius:16px;background:rgba(14,14,17,.92);border:1px solid var(--gold-deep);color:var(--gold-hi);font-family:var(--disp);font-weight:800;font-size:34px;display:flex;align-items:center;justify-content:center;pointer-events:none;opacity:0;transition:opacity .2s}
+.az-pop.on{opacity:1}
+@media(max-width:640px){.az{right:3px;padding:6px 2px}.az button{width:18px;font-size:9.5px}}
+/* ===== (11) FILTROS ACTIVOS ===== */
+.fchips{display:flex;gap:8px;flex-wrap:wrap;margin:-4px 0 12px}
+.fchips:empty{display:none}
+.fchip{display:inline-flex;align-items:center;gap:8px;padding:6px 8px 6px 13px;border-radius:999px;background:rgba(var(--gold-rgb),.1);border:1px solid rgba(var(--gold-rgb),.4);color:var(--gold-hi);font-family:var(--mono);font-size:11.5px;animation:chipIn .25s cubic-bezier(.2,.8,.2,1)}
+.fchip b{font-weight:400;color:var(--muted)}
+.fchip button{width:20px;height:20px;border-radius:50%;border:0;background:rgba(var(--gold-rgb),.2);color:var(--gold-hi);cursor:pointer;font-size:13px;line-height:1}
+.fchip button:hover{background:var(--gold);color:#1a1400}
+.fchip.clear{background:none;border-color:var(--line);color:var(--muted);padding:6px 13px;cursor:pointer}
+@keyframes chipIn{from{opacity:0;transform:scale(.85)}}
+/* ===== (12) SELLO DE AUTENTICIDAD ===== */
+.ink-row{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:-2px 0 12px}
+.ink-row .ink{margin:0;flex:1;min-width:0;overflow:hidden}
+.stamp{flex:none;width:96px;height:96px;transform:rotate(-12deg) scale(.6);opacity:0;animation:stampIn .5s cubic-bezier(.3,1.6,.5,1) 1.9s forwards;color:var(--gold)}
+.stamp svg{width:100%;height:100%;overflow:visible}
+.stamp text{font-family:var(--mono);font-weight:700;fill:currentColor}
+@keyframes stampIn{to{opacity:.92;transform:rotate(-12deg) scale(1)}}
+@media(prefers-reduced-motion:reduce){.stamp{animation:none;opacity:.92;transform:rotate(-12deg)}}
+@media(max-width:520px){.stamp{width:78px;height:78px}}
+/* ===== (13) RAREZA ===== */
+.rar{display:inline-flex;align-items:center;gap:4px;font-family:var(--mono);font-size:9.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:3px 8px;border-radius:999px;white-space:nowrap}
+.rar svg{width:10px;height:10px}
+.rar.r-plata{color:#E4E7EC;background:rgba(200,206,216,.12);border:1px solid rgba(200,206,216,.35)}
+.rar.r-oro{color:#F5D77A;background:rgba(232,190,70,.12);border:1px solid rgba(232,190,70,.45)}
+.rar.r-leg{color:#fff;border:1px solid transparent;background:linear-gradient(var(--panel),var(--panel)) padding-box,linear-gradient(90deg,#ff7ad9,#7af0ff,#ffe27a,#ff7ad9) border-box;background-size:auto,300% 100%;animation:legShift 4s linear infinite}
+@keyframes legShift{to{background-position:0 0,300% 0}}
+.foot-r{display:flex;align-items:center;gap:6px}
+.card.rar-plata .card-strip{background:linear-gradient(90deg,#8e96a3,#eef1f5,#8e96a3)}
+.card.rar-oro .card-strip{background:linear-gradient(90deg,#9A7A24,#F7E3A1,#9A7A24)}
+.card.rar-leg .card-strip{background:linear-gradient(90deg,#ff7ad9,#7af0ff,#ffe27a,#ff7ad9);background-size:300% 100%;animation:legShift 4s linear infinite}
+.card.rar-leg{box-shadow:0 0 0 1px rgba(255,255,255,.08),0 0 26px -10px rgba(122,240,255,.45)}
+@media (hover:hover) and (pointer:fine) and (min-width:821px){
+  .card.rar-leg::after{content:"";position:absolute;inset:-1px;border-radius:inherit;padding:1px;pointer-events:none;z-index:4;background:conic-gradient(from var(--ang,0deg),#ff7ad9,#7af0ff,#ffe27a,#ff7ad9);
+    -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;animation:legSpin 5s linear infinite;opacity:.75}
+}
+@property --ang{syntax:"<angle>";initial-value:0deg;inherits:false}
+@keyframes legSpin{to{--ang:360deg}}
+@media(max-width:820px){.rar.r-leg,.card.rar-leg .card-strip{animation:none}}
+/* ===== (14) SONIDO ===== */
+.snd .sw-on{display:none}
+.snd[aria-pressed="true"] .sw-on{display:inline}
+.snd[aria-pressed="true"] .sw-off{display:none}
+.foot-snd{display:inline-flex;align-items:center;gap:7px;border:1px solid var(--line);background:var(--panel);color:var(--muted);font-family:var(--mono);font-size:11px;padding:6px 12px;border-radius:999px;cursor:pointer;margin-right:auto}
+.foot-snd svg{width:15px;height:15px}
+.foot-snd[aria-pressed="true"]{color:var(--gold-hi);border-color:var(--gold-deep)}
+@media(max-width:900px){#navSound{display:none}}
 /* ===== NAVEGACIÓN FICHA ===== */
 .overlay{flex-direction:column;gap:14px}
 .overlay.has-nav .modal{max-height:calc(100vh - 110px)}
@@ -610,6 +756,7 @@ body.public .foot .priv-only{display:none}
     <a href="#videos" data-view="videos">Vídeos</a>
     <a href="#canal" data-view="canal">El Canal</a>
   </div>
+  <button class="nav-ic snd" id="navSound" title="Sonidos" aria-label="Activar sonidos" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9h4l5-4v14l-5-4H4z"/><path class="sw-on" d="M16.5 8.5a5 5 0 0 1 0 7M19 6a8.5 8.5 0 0 1 0 12"/><path class="sw-off" d="M17 9l5 6M22 9l-5 6"/></svg></button>
   <button class="nav-ic" id="navTheme" title="Cambiar tema (Oro / Stark)" aria-label="Cambiar tema"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4.2"/><path d="M12 3v3.2M12 17.8V21M3 12h3.2M17.8 12H21M5.6 5.6l2.3 2.3M16.1 16.1l2.3 2.3M5.6 18.4l2.3-2.3M16.1 7.9l2.3-2.3"/></svg></button>
   <button class="nav-ic nav-vit" id="navVitrina" title="Modo vitrina" aria-label="Modo vitrina"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="13" rx="2"/><path d="M8 21h8M12 17v4"/><path d="M10 8.5v5l4-2.5z" fill="currentColor"/></svg></button>
   <button class="nav-dice" id="navDice" title="Pieza al azar" aria-label="Pieza al azar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="4"/><circle cx="8.5" cy="8.5" r="1.3" fill="currentColor"/><circle cx="15.5" cy="15.5" r="1.3" fill="currentColor"/><circle cx="12" cy="12" r="1.3" fill="currentColor"/><circle cx="15.5" cy="8.5" r="1.3" fill="currentColor"/><circle cx="8.5" cy="15.5" r="1.3" fill="currentColor"/></svg></button>
@@ -650,6 +797,8 @@ body.public .foot .priv-only{display:none}
     </div>
   </div></header>
 
+  <div class="wrap home-block" id="dayBlock"><div class="eyebrow">Pieza del día</div><div class="day" id="dayPiece"><div class="day-sk"></div></div></div>
+
   <div class="wrap home-block">
     <div class="eyebrow">Vídeos destacados</div>
     <div id="chVideos"></div>
@@ -660,7 +809,9 @@ body.public .foot .priv-only{display:none}
       <div class="eyebrow" style="margin:0">Novedades en la bóveda</div>
       
     </div>
-    <div class="grid" id="novedades"></div>
+    <div class="rail-wrap"><button class="rail-arr prev" id="railPrev" aria-label="Anteriores"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></button>
+      <div class="rail" id="novedades"><div class="card sk-card"><div class="thumb sk"></div><div class="card-body"><i class="skl w80"></i><i class="skl w50"></i><i class="skl w30"></i></div></div><div class="card sk-card"><div class="thumb sk"></div><div class="card-body"><i class="skl w80"></i><i class="skl w50"></i><i class="skl w30"></i></div></div><div class="card sk-card"><div class="thumb sk"></div><div class="card-body"><i class="skl w80"></i><i class="skl w50"></i><i class="skl w30"></i></div></div><div class="card sk-card"><div class="thumb sk"></div><div class="card-body"><i class="skl w80"></i><i class="skl w50"></i><i class="skl w30"></i></div></div><div class="card sk-card"><div class="thumb sk"></div><div class="card-body"><i class="skl w80"></i><i class="skl w50"></i><i class="skl w30"></i></div></div><div class="card sk-card"><div class="thumb sk"></div><div class="card-body"><i class="skl w80"></i><i class="skl w50"></i><i class="skl w30"></i></div></div></div>
+      <button class="rail-arr next" id="railNext" aria-label="Siguientes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></button></div>
   </div>
 </section>
 
@@ -680,8 +831,11 @@ body.public .foot .priv-only{display:none}
     <div class="chips" id="catChips"></div>
   </div></div>
   <div class="wrap">
-    <div class="countbar"><span><b id="shownCount">0</b> piezas · <span id="shownVal">0 €</span></span><span class="rhs" id="ctxNote"></span></div>
-    <div class="grid" id="grid"></div>
+    <div class="fchips" id="fChips"></div>
+    <div class="countbar"><span><b id="shownCount">0</b> piezas · <span id="shownVal">0 €</span></span>
+      <span class="cb-r"><span class="rhs" id="ctxNote"></span><span class="vsel" id="vSel" role="group" aria-label="Vista"><button data-v="grid" title="Cuadrícula"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/></svg></button><button data-v="compact" title="Compacta"><svg viewBox="0 0 24 24" fill="currentColor"><rect x="3" y="3" width="5" height="5" rx="1"/><rect x="9.5" y="3" width="5" height="5" rx="1"/><rect x="16" y="3" width="5" height="5" rx="1"/><rect x="3" y="9.5" width="5" height="5" rx="1"/><rect x="9.5" y="9.5" width="5" height="5" rx="1"/><rect x="16" y="9.5" width="5" height="5" rx="1"/><rect x="3" y="16" width="5" height="5" rx="1"/><rect x="9.5" y="16" width="5" height="5" rx="1"/><rect x="16" y="16" width="5" height="5" rx="1"/></svg></button><button data-v="list" title="Lista"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="4" width="5" height="5" rx="1"/><rect x="3" y="15" width="5" height="5" rx="1"/><path d="M11 6.5h10M11 17.5h10"/></svg></button></span></span></div>
+    <nav class="az" id="azBar" aria-label="Saltar por letra" hidden></nav>
+    <div class="grid" id="grid"><div class="card sk-card"><div class="thumb sk"></div><div class="card-body"><i class="skl w80"></i><i class="skl w50"></i><i class="skl w30"></i></div></div><div class="card sk-card"><div class="thumb sk"></div><div class="card-body"><i class="skl w80"></i><i class="skl w50"></i><i class="skl w30"></i></div></div><div class="card sk-card"><div class="thumb sk"></div><div class="card-body"><i class="skl w80"></i><i class="skl w50"></i><i class="skl w30"></i></div></div><div class="card sk-card"><div class="thumb sk"></div><div class="card-body"><i class="skl w80"></i><i class="skl w50"></i><i class="skl w30"></i></div></div><div class="card sk-card"><div class="thumb sk"></div><div class="card-body"><i class="skl w80"></i><i class="skl w50"></i><i class="skl w30"></i></div></div><div class="card sk-card"><div class="thumb sk"></div><div class="card-body"><i class="skl w80"></i><i class="skl w50"></i><i class="skl w30"></i></div></div><div class="card sk-card"><div class="thumb sk"></div><div class="card-body"><i class="skl w80"></i><i class="skl w50"></i><i class="skl w30"></i></div></div><div class="card sk-card"><div class="thumb sk"></div><div class="card-body"><i class="skl w80"></i><i class="skl w50"></i><i class="skl w30"></i></div></div><div class="card sk-card"><div class="thumb sk"></div><div class="card-body"><i class="skl w80"></i><i class="skl w50"></i><i class="skl w30"></i></div></div><div class="card sk-card"><div class="thumb sk"></div><div class="card-body"><i class="skl w80"></i><i class="skl w50"></i><i class="skl w30"></i></div></div><div class="card sk-card"><div class="thumb sk"></div><div class="card-body"><i class="skl w80"></i><i class="skl w50"></i><i class="skl w30"></i></div></div><div class="card sk-card"><div class="thumb sk"></div><div class="card-body"><i class="skl w80"></i><i class="skl w50"></i><i class="skl w30"></i></div></div></div>
   </div>
 </section>
 
@@ -748,7 +902,7 @@ body.public .foot .priv-only{display:none}
 </section>
 </main>
 
-<footer class="foot wrap"><span>Mario Collectibles · <span id="footCount">0</span> piezas catalogadas</span><span class="sync">Sincronización: <b id="syncMode">datos embebidos</b></span></footer>
+<footer class="foot wrap"><span>Mario Collectibles · <span id="footCount">0</span> piezas catalogadas</span><button class="foot-snd snd" id="footSound" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9h4l5-4v14l-5-4H4z"/><path class="sw-on" d="M16.5 8.5a5 5 0 0 1 0 7M19 6a8.5 8.5 0 0 1 0 12"/><path class="sw-off" d="M17 9l5 6M22 9l-5 6"/></svg><span>Sonidos</span></button><span class="sync">Sincronización: <b id="syncMode">datos embebidos</b></span></footer>
 
 <div class="lb" id="lb" role="dialog" aria-modal="true" aria-label="Imagen ampliada" hidden>
   <div class="lb-stage" id="lbStage"><img id="lbImg" alt=""></div>
@@ -954,20 +1108,22 @@ function markSigned(list){list.forEach(d=>{
   d.titulo=m?(d.nombre||"").replace(SIGN_RE,"").replace(/\s{2,}/g," ").trim():d.nombre;
 });}
 function cardHTML(d,i){
-  const img=d.imagen?`<img src="${esc(d.imagen)}" alt="${esc(d.nombre)}" loading="lazy" decoding="async" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span class="ph" style="display:none">${ICONS[d.categoria]}</span>`:`<span class="ph">${ICONS[d.categoria]}</span>`;
+  const frame=`<span class="ph frame">${ICONS[d.categoria]}<em>${esc(d.titulo||d.nombre)}</em><small>${d.imagen?"Imagen no disponible":"Sin imagen todavía"}</small></span>`;
+  const img=d.imagen?`<img class="fade" src="${esc(d.imagen)}" alt="${esc(d.nombre)}" loading="lazy" decoding="async" onload="this.classList.add('ld');this.parentNode.classList.add('ok')" onerror="this.style.display='none';this.parentNode.classList.add('ok','err')">${frame}`:frame;
   const fr=d.franquicia&&FR_SHORT[d.franquicia]?`<span class="fr-tag">${FR_SHORT[d.franquicia]}</span>`:"";
   const sub=d.categoria==="Figuras y Réplicas"?`<span class="brand">${esc(d.marca)}</span><span>${esc(d.tipo)}${d.linea?" · "+esc(d.linea):""}</span>`:`<span class="brand">${esc(d.marca)}</span><span>${esc(d.autores)||"&nbsp;"}</span>${d.firmado?`<span class="signer">✍ ${d.firmante?"Firmado por "+esc(d.firmante):"Firmado"}</span>`:""}${d.lugarFirma?`<span class="signplace">${PIN_SVG}${esc(d.lugarFirma)}</span>`:""}`;
   const alt=d.fotoFirma?`<img class="alt" src="${esc(d.fotoFirma)}" alt="" loading="lazy" decoding="async" onerror="this.remove()">`:"";
   const seal=d.firmado?`${alt}<span class="seal" title="${d.firmante?"Firmado por "+esc(d.firmante):"Firmado"}">${PEN_SVG}Firmado${d.fotoFirma?`<i class="cam">${CAM_SVG}${d.fotos.length>1?d.fotos.length:""}</i>`:""}</span><span class="sheen"></span>`:"";
   const buy=d.link?`<a class="buy" href="${esc(d.link)}" target="_blank" rel="noopener" onclick="event.stopPropagation()">Comprar ↗</a>`:"";
-  return `<article class="card${!d.imagen?" pending":""}${d.firmado?" signed":""}${d.fotoFirma&&d.imagen?" has-alt":""}${i<0?" noanim":""}" data-cat="${d.categoria}" tabindex="0" data-id="${d.id}" style="animation-delay:${Math.max(0,Math.min(i,24))*20}ms">
+  const rr=d.rar?`<span class="rar r-${d.rar}" title="Rareza: ${RAR_NAME[d.rar]}">${RAR_ICON}${RAR_NAME[d.rar]}</span>`:"";
+  return `<article class="card${!d.imagen?" pending":""}${d.firmado?" signed":""}${d.rar?" rar-"+d.rar:""}${d.fotoFirma&&d.imagen?" has-alt":""}${i<0?" noanim":""}" data-cat="${d.categoria}" tabindex="0" data-id="${d.id}" style="animation-delay:${Math.max(0,Math.min(i,24))*20}ms">
       <div class="card-strip"></div><span class="holo"></span>
-      <div class="thumb"><span class="ref">${d.ref}</span>${fr}${img}${seal}</div>
+      <div class="thumb${d.imagen?"":" ok"}"><span class="ref">${d.ref}</span>${fr}${img}${seal}</div>
       <div class="card-body"><div class="card-name">${esc(d.titulo||d.nombre)}</div><div class="card-meta">${sub}</div>
-      <div class="card-foot"><span class="price">${d.precio!=null?eur(d.precio):'<span class="np">sin precio</span>'}</span><span class="foot-r">${buy}</span></div></div>
+      <div class="card-foot"><span class="price">${d.precio!=null?eur(d.precio):'<span class="np">sin precio</span>'}</span><span class="foot-r">${rr}${buy}</span></div></div>
     </article>`;
 }
-function wireCards(container,list){container.querySelectorAll(".card").forEach(c=>{const open=()=>{const L=typeof list==="function"?list():list;const d=DATA.find(d=>d.id==c.dataset.id);openModal(d,L&&L.includes(d)?L:null)};c.onclick=open;c.onkeydown=e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();open()}}});}
+function wireCards(container,list){container.querySelectorAll(".card").forEach(c=>{const open=()=>{const L=typeof list==="function"?list():list;const d=DATA.find(d=>d.id==c.dataset.id);flyFrom=c.querySelector(".thumb img.ld");openModal(d,L&&L.includes(d)?L:null)};c.onclick=open;c.onkeydown=e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();open()}}});}
 
 const PAGE=60;let pageList=[],pageN=0,moreObs=null;
 function moreHTML(){const rest=pageList.length-pageN;return rest>0?`<div class="more-wrap"><button class="more-btn" id="moreBtn">Ver ${Math.min(PAGE,rest)} más · quedan ${rest}</button></div>`:""}
@@ -993,7 +1149,10 @@ function render(){
   document.getElementById("shownVal").textContent=eur(list.reduce((a,d)=>a+(d.precio||0),0));
   document.getElementById("ctxNote").textContent=(state.cat==="Todo"?"toda la colección":state.cat+(state.refine?` · ${state.refine}`:""))+(state.signed?" · firmados":"");
   if(moreObs){moreObs.disconnect();moreObs=null}
-  if(!list.length){grid.innerHTML=`<div class="empty"><h3>Sin resultados</h3><p>Prueba con otra búsqueda o quita los filtros.</p></div>`;return}
+  renderFChips();updateAZ(list);
+  if(!list.length){grid.innerHTML=`<div class="empty"><div class="empty-ic">${ICONS["Figuras y Réplicas"]}</div><h3>${pickEmpty()}</h3><p>${state.q?`No encuentro nada con «${esc(state.q)}».`:"No hay piezas con estos filtros."} Prueba otra cosa o déjate sorprender.</p>
+    <div class="empty-act"><button class="hcta sm" id="emClear">Quitar filtros</button><button class="hcta sm gold" id="emRand">${DICE_SVG}Pieza al azar</button></div></div>`;
+    document.getElementById("emClear").onclick=clearFilters;document.getElementById("emRand").onclick=randomPiece;return}
   pageList=list;pageN=Math.min(PAGE,list.length);
   grid.innerHTML=list.slice(0,pageN).map((d,i)=>cardHTML(d,i)).join("")+moreHTML();
   wireCards(grid,()=>pageList);wireMore();
@@ -1003,14 +1162,15 @@ function render(){
 let novItems=[];
 function renderNovedades(){
   const box=document.getElementById("novedades");if(!box)return;
-  const items=DATA.filter(d=>d.categoria==="Figuras y Réplicas").slice(-10).reverse();novItems=items;
+  const items=DATA.filter(d=>d.categoria==="Figuras y Réplicas").slice(-12).reverse();novItems=items;
   box.innerHTML=items.map((d,i)=>cardHTML(d,i)).join("");
   wireCards(box,()=>novItems);
 }
 
 /* ===== MODAL ===== */
 let lastFocus=null,mList=null,mIdx=-1;
-function openModal(d,list,fromRoute){_fromRoute=!!fromRoute;
+let mCur=null;
+function openModal(d,list,fromRoute){_fromRoute=!!fromRoute;mCur=d;
   if(!d)return;
   const ovEl=document.getElementById("overlay"),already=ovEl.classList.contains("open");
   if(!already)lastFocus=document.activeElement;
@@ -1036,6 +1196,7 @@ function openModal(d,list,fromRoute){_fromRoute=!!fromRoute;
   if(d.autores)facts.push([d.categoria==="Manga"?"Mangaka":"Autores",tlList(d.autores)]);
   if(d.firmado)facts.push(["Firmado por",d.firmante?tlList(d.firmante):"Sí","","signfact"]);
   if(d.lugarFirma)facts.push(["Lugar de firma",`<span class="placev">${PIN_SVG}${tl(d.lugarFirma)}</span>`,"","signfact"]);
+  if(d.rar)facts.push(["Rareza",`<span class="rar r-${d.rar}">${RAR_ICON}${RAR_NAME[d.rar]}</span>`]);
   if(!document.body.classList.contains("public"))facts.push(["Precio de coste",d.precio!=null?eur(d.precio):"—",true]);
   const title=d.link
     ? `<a class="m-title" id="mTitle" href="${esc(d.link)}" target="_blank" rel="noopener">${esc(d.titulo||d.nombre)}<span class="arr">↗</span></a>`
@@ -1048,11 +1209,11 @@ function openModal(d,list,fromRoute){_fromRoute=!!fromRoute;
     <div class="m-visual${d.firmado?" signed":""}" style="--cc-a:rgba(${ft},.22)"><span class="m-cat" style="color:${CAT_COLORS[d.categoria]}">${esc(d.categoria)}</span><div class="glow"></div>${img}${d.firmado&&!dual?`<span class="m-seal">${PEN_SVG}Firmado</span>`:""}</div>
     <div class="m-info">
       <div class="m-ref">${d.ref}<button class="m-share" id="mShare" title="Copiar enlace a esta pieza">${LINK_SVG}<span>Compartir</span></button></div>${title}
-      ${d.firmado?inkHTML(d):""}
+      ${d.firmado?`<div class="ink-row">${inkHTML(d)}${stampHTML(d)}</div>`:""}
       <div class="m-facts">${facts.map(f=>`<div class="fact${f[2]?" pricefact":""}${f[3]?" "+f[3]:""}"><div class="k">${f[0]}</div><div class="v${f[2]?" price":""}">${f[1]}</div></div>`).join("")}</div>
       ${synHtml}
     </div></div>`;
-  m.scrollTop=0;updateNav();wireStack(m);wireModalExtras(m,d);routeModal(d,already);
+  m.scrollTop=0;updateNav();wireStack(m);if(!already){flyIn(m);sfx("open")}else flyFrom=null;wireModalExtras(m,d);routeModal(d,already);
   if(already){m.classList.remove("swap");void m.offsetWidth;m.classList.add("swap")}
   else{ovEl.classList.add("open");document.body.style.overflow="hidden";m.querySelector(".m-close").focus()}
   if(mList){[mIdx-1,mIdx+1].forEach(j=>{const n=mList[(j+mList.length)%mList.length];if(n){[n.imagen,...(n.fotos||[])].forEach(u=>{if(u){const im=new Image();im.src=u}})}})}
@@ -1070,10 +1231,10 @@ function wireStack(m){const st=m.querySelector(".stack");if(!st)return;const bg=
     const tb=tabs&&tabs.querySelector(`button[data-k="${k}"]`);if(tb)tb.remove();
     const rest=figs();rest.forEach((x,i)=>{if(wasFront||+x.dataset.pos>0)x.dataset.pos=String(Math.min(i,3))});
     if(rest.length<2){st.classList.add("solo");if(tabs)tabs.remove()}sync()});}
-function navModal(step){if(!mList)return;mIdx=(mIdx+step+mList.length)%mList.length;openModal(mList[mIdx])}
+function navModal(step){if(!mList)return;sfx("tick");mIdx=(mIdx+step+mList.length)%mList.length;openModal(mList[mIdx])}
 function updateNav(){const on=!!mList;document.getElementById("overlay").classList.toggle("has-nav",on);
   const c=document.getElementById("mCount");if(c)c.textContent=on?`${mIdx+1} / ${mList.length}`:""}
-function closeModal(opt){opt=opt||{};mList=null;const ov=document.getElementById("overlay");if(!ov.classList.contains("open"))return;
+function closeModal(opt){opt=opt||{};mList=null;const ov=document.getElementById("overlay");if(!ov.classList.contains("open"))return;flyOut();
   ov.classList.remove("open","has-nav");document.body.style.overflow="";if(lastFocus&&!opt.noFocus)lastFocus.focus();
   if(opt.fromPop)return;
   if(opt.goto){modalPushed=false;history.replaceState(null,"",hashFor(opt.goto));return}
@@ -1104,7 +1265,7 @@ function applyView(name){
   if(!VIEWS.includes(name))name="home";
   if(document.startViewTransition&&curView!==name&&!matchMedia("(prefers-reduced-motion:reduce)").matches&&innerWidth>640&&document.body.dataset.ready){const n=name;document.startViewTransition(()=>applyViewNow(n));return}
   applyViewNow(name)}
-function applyViewNow(name){curView=name;
+function applyViewNow(name){curView=name;{const az=document.getElementById("azBar");if(az)az.hidden=name!=="coleccion"||state.sort!=="az"||!az.innerHTML}
   document.querySelectorAll(".view").forEach(v=>v.classList.toggle("active",v.id==="view-"+name));
   document.querySelectorAll('.nav-links a,.tabbar a').forEach(a=>a.classList.toggle("on",a.dataset.view===name));
   if(name==="firmas")renderFirmas();if(name==="stats")renderStats();
@@ -1273,7 +1434,7 @@ function lbZoomAt(cx,cy,ns){const im=document.getElementById("lbImg");ns=Math.ma
 })();
 
 /* ===================== PIEZA AL AZAR ===================== */
-function randomPiece(){const pool=DATA.filter(d=>d.imagen||d.fotoFirma);const L=(pool.length?pool:DATA).slice();
+function randomPiece(){sfx("dice");const pool=DATA.filter(d=>d.imagen||d.fotoFirma);const L=(pool.length?pool:DATA).slice();
   for(let i=L.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[L[i],L[j]]=[L[j],L[i]]}
   if(L.length)openModal(L[0],L)}
 
@@ -1381,11 +1542,14 @@ window.addEventListener("appinstalled",()=>{document.getElementById("navInstall"
 if("serviceWorker" in navigator&&location.protocol==="https:"){window.addEventListener("load",()=>navigator.serviceWorker.register("sw.js").catch(()=>{}))}
 
 /* ===================== TEMA ===================== */
-function setTheme(t){document.body.classList.toggle("stark",t==="stark");try{localStorage.setItem("mc-theme",t)}catch(_){}
+function setTheme(t){document.body.classList.toggle("stark",t==="stark");try{localStorage.setItem("mc-theme",t)}catch(_){}themeIcons();
   const mt=document.querySelector('meta[name="theme-color"]');if(mt)mt.content="#0B0B0D";
   if(typeof initCircuit==="function")dispatchEvent(new Event("resize"))}
 try{if(localStorage.getItem("mc-theme")==="stark")document.body.classList.add("stark")}catch(_){}
-document.getElementById("navTheme").onclick=()=>{const s=!document.body.classList.contains("stark");setTheme(s?"stark":"gold");toast(s?"Tema Stark activado":"Tema Oro activado")};
+function themeIcons(){const s=document.body.classList.contains("stark"),sfxn=s?"-stark":"";
+  const set=(id,f)=>{const l=document.getElementById(id);if(l)l.href=f};set("lnkManifest",`manifest${sfxn}.webmanifest`);set("lnkApple",`apple-touch-icon${sfxn}.png`);set("lnkIcon",`icon-192${sfxn}.png`)}
+themeIcons();
+document.getElementById("navTheme").onclick=()=>{const s=!document.body.classList.contains("stark");setTheme(s?"stark":"gold");sfx(s?"reactor":"gold");toast(s?"Tema Stark activado":"Tema Oro activado")};
 
 /* ===================== COLOR POR FRANQUICIA ===================== */
 const FR_TINT={"MARVEL":"226,54,54","DC":"30,120,255","STAR WARS":"255,214,10"};
@@ -1486,8 +1650,134 @@ function vitKey(e){vitUI();if(e.key==="Escape")closeVitrina();else if(e.key==="A
   document.getElementById("heroVitrina").onclick=()=>openVitrina("all");
   document.getElementById("firmasVitrina").onclick=()=>openVitrina("signed");})();
 
+/* ===================== (13) RAREZA ===================== */
+const RAR_NAME={plata:"Plata",oro:"Oro",leg:"Legendaria"};
+const RAR_ICON='<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3 7 7 1-5.5 4.8L18 22l-6-3.6L6 22l1.5-7.2L2 10l7-1z"/></svg>';
+function computeRarity(){["Figuras y Réplicas","Cómics","Manga"].forEach(c=>{const L=DATA.filter(d=>d.categoria===c&&d.precio!=null&&d.precio>0).sort((a,b)=>b.precio-a.precio);const n=L.length;
+  L.forEach((d,i)=>{const q=i/n;d.rar=q<.04?"leg":q<.16?"oro":q<.40?"plata":""})});DATA.forEach(d=>{if(d.rar===undefined)d.rar=""})}
+
+/* ===================== (12) SELLO ===================== */
+function stampHTML(d){const yr=(String(d.lugarFirma).match(/(19|20)\d{2}/)||[""])[0];
+  const ev=String(d.lugarFirma||"").replace(/(19|20)\d{2}/,"").trim();const evS=ev.length>16?ev.slice(0,15)+"…":ev;
+  const ini=splitPeople(d.firmante).map(n=>n.split(/\s+/).map(w=>w[0]).join("").slice(0,2).toUpperCase()).slice(0,2).join("·")||"✍";
+  return `<div class="stamp" aria-hidden="true"><svg viewBox="0 0 100 100"><defs><path id="stc" d="M50,50 m-36,0 a36,36 0 1,1 72,0 a36,36 0 1,1 -72,0"/></defs>
+  <circle cx="50" cy="50" r="46" fill="none" stroke="currentColor" stroke-width="2.4"/><circle cx="50" cy="50" r="27" fill="none" stroke="currentColor" stroke-width="1.2" stroke-dasharray="2 2.5"/>
+  <text font-size="8.6" letter-spacing="1.6"><textPath href="#stc" startOffset="0">FIRMA AUTÉNTICA ★ MARIO COLLECTIBLES ★</textPath></text>
+  <text x="50" y="${yr?47:54}" text-anchor="middle" font-size="${ini.length>4?11:15}">${esc(ini)}</text>${yr?`<text x="50" y="62" text-anchor="middle" font-size="10">${yr}</text>`:""}
+  ${evS?`<text x="50" y="${yr?71:66}" text-anchor="middle" font-size="5.2" letter-spacing=".4">${esc(evS.toUpperCase())}</text>`:""}</svg></div>`}
+
+/* ===================== (3) VUELO TARJETA → FICHA ===================== */
+let flyFrom=null,flyBackId=null;
+const canFly=()=>!matchMedia("(prefers-reduced-motion:reduce)").matches;
+function flyTarget(m){return m.querySelector('.sk[data-pos="0"] img')||m.querySelector("img.main")}
+function flyIn(m){const src=flyFrom;flyFrom=null;if(!src||!canFly())return;const tgt=flyTarget(m);if(!tgt)return;
+  const r0=src.getBoundingClientRect();if(!r0.width||r0.bottom<0||r0.top>innerHeight)return;
+  flyBackId=m.querySelector("#mTitle")?1:null;
+  const go=()=>{const r1=tgt.getBoundingClientRect();if(!r1.width)return;const f=document.createElement("img");f.className="fly";f.src=src.currentSrc||src.src;
+    Object.assign(f.style,{left:r0.left+"px",top:r0.top+"px",width:r0.width+"px",height:r0.height+"px"});document.body.appendChild(f);tgt.classList.add("fly-hide");
+    requestAnimationFrame(()=>requestAnimationFrame(()=>{Object.assign(f.style,{left:r1.left+"px",top:r1.top+"px",width:r1.width+"px",height:r1.height+"px",borderRadius:"6px"})}));
+    const end=()=>{tgt.classList.remove("fly-hide");f.remove()};f.addEventListener("transitionend",end,{once:true});setTimeout(end,700)};
+  if(tgt.complete&&tgt.naturalWidth)requestAnimationFrame(go);else{tgt.addEventListener("load",()=>requestAnimationFrame(go),{once:true})}}
+function flyOut(){if(!canFly())return;const m=document.getElementById("modal");const tgt=flyTarget(m);const d=mCur;if(!tgt||!d)return;
+  const card=[...document.querySelectorAll(`.view.active .card[data-id="${d.id}"] .thumb img.ld`)].find(i=>{const r=i.getBoundingClientRect();return r.width&&r.bottom>0&&r.top<innerHeight});if(!card)return;
+  const r0=tgt.getBoundingClientRect(),r1=card.getBoundingClientRect();if(!r0.width)return;
+  const f=document.createElement("img");f.className="fly";f.src=tgt.currentSrc||tgt.src;Object.assign(f.style,{left:r0.left+"px",top:r0.top+"px",width:r0.width+"px",height:r0.height+"px",objectFit:"contain"});
+  document.body.appendChild(f);card.classList.add("fly-hide");
+  requestAnimationFrame(()=>requestAnimationFrame(()=>{Object.assign(f.style,{left:r1.left+"px",top:r1.top+"px",width:r1.width+"px",height:r1.height+"px",objectFit:"cover"})}));
+  const end=()=>{card.classList.remove("fly-hide");f.remove()};f.addEventListener("transitionend",end,{once:true});setTimeout(end,700)}
+
+/* ===================== (4) VACÍO ===================== */
+const EMPTY_T=["Nada por aquí… ni en la bóveda secreta","Esta vitrina está vacía","Ni con el visor de Stark aparece","Esto no está en la colección… todavía","Búsqueda fallida, el reactor sigue girando"];
+const pickEmpty=()=>EMPTY_T[Math.floor(Math.random()*EMPTY_T.length)];
+const DICE_SVG='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;vertical-align:-3px;margin-right:7px"><rect x="3" y="3" width="18" height="18" rx="4"/><circle cx="8.5" cy="8.5" r="1.3" fill="currentColor"/><circle cx="15.5" cy="15.5" r="1.3" fill="currentColor"/><circle cx="12" cy="12" r="1.3" fill="currentColor"/></svg>';
+function clearFilters(){state.cat="Todo";state.refine="";state.q="";state.signed=false;state.pending=false;document.body.dataset.cat="Todo";const s=document.getElementById("search");if(s)s.value="";buildRefine();renderChips();render()}
+
+/* ===================== (11) FILTROS ACTIVOS ===================== */
+function renderFChips(){const el=document.getElementById("fChips");if(!el)return;const F=[];
+  if(state.q)F.push(["Búsqueda",state.q,()=>{state.q="";document.getElementById("search").value=""}]);
+  if(state.cat!=="Todo")F.push(["Categoría",state.cat==="Figuras y Réplicas"?"Figuras":state.cat,()=>{state.cat="Todo";state.refine="";document.body.dataset.cat="Todo";buildRefine()}]);
+  if(state.refine)F.push([document.getElementById("refine").dataset.key==="franquicia"?"Franquicia":"Marca",state.refine,()=>{state.refine="";buildRefine()}]);
+  if(state.signed)F.push(["","✍ Firmados",()=>{state.signed=false}]);
+  el.innerHTML=F.map((f,i)=>`<span class="fchip">${f[0]?`<b>${f[0]}:</b>`:""}${esc(f[1])}<button data-i="${i}" aria-label="Quitar filtro">×</button></span>`).join("")+(F.length>1?`<button class="fchip clear" id="fcAll">Limpiar todo</button>`:"");
+  el.querySelectorAll("button[data-i]").forEach(b=>b.onclick=()=>{F[+b.dataset.i][2]();renderChips();render()});
+  const all=document.getElementById("fcAll");if(all)all.onclick=clearFilters}
+
+/* ===================== (9) VISTAS ===================== */
+let VMODE="grid";try{VMODE=localStorage.getItem("mc-view")||"grid"}catch(_){}
+function applyVSel(){const g=document.getElementById("grid");g.classList.remove("v-compact","v-list");if(VMODE!=="grid")g.classList.add("v-"+VMODE);
+  document.querySelectorAll("#vSel button").forEach(b=>b.classList.toggle("on",b.dataset.v===VMODE))}
+document.querySelectorAll("#vSel button").forEach(b=>b.onclick=()=>{VMODE=b.dataset.v;try{localStorage.setItem("mc-view",VMODE)}catch(_){}applyVSel();sfx("tick")});
+
+/* ===================== (10) A–Z ===================== */
+const azKey=s=>{const c=norm(s).replace(/^[^a-z0-9]+/,"")[0]||"#";return /[a-z]/.test(c)?c.toUpperCase():"#"};
+function updateAZ(list){const bar=document.getElementById("azBar");if(!bar)return;
+  if(state.sort!=="az"||list.length<30){bar.hidden=true;return}
+  const first={};list.forEach((d,i)=>{const k=azKey(d.titulo||d.nombre);if(first[k]==null)first[k]=i});
+  bar.innerHTML=["#",..."ABCDEFGHIJKLMNOPQRSTUVWXYZ"].map(k=>`<button data-k="${k}"${first[k]==null?" disabled":""}>${k}</button>`).join("");
+  bar.hidden=curView!=="coleccion";AZF=first;
+  if(!bar.dataset.w){bar.dataset.w="1";let drag=false,last="";
+    const hit=(x,y)=>{const el=document.elementFromPoint(x,y);const b=el&&el.closest&&el.closest(".az button[data-k]");if(b&&!b.disabled&&b.dataset.k!==last){last=b.dataset.k;azJump(AZF[last],last)}};
+    bar.addEventListener("pointerdown",e=>{e.preventDefault();drag=true;last="";hit(e.clientX,e.clientY)});
+    addEventListener("pointermove",e=>{if(drag)hit(e.clientX,e.clientY)},{passive:true});
+    addEventListener("pointerup",()=>{drag=false});addEventListener("pointercancel",()=>{drag=false});
+    bar.addEventListener("keydown",e=>{const b=e.target.closest("button[data-k]");if(b&&(e.key==="Enter"||e.key===" ")){e.preventDefault();azJump(AZF[b.dataset.k],b.dataset.k)}})}}
+let AZF={};
+let azT;function azJump(idx,k){if(idx==null)return;while(pageN<=idx&&pageN<pageList.length)appendChunk();
+  const c=document.querySelectorAll("#grid .card")[idx];if(c){const y=c.getBoundingClientRect().top+scrollY-170;scrollTo({top:y,behavior:Math.abs(y-scrollY)>2500?"auto":"smooth"});sfx("tick")}
+  let p=document.querySelector(".az-pop");if(!p){p=document.createElement("div");p.className="az-pop";document.body.appendChild(p)}p.textContent=k;p.classList.add("on");clearTimeout(azT);azT=setTimeout(()=>p.classList.remove("on"),600)}
+
+{const az=document.getElementById("azBar");if(az)document.body.appendChild(az)}
+/* ===================== (6) PIEZA DEL DÍA ===================== */
+function renderDay(){const box=document.getElementById("dayPiece");if(!box)return;const pool=DATA.filter(d=>d.imagen||(d.fotos&&d.fotos.length));if(!pool.length){document.getElementById("dayBlock").hidden=true;return}
+  const today=new Date(),key=today.getFullYear()*10000+(today.getMonth()+1)*100+today.getDate();
+  let hsh=key;for(let i=0;i<6;i++)hsh=(hsh*1103515245+12345)>>>0;const d=pool[hsh%pool.length];const u=(d.fotos&&d.fotos[0])||d.imagen;
+  const fecha=today.toLocaleDateString("es-ES",{weekday:"long",day:"numeric",month:"long"});
+  box.style.setProperty("--ft",tintOf(d));
+  box.innerHTML=`<div class="day-vis"><div class="bg" style="background-image:url('${esc(u)}')"></div><img src="${esc(u)}" alt="${esc(d.titulo||d.nombre)}"></div>
+   <div class="day-info"><div class="day-date">${fecha}</div><div class="day-title">${esc(d.titulo||d.nombre)}</div>
+   <div class="day-meta">${esc([d.marca,d.categoria==="Figuras y Réplicas"?d.linea:d.autores].filter(Boolean).join(" · "))}</div>
+   ${d.firmado?inkHTML(d):""}<div class="day-tags">${d.rar?`<span class="rar r-${d.rar}">${RAR_ICON}${RAR_NAME[d.rar]}</span>`:""}${d.lugarFirma?`<span class="rar" style="color:var(--gold-hi);border:1px solid var(--gold-deep)">📍 ${esc(d.lugarFirma)}</span>`:""}</div>
+   <button class="hcta gold day-go">Ver ficha</button></div>`;
+  box.onclick=()=>{flyFrom=box.querySelector(".day-vis img");openModal(d)}}
+
+/* ===================== (8) CARRUSEL ===================== */
+function wireRail(){const r=document.getElementById("novedades"),p=document.getElementById("railPrev"),n=document.getElementById("railNext");if(!r)return;
+  const upd=()=>{p.disabled=r.scrollLeft<8;n.disabled=r.scrollLeft+r.clientWidth>=r.scrollWidth-8};
+  const step=()=>Math.max(260,r.clientWidth*.8);p.onclick=()=>{r.scrollBy({left:-step()});sfx("tick")};n.onclick=()=>{r.scrollBy({left:step()});sfx("tick")};
+  r.addEventListener("scroll",upd,{passive:true});addEventListener("resize",upd);upd();
+  // arrastrar con el ratón
+  let down=false,sx=0,sl=0,moved=false;r.addEventListener("pointerdown",e=>{if(e.pointerType!=="mouse")return;down=true;moved=false;sx=e.clientX;sl=r.scrollLeft;r.style.scrollSnapType="none";r.style.scrollBehavior="auto"});
+  addEventListener("pointermove",e=>{if(!down)return;const dx=e.clientX-sx;if(Math.abs(dx)>4)moved=true;r.scrollLeft=sl-dx});
+  addEventListener("pointerup",()=>{if(!down)return;down=false;r.style.scrollSnapType="";r.style.scrollBehavior=""});
+  r.addEventListener("click",e=>{if(moved){e.stopPropagation();e.preventDefault();moved=false}},true)}
+
+/* ===================== (7) LOGO VIVO ===================== */
+(function liveLogo(){if(!matchMedia("(hover:hover) and (pointer:fine)").matches)return;const w=document.querySelector(".emblem-wrap");if(!w)return;let raf=0,ev=null;
+  addEventListener("pointermove",e=>{ev=e;if(!raf)raf=requestAnimationFrame(()=>{raf=0;if(curView!=="home")return;const r=w.getBoundingClientRect();
+    const dx=ev.clientX-(r.left+r.width/2),dy=ev.clientY-(r.top+r.height/2),dist=Math.hypot(dx,dy);w.style.setProperty("--near",Math.max(0,1-dist/420).toFixed(3))})},{passive:true})})();
+
+/* ===================== (14) SONIDOS (sintetizados, sin archivos) ===================== */
+let SND=false,AC=null;try{SND=localStorage.getItem("mc-sound")==="1"}catch(_){}
+function sndUI(){document.querySelectorAll(".snd").forEach(b=>{b.setAttribute("aria-pressed",SND);b.title=SND?"Sonidos activados":"Sonidos desactivados"})}
+function ac(){if(!AC){const C=window.AudioContext||window.webkitAudioContext;if(!C)return null;AC=new C()}if(AC.state==="suspended")AC.resume();return AC}
+function tone(c,{f=440,f2=null,t=.08,type="sine",g=.06,at=0,q=null}){const o=c.createOscillator(),gn=c.createGain();o.type=type;const t0=c.currentTime+at;
+  o.frequency.setValueAtTime(f,t0);if(f2)o.frequency.exponentialRampToValueAtTime(f2,t0+t);gn.gain.setValueAtTime(0,t0);gn.gain.linearRampToValueAtTime(g,t0+.005);gn.gain.exponentialRampToValueAtTime(.0001,t0+t);
+  let node=o;if(q){const bp=c.createBiquadFilter();bp.type="bandpass";bp.frequency.value=q;bp.Q.value=8;o.connect(bp);node=bp}node.connect(gn);gn.connect(c.destination);o.start(t0);o.stop(t0+t+.02)}
+function noise(c,{t=.05,g=.05,at=0,fq=3000}){const b=c.createBuffer(1,Math.ceil(c.sampleRate*t),c.sampleRate),d=b.getChannelData(0);for(let i=0;i<d.length;i++)d[i]=(Math.random()*2-1)*(1-i/d.length);
+  const s=c.createBufferSource(),f=c.createBiquadFilter(),gn=c.createGain();f.type="bandpass";f.frequency.value=fq;f.Q.value=3;s.buffer=b;gn.gain.value=g;s.connect(f);f.connect(gn);gn.connect(c.destination);s.start(c.currentTime+at)}
+function sfx(k){if(!SND)return;const c=ac();if(!c)return;try{
+  if(k==="open"){noise(c,{t:.04,g:.08,fq:4200});tone(c,{f:1650,t:.12,type:"triangle",g:.05,q:1650});tone(c,{f:2480,t:.09,type:"sine",g:.025,at:.01})}
+  else if(k==="tick"){noise(c,{t:.025,g:.05,fq:5200});tone(c,{f:1900,t:.05,type:"square",g:.012})}
+  else if(k==="dice"){for(let i=0;i<5;i++)noise(c,{t:.03,g:.06,at:i*.06+Math.random()*.02,fq:2200+Math.random()*1600})}
+  else if(k==="reactor"){tone(c,{f:70,f2:240,t:.9,type:"sawtooth",g:.035});tone(c,{f:140,f2:480,t:.9,type:"sine",g:.03});tone(c,{f:960,f2:1900,t:.6,type:"sine",g:.012,at:.25})}
+  else if(k==="gold"){[784,988,1318].forEach((f,i)=>tone(c,{f,t:.35,type:"triangle",g:.035,at:i*.07}))}
+}catch(_){}}
+function toggleSound(){SND=!SND;try{localStorage.setItem("mc-sound",SND?"1":"0")}catch(_){}sndUI();if(SND){ac();sfx("open");toast("Sonidos activados")}else toast("Sonidos desactivados")}
+document.getElementById("navSound").onclick=toggleSound;document.getElementById("footSound").onclick=toggleSound;sndUI();
+
 async function boot(){
   const _sp=splashStart();
+  {const h0=decodeURIComponent((location.hash||"").slice(1));if(!h0.startsWith("p/"))applyViewNow(VIEWS.includes(h0)?h0:"home")}
   const params=new URLSearchParams(location.search);
   let isPublic=params.get("pub")==="1";
   document.body.classList.toggle("public",isPublic);
@@ -1497,10 +1787,10 @@ async function boot(){
   if(dataUrl){try{const u=dataUrl+(dataUrl.includes("?")?"&":"?")+"_="+Date.now();const r=await fetch(u,{cache:"no-store"});if(r.ok){const parsed=fromCSV(await r.text());if(parsed.length){DATA=parsed;synced=true;document.getElementById("syncMode").textContent="sincronizado con Google Sheets ✓"}}else{document.getElementById("syncMode").textContent="sin conexión con la hoja (datos locales)"}}catch(e){document.getElementById("syncMode").textContent="sin conexión con la hoja (datos locales)";console.warn("Sync no disponible:",e)}}
   loadOverrides();
   if(!synced)applyOverrides();
-  markSigned(DATA);buildSlugs();
+  markSigned(DATA);buildSlugs();computeRarity();
   document.getElementById("footCount").textContent=DATA.length;document.body.dataset.firstPaint="1";
   renderCanal();renderVideos();renderHero();renderChips();buildRefine();render();
-  renderNovedades();delete document.body.dataset.firstPaint;
+  renderNovedades();renderDay();wireRail();applyVSel();delete document.body.dataset.firstPaint;
   initCircuit();splashEnd(_sp);setTimeout(()=>{document.body.dataset.ready="1"},50);
   const hs=decodeURIComponent((location.hash||"").slice(1));
   if(hs.startsWith("p/")&&BY_SLUG[hs.slice(2)]){history.replaceState(null,"",hashFor("coleccion"));applyView("coleccion");openModal(BY_SLUG[hs.slice(2)],pageList)}
