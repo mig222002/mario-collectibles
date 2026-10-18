@@ -461,14 +461,24 @@ body.stark .plank{background:linear-gradient(180deg,#2b3540,#141b22)}
 .vit{position:fixed;inset:0;z-index:250;background:#050506;overflow:hidden;cursor:none}
 .vit[hidden]{display:none}
 .vit.ui{cursor:default}
-.vit-bg{position:absolute;inset:-40px;background-size:cover;background-position:center;filter:blur(40px) saturate(1.3) brightness(.45);transform:scale(1.1);transition:background-image .8s}
+.vit-bg{position:absolute;inset:-40px;background-size:cover;background-position:center;filter:blur(40px) saturate(1.3) brightness(.45);transform:scale(1.1);opacity:0;transition:opacity 1.6s ease;will-change:opacity}
+.vit-bg.on{opacity:1}
 .vit-stage{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:5vh 6vw 27vh}
 .vit-stage::after{content:"";position:fixed;left:0;right:0;bottom:0;height:42vh;background:linear-gradient(transparent,rgba(5,5,6,.82) 70%);pointer-events:none}
 .vit-cap,.vit-brand{z-index:2}
-.vit-stage img{max-width:100%;max-height:100%;object-fit:contain;border-radius:8px;box-shadow:0 40px 90px -30px #000;opacity:0;transition:opacity .9s ease}
-.vit-stage img.on{opacity:1;animation:kb var(--dur,8s) linear forwards}
-@keyframes kb{from{transform:scale(1)}to{transform:scale(1.06)}}
+.vit-stage{display:grid!important;grid-template:minmax(0,1fr)/minmax(0,1fr)}
+.vit-stage img{min-width:0;min-height:0}
+.vit-stage img{grid-area:1/1;place-self:center;max-width:100%;max-height:100%;object-fit:contain;border-radius:8px;box-shadow:0 40px 90px -30px #000;opacity:0;transition:opacity 1.3s cubic-bezier(.4,0,.2,1),filter 1.3s ease;filter:blur(6px);will-change:opacity,transform}
+.vit-stage img.live{animation:kb var(--dur,10s) linear forwards}
+.vit.paused .vit-stage img.live{animation-play-state:paused}
+.vit-stage img.on{opacity:1;filter:none;z-index:1}
+@keyframes kb{from{transform:var(--kb-from,scale(1))}to{transform:var(--kb-to,scale(1.06))}}
 .vit-cap{position:absolute;left:clamp(18px,4vw,56px);bottom:clamp(30px,5vh,60px);max-width:min(64vw,760px);text-shadow:0 2px 12px rgba(0,0,0,.8)}
+.vit-cap>*{transition:opacity .45s ease,transform .55s cubic-bezier(.2,.8,.2,1)}
+.vit-cap.out>*{opacity:0;transform:translateY(-10px)}
+.vit-cap.in>*{opacity:0;transform:translateY(14px)}
+.vit-cap .vit-title{transition-delay:.06s}.vit-cap .vit-sub{transition-delay:.12s}
+.vit-cap.out>*{transition-delay:0s}
 .vit-cat{font-family:var(--sten);letter-spacing:.24em;text-transform:uppercase;font-size:13px;color:var(--gold)}
 .vit-title{font-family:var(--disp);font-weight:800;font-size:clamp(22px,3vw,40px);letter-spacing:-.02em;line-height:1.05;margin-top:6px}
 .vit-sub{font-family:var(--mono);font-size:clamp(11px,1.2vw,14px);color:#cfcdc4;margin-top:8px}
@@ -476,7 +486,8 @@ body.stark .plank{background:linear-gradient(180deg,#2b3540,#141b22)}
 .vit-brand{position:absolute;right:clamp(18px,4vw,56px);bottom:clamp(30px,5vh,60px);display:flex;align-items:center;gap:10px;font-family:var(--sten);letter-spacing:.2em;font-size:12px;color:var(--gold-hi);opacity:.85}
 .vit-brand img{width:34px;height:34px;object-fit:contain}
 .vit-prog{position:absolute;left:0;right:0;bottom:0;height:3px;background:rgba(255,255,255,.06)}
-.vit-prog i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--gold-deep),var(--gold-hi))}
+.vit-prog i{display:block;height:100%;width:100%;transform-origin:0 50%;transform:scaleX(0);background:linear-gradient(90deg,var(--gold-deep),var(--gold-hi))}
+.vit-prog i.rst{transition:transform .5s ease}
 .vit-bar{position:absolute;top:16px;left:0;right:0;margin:0 auto;width:max-content;transform:translateY(-120px);display:flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:center;padding:8px;border-radius:18px;background:rgba(12,12,15,.86);border:1px solid var(--line);transition:transform .3s ease;max-width:calc(100vw - 24px)}
 .vit.ui .vit-bar{transform:none}
 .vb{width:36px;height:36px;border-radius:50%;border:1px solid var(--line);background:var(--panel-2);color:var(--gold-hi);font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center}
@@ -1058,9 +1069,9 @@ body.public .foot .priv-only{display:none}
   </div>
 </div>
 <div class="vit" id="vit" hidden>
-  <div class="vit-bg" id="vitBg"></div>
-  <div class="vit-stage"><img id="vitImg" alt=""></div>
-  <div class="vit-cap"><div class="vit-cat" id="vitCat"></div><div class="vit-title" id="vitTitle"></div><div class="vit-sub" id="vitSub"></div><div class="vit-ink" id="vitInk"></div></div>
+  <div class="vit-bg" id="vitBg0"></div><div class="vit-bg" id="vitBg1"></div>
+  <div class="vit-stage"><img id="vitImg0" alt=""><img id="vitImg1" alt=""></div>
+  <div class="vit-cap" id="vitCap"><div class="vit-cat" id="vitCat"></div><div class="vit-title" id="vitTitle"></div><div class="vit-sub" id="vitSub"></div><div class="vit-ink" id="vitInk"></div></div>
   <div class="vit-brand"><img id="vitLogo" alt=""><span>MARIO COLLECTIBLES</span></div>
   <div class="vit-prog"><i id="vitProg"></i></div>
   <div class="vit-bar" id="vitBar">
@@ -1780,21 +1791,35 @@ function vitBuild(){let L=DATA.filter(d=>d.imagen||(d.fotos&&d.fotos.length));
   if(VIT.pool==="signed")L=L.filter(d=>d.firmado);else if(VIT.pool!=="all")L=L.filter(d=>d.categoria===VIT.pool);
   for(let i=L.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[L[i],L[j]]=[L[j],L[i]]}VIT.list=L;VIT.i=0}
 const vitSrc=d=>(d.fotos&&d.fotos[0])||d.imagen;
+const KB=[["scale(1)","scale(1.07)"],["scale(1.08)","scale(1)"],["scale(1.05) translateX(1.2%)","scale(1.05) translateX(-1.2%)"],["scale(1.05) translateX(-1.2%)","scale(1.05) translateX(1.2%)"],["scale(1) translateY(.8%)","scale(1.06) translateY(-.8%)"]];
+let VSLOT=0;VIT.tok=0;
 function vitShow(){if(!VIT.list.length){document.getElementById("vitTitle").textContent="No hay piezas con imagen en este filtro";return}
-  const d=VIT.list[VIT.i],img=document.getElementById("vitImg"),u=vitSrc(d);
-  img.classList.remove("on");
-  const n=new Image();n.onload=()=>{img.src=u;img.style.setProperty("--dur",(VIT.dur+1)+"s");void img.offsetWidth;img.classList.add("on");
-      document.getElementById("vitBg").style.backgroundImage=`url('${u.replace(/'/g,"%27")}')`;
+  const d=VIT.list[VIT.i],u=vitSrc(d),tok=++VIT.tok;
+  const pre=new Image();pre.decoding="async";pre.src=u;
+  const skip=()=>{if(tok!==VIT.tok)return;VIT.list.splice(VIT.i,1);if(VIT.i>=VIT.list.length)VIT.i=0;vitShow()};
+  const go=()=>{if(tok!==VIT.tok)return;
+    const cur=VSLOT,nx=1-cur,A=document.getElementById("vitImg"+cur),B=document.getElementById("vitImg"+nx);
+    const kb=KB[Math.floor(Math.random()*KB.length)];
+    B.classList.remove("on","live");B.src=u;B.style.setProperty("--kb-from",kb[0]);B.style.setProperty("--kb-to",kb[1]);B.style.setProperty("--dur",(VIT.dur+3)+"s");
+    void B.offsetWidth;B.classList.add("live","on");A.classList.remove("on");
+    clearTimeout(A._t);A._t=setTimeout(()=>{if(!A.classList.contains("on"))A.classList.remove("live")},1500);
+    const g0=document.getElementById("vitBg"+cur),g1=document.getElementById("vitBg"+nx);
+    g1.style.backgroundImage=`url('${u.replace(/'/g,"%27")}')`;g1.classList.add("on");g0.classList.remove("on");
+    const cap=document.getElementById("vitCap"),first=!document.getElementById("vitTitle").textContent;
+    const fill=()=>{if(tok!==VIT.tok)return;
       document.getElementById("vitCat").textContent=(d.franquicia&&d.categoria!=="Mangas"?d.franquicia+" · ":"")+d.categoria;
       document.getElementById("vitTitle").textContent=d.titulo||d.nombre;
       document.getElementById("vitSub").textContent=[d.marca,d.categoria==="Figuras y Réplicas"?d.linea:d.autores,d.lugarFirma?"📍 "+d.lugarFirma:""].filter(Boolean).join("  ·  ");
       const ink=document.getElementById("vitInk");ink.innerHTML=d.firmado?`<span>${esc(splitPeople(d.firmante).join(" · ")||"Firmado")}</span>`:"";
-      VIT.t0=performance.now();vitTick()};
-  n.onerror=()=>{VIT.list.splice(VIT.i,1);if(VIT.i>=VIT.list.length)VIT.i=0;vitShow()};n.src=u;
-  const nx=VIT.list[(VIT.i+1)%VIT.list.length];if(nx){const p=new Image();p.src=vitSrc(nx)}}
+      cap.classList.remove("out");cap.classList.add("in");void cap.offsetWidth;requestAnimationFrame(()=>cap.classList.remove("in"))};
+    if(first)fill();else{cap.classList.add("out");setTimeout(fill,420)}
+    VSLOT=nx;const pr=document.getElementById("vitProg");pr.classList.add("rst");pr.style.transform="scaleX(0)";
+    setTimeout(()=>{pr.classList.remove("rst");if(tok===VIT.tok){VIT.t0=performance.now();vitTick()}},500)};
+  if(pre.decode)pre.decode().then(go,()=>{pre.complete&&pre.naturalWidth?go():skip()});else{pre.onload=go;pre.onerror=skip}
+  const nxt=VIT.list[(VIT.i+1)%VIT.list.length];if(nxt){const p=new Image();p.decoding="async";p.src=vitSrc(nxt)}}
 function vitTick(){cancelAnimationFrame(VIT.raf);const pr=document.getElementById("vitProg");
   const step=now=>{if(document.getElementById("vit").hidden)return;if(VIT.paused){VIT.t0=now-VIT.el;VIT.raf=requestAnimationFrame(step);return}
-    VIT.el=now-VIT.t0;const p=Math.min(1,VIT.el/(VIT.dur*1000));pr.style.width=(p*100)+"%";if(p>=1){vitStep(1);return}VIT.raf=requestAnimationFrame(step)};
+    VIT.el=now-VIT.t0;const p=Math.min(1,VIT.el/(VIT.dur*1000));pr.style.transform=`scaleX(${p.toFixed(4)})`;if(p>=1){vitStep(1);return}VIT.raf=requestAnimationFrame(step)};
   VIT.el=0;VIT.raf=requestAnimationFrame(step)}
 function vitStep(k){if(!VIT.list.length)return;VIT.i=(VIT.i+k+VIT.list.length)%VIT.list.length;vitShow()}
 function vitUI(){const v=document.getElementById("vit");v.classList.add("ui");clearTimeout(VIT.ui);VIT.ui=setTimeout(()=>v.classList.remove("ui"),2600)}
@@ -1803,9 +1828,10 @@ async function openVitrina(pool){VIT.pool=pool||"all";document.querySelectorAll(
   VIT.paused=false;document.getElementById("vitPlay").textContent="❚❚";vitBuild();vitShow();vitUI();
   try{if(v.requestFullscreen&&innerWidth>640)await v.requestFullscreen()}catch(_){}
   try{if(navigator.wakeLock)VIT.lock=await navigator.wakeLock.request("screen")}catch(_){}}
-function closeVitrina(){const v=document.getElementById("vit");v.hidden=true;cancelAnimationFrame(VIT.raf);document.body.style.overflow="";
+function closeVitrina(){const v=document.getElementById("vit");v.hidden=true;cancelAnimationFrame(VIT.raf);VIT.tok++;
+  [0,1].forEach(k=>{document.getElementById("vitImg"+k).classList.remove("on","live");document.getElementById("vitBg"+k).classList.remove("on")});document.getElementById("vitTitle").textContent="";document.body.style.overflow="";
   try{if(document.fullscreenElement)document.exitFullscreen()}catch(_){}try{if(VIT.lock)VIT.lock.release();VIT.lock=null}catch(_){}}
-function vitPause(){VIT.paused=!VIT.paused;document.getElementById("vitPlay").textContent=VIT.paused?"▶":"❚❚";vitUI()}
+function vitPause(){VIT.paused=!VIT.paused;document.getElementById("vit").classList.toggle("paused",VIT.paused);document.getElementById("vitPlay").textContent=VIT.paused?"▶":"❚❚";vitUI()}
 function vitKey(e){vitUI();if(e.key==="Escape")closeVitrina();else if(e.key==="ArrowRight")vitStep(1);else if(e.key==="ArrowLeft")vitStep(-1);
   else if(e.key===" "){e.preventDefault();vitPause()}else if(e.key==="f"||e.key==="F"){const v=document.getElementById("vit");document.fullscreenElement?document.exitFullscreen():v.requestFullscreen&&v.requestFullscreen()}}
 (function wireVit(){const v=document.getElementById("vit");
