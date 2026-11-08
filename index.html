@@ -957,6 +957,10 @@ body.busy-ui .eq i{animation-play-state:paused}
   .controls .chips .chip{flex:none}
 }
 .um-open{align-self:flex-start;margin-top:6px;font-family:var(--mono);font-size:11px;color:#000;background:#1ed760;border-radius:999px;padding:6px 12px;text-decoration:none;font-weight:700}
+.sp-diag{position:fixed;inset:0;z-index:400;background:rgba(0,0,0,.75);display:flex;align-items:center;justify-content:center;padding:16px}
+.sd-card{background:#141418;border:1px solid var(--line);border-radius:16px;padding:18px;max-width:440px;width:100%;color:var(--text);font-size:13px}
+.sd-card table{width:100%;border-collapse:collapse;margin:10px 0}.sd-card td{padding:6px 4px;border-bottom:1px solid var(--line-soft);vertical-align:top}.sd-card td:first-child{color:var(--muted);width:44%}
+.sd-card p{color:var(--muted);font-size:12px}.sd-card button{margin-top:6px;background:var(--gold);color:#111;border:0;border-radius:999px;padding:8px 16px;font-weight:700;cursor:pointer}
 /* transición «portal» */
 .uni-wipe{position:fixed;inset:0;z-index:300;pointer-events:none;display:none;align-items:center;justify-content:center;background:radial-gradient(circle at var(--wx) var(--wy),rgb(var(--uc)) 0%,var(--ud) 38%,#050506 85%)}
 .uni-wipe.on{display:flex}
@@ -1407,39 +1411,39 @@ const GAUTH_KEY="mc-gauth";
    logo: imagen opcional que pones tú (mejor PNG/SVG con fondo transparente), p. ej. "logos/marvel.png" subida al repositorio.
    Si está vacío se usa el nombre con su tipografía. */
 const UNIVERSES = [
-  { id:"marvel",      name:"Marvel",            logo:"", sp:"5SXsXjVJCWeJuf7FHvgBYR", yt:"XNCQZ0wxphY", font:"Bebas Neue",      fw:400, c:"226,54,54",   hi:"255,150,135", deep:"#8f1d1d", mood:"heroic",
+  { id:"marvel",      name:"Marvel",            logo:"logos/marvel.png", sp:"5SXsXjVJCWeJuf7FHvgBYR", yt:"XNCQZ0wxphY", font:"Bebas Neue",      fw:400, c:"226,54,54",   hi:"255,150,135", deep:"#8f1d1d", mood:"heroic",
     rx:/\bmarvel\b|spider|iron ?man|tony stark|capitan(a)? (america|marvel)|c\.america|\bthor\b|\bhulk\b|lobezno|wolverine|deadpool|daredevil|matt murdock|elektra|kingpin|punisher|venom|carnage|x-men|tormenta|magneto|picara|ciclope|gambito|\bbishop\b|jean grey|rondador nocturno|mr\. fantastico|mujer invisible|la cosa|antorcha humana|galactus|silver surfer|doctor (doom|strange)|black (panther|cat)|moon knight|mr\. knight|ant ?man|star ?lord|miss minutes|\bloki\b|tesseracto|mjolnir|stormbreaker|hawkeye|miles morales|peter parker|arachknight|supreme soldier|thanos|gamerverse/ },
-  { id:"dc",          name:"DC",                logo:"", sp:"4Dp4Sd86S7EEGhNJ13E5VT", yt:"gsbsYMPvdec", font:"Oswald",          fw:700, c:"40,120,255",  hi:"150,195,255", deep:"#123c8a", mood:"dark",
+  { id:"dc",          name:"DC",                logo:"logos/dc.png", sp:"4Dp4Sd86S7EEGhNJ13E5VT", yt:"gsbsYMPvdec", font:"Oswald",          fw:700, c:"40,120,255",  hi:"150,195,255", deep:"#123c8a", mood:"dark",
     rx:/\bdc\b|batman|batmobile|batcycle|superman|joker|wonder woman|pacificador|peacemaker|\bhush\b|black adam|harley quinn|aquaman|green lantern|\bflash\b/ },
-  { id:"starwars",    name:"Star Wars",         logo:"", sp:"4r1YlrbFqesleiLkO8p9dZ", yt:"ya3ZCEWhHmo", font:"Orbitron",        fw:700, c:"255,214,10",  hi:"255,236,150", deep:"#8a6d00", mood:"cosmic",
+  { id:"starwars",    name:"Star Wars",         logo:"logos/starwars.png", sp:"4r1YlrbFqesleiLkO8p9dZ", yt:"ya3ZCEWhHmo", font:"Orbitron",        fw:700, c:"255,214,10",  hi:"255,236,150", deep:"#8a6d00", mood:"cosmic",
     rx:/star wars|black series|mandaloria|grogu|ahsoka|anakin|skywalker|darth|vader|boba fett|chewbacca|stormtro|kylo|palpatine|obi[ -]?wan|bo[ -]katan|paz vizsla|armorer|sabine|halcon milenario|star destroyer|\bbb-8\b|\bd-0\b|\big-\d|\byoda\b|han solo|\bleia\b|\bjedi\b/ },
-  { id:"dragonball",  name:"Dragon Ball",       logo:"", sp:"1HetdN8ZgBcO5FXp69OspB", yt:"", font:"Bangers",         fw:400, c:"255,140,26",  hi:"255,205,130", deep:"#9a4a00", mood:"anime",
+  { id:"dragonball",  name:"Dragon Ball",       logo:"logos/dragonball.png", sp:"1HetdN8ZgBcO5FXp69OspB", yt:"", font:"Bangers",         fw:400, c:"255,140,26",  hi:"255,205,130", deep:"#9a4a00", mood:"anime",
     rx:/dragon ball|bola de drac|\bgoku\b|vegeta|gogeta|gohan|freezer|frieza|piccolo|trunks|majin|broly|daima/ },
-  { id:"onepiece",    name:"One Piece",         logo:"", sp:"1PdWDLJNk040dkuXoLLE2F", yt:"YoeP9w5UIlg", font:"Bangers",         fw:400, c:"0,175,205",   hi:"130,230,245", deep:"#005f73", mood:"ocean",
+  { id:"onepiece",    name:"One Piece",         logo:"logos/onepiece.png", sp:"1PdWDLJNk040dkuXoLLE2F", yt:"YoeP9w5UIlg", font:"Bangers",         fw:400, c:"0,175,205",   hi:"130,230,245", deep:"#005f73", mood:"ocean",
     rx:/one piece|luffy|\bzoro\b|\bsanji\b|\bnami\b|nico robin|boa hancock|going merry|sombrero de paja|chopper|usopp/ },
-  { id:"mha",         name:"My Hero Academia",  logo:"", sp:"0hHc2igYYlSUyZdByauJmB", yt:"QwACoXnNcwg", font:"Russo One",       fw:400, c:"46,204,113",  hi:"155,240,185", deep:"#146b3a", mood:"anime",
+  { id:"mha",         name:"My Hero Academia",  logo:"logos/mha.png", sp:"0hHc2igYYlSUyZdByauJmB", yt:"QwACoXnNcwg", font:"Russo One",       fw:400, c:"46,204,113",  hi:"155,240,185", deep:"#146b3a", mood:"anime",
     rx:/my hero|boku no hero|all might|\bdeku\b|izuku|bakugo|todoroki|ochako|uraraka|mirio|\btoga\b|\bhawks\b|endeavor|eraser ?head|shigaraki/ },
-  { id:"kimetsu",     name:"Demon Slayer", al:["kimetsu no yaiba"],  logo:"", sp:"0qMip0B2D4ePEjBJvAtYre", yt:"Uku3t8qAloc", font:"Shippori Mincho", fw:800, c:"255,82,120",  hi:"255,175,195", deep:"#8c1c3c", mood:"zen",
+  { id:"kimetsu",     name:"Demon Slayer", al:["kimetsu no yaiba"],  logo:"logos/kimetsu.png", sp:"0qMip0B2D4ePEjBJvAtYre", yt:"Uku3t8qAloc", font:"Shippori Mincho", fw:800, c:"255,82,120",  hi:"255,175,195", deep:"#8c1c3c", mood:"zen",
     rx:/kimetsu|demon slayer|tanjiro|nezuko|zenitsu|inosuke|rengoku|tengen|muichiro|haganezuka|giyu|shinobu/ },
-  { id:"aot",         name:"Attack on Titan", al:["ataque a los titanes","shingeki no kyojin"], logo:"", sp:"5uraJqtCBvLpwt3VeomZdq", yt:"", font:"Cinzel",       fw:700, c:"176,150,105", hi:"225,205,165", deep:"#4d4030", mood:"dark",
+  { id:"aot",         name:"Attack on Titan", al:["ataque a los titanes","shingeki no kyojin"], logo:"logos/aot.png", sp:"5uraJqtCBvLpwt3VeomZdq", yt:"", font:"Cinzel",       fw:700, c:"176,150,105", hi:"225,205,165", deep:"#4d4030", mood:"dark",
     rx:/ataque a los titanes|attack on titan|shingeki|\blevi\b|\beren\b|mikasa/ },
-  { id:"jjk",         name:"Jujutsu Kaisen",    logo:"", sp:"6y4GYuZszeXNOXuBFsJlos", yt:"1tk1pqwrOys", font:"Russo One",       fw:400, c:"140,90,255",  hi:"200,175,255", deep:"#432b8f", mood:"dark",
+  { id:"jjk",         name:"Jujutsu Kaisen",    logo:"logos/jjk.png", sp:"6y4GYuZszeXNOXuBFsJlos", yt:"1tk1pqwrOys", font:"Russo One",       fw:400, c:"140,90,255",  hi:"200,175,255", deep:"#432b8f", mood:"dark",
     rx:/jujutsu|sukuna|\bgojo\b|itadori|megumi/ },
-  { id:"cosplaydoll", name:"My Dress Up Darling", al:["sexy cosplay doll","sono bisque doll"], logo:"", sp:"4CebKGVZUJw18tnDzsjv2d", yt:"8pGN2YEMXHo", font:"Fredoka",         fw:600, c:"255,120,200", hi:"255,195,232", deep:"#8a2f66", mood:"lofi",
+  { id:"cosplaydoll", name:"My Dress Up Darling", al:["sexy cosplay doll","sono bisque doll"], logo:"logos/cosplaydoll.png", sp:"4CebKGVZUJw18tnDzsjv2d", yt:"8pGN2YEMXHo", font:"Fredoka",         fw:600, c:"255,120,200", hi:"255,195,232", deep:"#8a2f66", mood:"lofi",
     rx:/sexy cosplay doll|marin kitagawa|kitagawa/ },
-  { id:"apothecary",  name:"The Apothecary Diaries", al:["kusuriya no hitorigoto","los diarios de la boticaria"], logo:"", sp:"79zgdvnTPyWSuTrd48Ik5O", yt:"", font:"Shippori Mincho", fw:800, fs:.78, c:"70,185,150", hi:"175,238,215", deep:"#1d5c4b", mood:"zen",
+  { id:"apothecary",  name:"The Apothecary Diaries", al:["kusuriya no hitorigoto","los diarios de la boticaria"], logo:"logos/apothecary.png", sp:"79zgdvnTPyWSuTrd48Ik5O", yt:"", font:"Shippori Mincho", fw:800, fs:.78, c:"70,185,150", hi:"175,238,215", deep:"#1d5c4b", mood:"zen",
     rx:/apothecary|kusuriya|boticaria|maomao|jinshi/ },
-  { id:"stranger",    name:"Stranger Things",   logo:"", sp:"0kwuKfWntoGh0EWyYb7Mpf", yt:"2obv0DHuhu4", font:"Monoton",         fw:400, fs:.82, c:"255,45,70",   hi:"255,150,150", deep:"#7a0f1e", mood:"eerie",
+  { id:"stranger",    name:"Stranger Things",   logo:"logos/stranger.png", sp:"0kwuKfWntoGh0EWyYb7Mpf", yt:"2obv0DHuhu4", font:"Monoton",         fw:400, fs:.82, c:"255,45,70",   hi:"255,150,150", deep:"#7a0f1e", mood:"eerie",
     rx:/stranger things|^once\b|\bdustin\b|hopper|eddie munson|steve harrington|will byers|demogorgon|demodog|^dart\b|vecna/ },
-  { id:"bttf",        name:"Regreso al Futuro", logo:"", sp:"1FI5hblwy9ZwyPg4Jr5hni", yt:"cgBvhmxun5M", font:"Audiowide",       fw:400, fs:.86, c:"255,120,40",  hi:"255,195,125", deep:"#8a3a00", mood:"retro",
+  { id:"bttf",        name:"Regreso al Futuro", logo:"logos/bttf.png", sp:"1FI5hblwy9ZwyPg4Jr5hni", yt:"cgBvhmxun5M", font:"Audiowide",       fw:400, fs:.86, c:"255,120,40",  hi:"255,195,125", deep:"#8a3a00", mood:"retro",
     rx:/bttf|regreso al futuro|back to the future|marty mcfly|doc\.? (emmet )?brown|delorean/ },
-  { id:"twd",         name:"The Walking Dead",  logo:"", sp:"2cji350vUbvxQ9QwyL5Nkp", yt:"gMs7gzFzoLU", font:"Special Elite",   fw:400, c:"150,170,110", hi:"205,220,170", deep:"#3f4a2c", mood:"dark",
+  { id:"twd",         name:"The Walking Dead",  logo:"logos/twd.png", sp:"2cji350vUbvxQ9QwyL5Nkp", yt:"gMs7gzFzoLU", font:"Special Elite",   fw:400, c:"150,170,110", hi:"205,220,170", deep:"#3f4a2c", mood:"dark",
     rx:/walking dead|negan|lucille|eugene porter|rick grimes|daryl/ },
-  { id:"harrypotter", name:"Harry Potter",      logo:"", sp:"1n8NKQRg8LVHy7oUhUgbFF", yt:"42ytXvVzPts", font:"Cinzel",          fw:700, c:"200,55,60",   hi:"240,195,130", deep:"#5c1218", mood:"magic",
+  { id:"harrypotter", name:"Harry Potter",      logo:"logos/harrypotter.png", sp:"1n8NKQRg8LVHy7oUhUgbFF", yt:"42ytXvVzPts", font:"Cinzel",          fw:700, c:"200,55,60",   hi:"240,195,130", deep:"#5c1218", mood:"magic",
     rx:/harry potter|gryffindor|varita de sauco|hogwarts|dumbledore|voldemort/ },
-  { id:"videojuegos", name:"Videojuegos",       logo:"", sp:"", yt:"", font:"Press Start 2P",  fw:400, fs:.52, c:"215,80,255",  hi:"240,180,255", deep:"#6a1b80", mood:"chip",
+  { id:"videojuegos", name:"Videojuegos",       logo:"logos/videojuegos.png", sp:"", yt:"", font:"Press Start 2P",  fw:400, fs:.52, c:"215,80,255",  hi:"240,180,255", deep:"#6a1b80", mood:"chip",
     rx:/\bsonic\b|super mario|\bjinx\b|arcane|last of us|zelda|pokemon/ },
-  { id:"cine",        name:"Cine y Series",     logo:"", sp:"5duZVZ4m1TaJDTCbeHG8TG", yt:"IgQGqTvd29c", font:"Playfair Display",fw:800, c:"215,215,228", hi:"255,255,255", deep:"#4d4d58", mood:"noir",
+  { id:"cine",        name:"Cine y Series",     logo:"logos/cine.png", sp:"5duZVZ4m1TaJDTCbeHG8TG", yt:"IgQGqTvd29c", font:"Playfair Display",fw:800, c:"215,215,228", hi:"255,255,255", deep:"#4d4d58", mood:"noir",
     rx:/\balien\b|aliens|predator|terminator|robocop|pennywise|it movie|beetlejuice|gremlin|godzilla|indiana jones|jack sparrow|john wick|toretto|tommy shelby|miercoles|hofstadter|the boys|homelander|juego de tronos|jon nieve/ }
 ];
 const UNI_MIN = 3;
@@ -2572,6 +2576,7 @@ function openYT(u){const p=document.getElementById("uniDock");if(!p||!(u.sp||u.y
       <div class="ud-head"><span class="eq"><i></i><i></i><i></i><i></i></span><span class="ud-t">Tu Spotify · <b>${esc(u.name)}</b></span><button type="button" class="ud-min" aria-label="Ocultar tarjeta">–</button><button type="button" class="ud-x" aria-label="Parar música">×</button></div><div class="ud-my"></div>`;
     p.querySelector(".ud-pill").onclick=()=>{p.classList.remove("mini");uniAmbUI()};
     p.querySelector(".ud-min").onclick=()=>{p.classList.add("mini");uniAmbUI()};
+    if(spIsMobile())audioSess("ambient");
     requestAnimationFrame(()=>p.classList.add("on"));SPM.track=null;spDockState("Conectando con tu Spotify…");spPlay(u);
     p.querySelector(".ud-x").onclick=()=>{closeYT();if(AMB.on&&state.fr===u.id)ambStart(u,true)};uniAmbUI();return}
   p.classList.remove("is-my");
@@ -2640,8 +2645,14 @@ const MOODS={
   noir:{root:110,pad:"triangle",cut:900,padG:.06,sub:.05,chords:[[0,3,7,10,14],[5,8,12,15],[-2,2,5,9],[-5,-1,2,5,10]],scale:[0,3,5,7,10],spark:"triangle",so:1,se:2.2,crackle:.04,chordSec:9}
 };
 const hz=(root,st)=>root*Math.pow(2,st/12);
+/* iPhone: el audio web va silenciado con el interruptor de silencio y necesita «despertarse» con un toque */
+function audioSess(t){try{if(navigator.audioSession&&navigator.audioSession.type!==t)navigator.audioSession.type=t}catch(_){}}
+(function iosAudioUnlock(){const evs=["touchend","pointerdown","keydown"];const un=()=>{const c=ac();if(!c)return;
+    try{const b=c.createBuffer(1,1,22050),s=c.createBufferSource();s.buffer=b;s.connect(c.destination);s.start(0)}catch(_){}
+    if(c.state==="running")evs.forEach(e=>removeEventListener(e,un,true))};
+  evs.forEach(e=>addEventListener(e,un,true))})();
 function ambStart(u,force){if(!AMB.on||AMB.yt||document.hidden||!u)return;if(AMB.bus&&AMB.id===u.id)return;ambStop(true);
-  const c=ac();if(!c)return;const M=MOODS[u.mood]||MOODS.cosmic;AMB.id=u.id;
+  audioSess("playback");const c=ac();if(!c)return;const M=MOODS[u.mood]||MOODS.cosmic;AMB.id=u.id;
   if(c.state!=="running"){const un=()=>{removeEventListener("pointerdown",un,true);removeEventListener("keydown",un,true);try{c.resume()}catch(_){}};addEventListener("pointerdown",un,true);addEventListener("keydown",un,true)}
   const now=c.currentTime,bus=c.createGain();bus.gain.value=0;const comp=c.createDynamicsCompressor();bus.connect(comp);comp.connect(c.destination);AMB.bus=bus;AMB.o=[];AMB.t=[];
   const keep=n=>{AMB.o.push(n);return n};
@@ -2763,12 +2774,24 @@ function spDockState(busy,err,openBtn){const p=document.getElementById("uniDock"
   p.classList.toggle("playing",!!SPM.mode&&!SPM.paused);
   if(err&&p.classList.contains("mini")){p.classList.remove("mini");uniAmbUI()}
   b.querySelector(".um-pp").onclick=()=>{if(SPM.sdk&&SPM.sdk.activateElement)try{SPM.sdk.activateElement()}catch(_){}spToggle()}}
+async function spDiag(){const c=AC,L=[];const add=(k,v)=>L.push(`<tr><td>${k}</td><td>${esc(String(v))}</td></tr>`);
+  add("Dispositivo",spIsMobile()?"móvil":"ordenador");add("App instalada",(navigator.standalone||matchMedia("(display-mode: standalone)").matches)?"sí":"no (navegador)");
+  add("Audio web",c?c.state:"sin crear");add("Sesión de audio",navigator.audioSession?navigator.audioSession.type:"no disponible");
+  add("Ambiente",AMB.on?(AMB.bus?"sonando":"activado, parado"):"apagado");add("Spotify conectado",spOn()?"sí":"no");
+  if(spOn()){const t=await spToken();add("Token",t?"válido":"caducado / no válido");if(t){const r=await spWeb("/me/player/devices");
+    add("Aparatos de tu Spotify",((r.j&&r.j.devices)||[]).map(d=>`${d.name} (${d.type}${d.is_active?", activo":""})`).join(" · ")||"ninguno visible ("+r.status+")")}}
+  add("Modo actual",SPM.mode||"-");add("Dónde",SPM.where||"-");
+  let o=document.getElementById("spDiag");if(o)o.remove();o=document.createElement("div");o.id="spDiag";o.className="sp-diag";
+  o.innerHTML=`<div class="sd-card"><b>Diagnóstico de sonido</b><table>${L.join("")}</table><p>Haz una captura y mándasela a Claude.</p><button type="button">Cerrar</button></div>`;
+  document.body.appendChild(o);o.querySelector("button").onclick=()=>o.remove();o.onclick=e=>{if(e.target===o)o.remove()}}
 function spMenu(btn){let m=document.getElementById("spMenu");if(m){m.remove();return}
   m=document.createElement("div");m.id="spMenu";m.className="sp-menu";
   m.innerHTML=spOn()?`<button data-a="out">Desconectar Spotify</button><button data-a="copy">Copiar código para otro dispositivo</button><button data-a="paste">Pegar código</button>`
     :`<button data-a="in">Conectar con Spotify</button><button data-a="paste">Pegar código de otro dispositivo</button>`;
+  m.innerHTML+=`<button data-a="diag">Diagnóstico de sonido</button>`;
   document.body.appendChild(m);const r=btn.getBoundingClientRect();m.style.top=(r.bottom+8+scrollY)+"px";m.style.left=Math.max(8,Math.min(innerWidth-m.offsetWidth-8,r.left))+"px";
   m.querySelectorAll("button").forEach(b=>b.onclick=async()=>{m.remove();const a=b.dataset.a;
+    if(a==="diag"){spDiag();return}
     if(a==="in")spLogin();else if(a==="out")spLogout();
     else if(a==="copy"){const t=spLoad();try{await navigator.clipboard.writeText("MCSP:"+t.rt);toast("Código copiado ✓ (pégalo en el otro dispositivo)")}catch(_){prompt("Copia este código:","MCSP:"+t.rt)}}
     else if(a==="paste"){const c=(prompt("Pega el código de Spotify (empieza por MCSP:)")||"").trim();if(!/^MCSP:\S+$/.test(c))return;
