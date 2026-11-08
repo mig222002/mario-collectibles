@@ -1408,24 +1408,26 @@ const GAUTH_KEY="mc-gauth";
 const UNIVERSES = [
   { id:"marvel",      name:"Marvel",            logo:"", sp:"5SXsXjVJCWeJuf7FHvgBYR", yt:"XNCQZ0wxphY", font:"Bebas Neue",      fw:400, c:"226,54,54",   hi:"255,150,135", deep:"#8f1d1d", mood:"heroic",
     rx:/\bmarvel\b|spider|iron ?man|tony stark|capitan(a)? (america|marvel)|c\.america|\bthor\b|\bhulk\b|lobezno|wolverine|deadpool|daredevil|matt murdock|elektra|kingpin|punisher|venom|carnage|x-men|tormenta|magneto|picara|ciclope|gambito|\bbishop\b|jean grey|rondador nocturno|mr\. fantastico|mujer invisible|la cosa|antorcha humana|galactus|silver surfer|doctor (doom|strange)|black (panther|cat)|moon knight|mr\. knight|ant ?man|star ?lord|miss minutes|\bloki\b|tesseracto|mjolnir|stormbreaker|hawkeye|miles morales|peter parker|arachknight|supreme soldier|thanos|gamerverse/ },
-  { id:"dc",          name:"DC",                logo:"", sp:"0hs3unYvc0bFG2NgheFdkO", yt:"gsbsYMPvdec", font:"Oswald",          fw:700, c:"40,120,255",  hi:"150,195,255", deep:"#123c8a", mood:"dark",
+  { id:"dc",          name:"DC",                logo:"", sp:"4Dp4Sd86S7EEGhNJ13E5VT", yt:"gsbsYMPvdec", font:"Oswald",          fw:700, c:"40,120,255",  hi:"150,195,255", deep:"#123c8a", mood:"dark",
     rx:/\bdc\b|batman|batmobile|batcycle|superman|joker|wonder woman|pacificador|peacemaker|\bhush\b|black adam|harley quinn|aquaman|green lantern|\bflash\b/ },
   { id:"starwars",    name:"Star Wars",         logo:"", sp:"4r1YlrbFqesleiLkO8p9dZ", yt:"ya3ZCEWhHmo", font:"Orbitron",        fw:700, c:"255,214,10",  hi:"255,236,150", deep:"#8a6d00", mood:"cosmic",
     rx:/star wars|black series|mandaloria|grogu|ahsoka|anakin|skywalker|darth|vader|boba fett|chewbacca|stormtro|kylo|palpatine|obi[ -]?wan|bo[ -]katan|paz vizsla|armorer|sabine|halcon milenario|star destroyer|\bbb-8\b|\bd-0\b|\big-\d|\byoda\b|han solo|\bleia\b|\bjedi\b/ },
   { id:"dragonball",  name:"Dragon Ball",       logo:"", sp:"1HetdN8ZgBcO5FXp69OspB", yt:"", font:"Bangers",         fw:400, c:"255,140,26",  hi:"255,205,130", deep:"#9a4a00", mood:"anime",
     rx:/dragon ball|bola de drac|\bgoku\b|vegeta|gogeta|gohan|freezer|frieza|piccolo|trunks|majin|broly|daima/ },
-  { id:"onepiece",    name:"One Piece",         logo:"", sp:"42esJ6BgSoV1DS3Onns03h", yt:"YoeP9w5UIlg", font:"Bangers",         fw:400, c:"0,175,205",   hi:"130,230,245", deep:"#005f73", mood:"ocean",
+  { id:"onepiece",    name:"One Piece",         logo:"", sp:"1PdWDLJNk040dkuXoLLE2F", yt:"YoeP9w5UIlg", font:"Bangers",         fw:400, c:"0,175,205",   hi:"130,230,245", deep:"#005f73", mood:"ocean",
     rx:/one piece|luffy|\bzoro\b|\bsanji\b|\bnami\b|nico robin|boa hancock|going merry|sombrero de paja|chopper|usopp/ },
   { id:"mha",         name:"My Hero Academia",  logo:"", sp:"0hHc2igYYlSUyZdByauJmB", yt:"QwACoXnNcwg", font:"Russo One",       fw:400, c:"46,204,113",  hi:"155,240,185", deep:"#146b3a", mood:"anime",
     rx:/my hero|boku no hero|all might|\bdeku\b|izuku|bakugo|todoroki|ochako|uraraka|mirio|\btoga\b|\bhawks\b|endeavor|eraser ?head|shigaraki/ },
-  { id:"kimetsu",     name:"Kimetsu no Yaiba",  logo:"", sp:"23DbzwNJSLo7nkSWjODMvY", yt:"Uku3t8qAloc", font:"Shippori Mincho", fw:800, c:"255,82,120",  hi:"255,175,195", deep:"#8c1c3c", mood:"zen",
+  { id:"kimetsu",     name:"Demon Slayer", al:["kimetsu no yaiba"],  logo:"", sp:"0qMip0B2D4ePEjBJvAtYre", yt:"Uku3t8qAloc", font:"Shippori Mincho", fw:800, c:"255,82,120",  hi:"255,175,195", deep:"#8c1c3c", mood:"zen",
     rx:/kimetsu|demon slayer|tanjiro|nezuko|zenitsu|inosuke|rengoku|tengen|muichiro|haganezuka|giyu|shinobu/ },
-  { id:"aot",         name:"Ataque a los Titanes", logo:"", sp:"70p3HYq9iHZisJqpDmWd1U", yt:"", font:"Cinzel",       fw:700, c:"176,150,105", hi:"225,205,165", deep:"#4d4030", mood:"dark",
+  { id:"aot",         name:"Attack on Titan", al:["ataque a los titanes","shingeki no kyojin"], logo:"", sp:"5uraJqtCBvLpwt3VeomZdq", yt:"", font:"Cinzel",       fw:700, c:"176,150,105", hi:"225,205,165", deep:"#4d4030", mood:"dark",
     rx:/ataque a los titanes|attack on titan|shingeki|\blevi\b|\beren\b|mikasa/ },
   { id:"jjk",         name:"Jujutsu Kaisen",    logo:"", sp:"6y4GYuZszeXNOXuBFsJlos", yt:"1tk1pqwrOys", font:"Russo One",       fw:400, c:"140,90,255",  hi:"200,175,255", deep:"#432b8f", mood:"dark",
     rx:/jujutsu|sukuna|\bgojo\b|itadori|megumi/ },
-  { id:"cosplaydoll", name:"Sexy Cosplay Doll", logo:"", sp:"6RFXBsfywZrIGK2PP7m54W", yt:"8pGN2YEMXHo", font:"Fredoka",         fw:600, c:"255,120,200", hi:"255,195,232", deep:"#8a2f66", mood:"lofi",
+  { id:"cosplaydoll", name:"My Dress Up Darling", al:["sexy cosplay doll","sono bisque doll"], logo:"", sp:"4CebKGVZUJw18tnDzsjv2d", yt:"8pGN2YEMXHo", font:"Fredoka",         fw:600, c:"255,120,200", hi:"255,195,232", deep:"#8a2f66", mood:"lofi",
     rx:/sexy cosplay doll|marin kitagawa|kitagawa/ },
+  { id:"apothecary",  name:"The Apothecary Diaries", al:["kusuriya no hitorigoto","los diarios de la boticaria"], logo:"", sp:"79zgdvnTPyWSuTrd48Ik5O", yt:"", font:"Shippori Mincho", fw:800, fs:.78, c:"70,185,150", hi:"175,238,215", deep:"#1d5c4b", mood:"zen",
+    rx:/apothecary|kusuriya|boticaria|maomao|jinshi/ },
   { id:"stranger",    name:"Stranger Things",   logo:"", sp:"0kwuKfWntoGh0EWyYb7Mpf", yt:"2obv0DHuhu4", font:"Monoton",         fw:400, fs:.82, c:"255,45,70",   hi:"255,150,150", deep:"#7a0f1e", mood:"eerie",
     rx:/stranger things|^once\b|\bdustin\b|hopper|eddie munson|steve harrington|will byers|demogorgon|demodog|^dart\b|vecna/ },
   { id:"bttf",        name:"Regreso al Futuro", logo:"", sp:"1FI5hblwy9ZwyPg4Jr5hni", yt:"cgBvhmxun5M", font:"Audiowide",       fw:400, fs:.86, c:"255,120,40",  hi:"255,195,125", deep:"#8a3a00", mood:"retro",
@@ -1435,7 +1437,7 @@ const UNIVERSES = [
   { id:"harrypotter", name:"Harry Potter",      logo:"", sp:"1n8NKQRg8LVHy7oUhUgbFF", yt:"42ytXvVzPts", font:"Cinzel",          fw:700, c:"200,55,60",   hi:"240,195,130", deep:"#5c1218", mood:"magic",
     rx:/harry potter|gryffindor|varita de sauco|hogwarts|dumbledore|voldemort/ },
   { id:"videojuegos", name:"Videojuegos",       logo:"", sp:"", yt:"", font:"Press Start 2P",  fw:400, fs:.52, c:"215,80,255",  hi:"240,180,255", deep:"#6a1b80", mood:"chip",
-    rx:/\bsonic\b|super mario|\bjinx\b|last of us|zelda|pokemon/ },
+    rx:/\bsonic\b|super mario|\bjinx\b|arcane|last of us|zelda|pokemon/ },
   { id:"cine",        name:"Cine y Series",     logo:"", sp:"5duZVZ4m1TaJDTCbeHG8TG", yt:"IgQGqTvd29c", font:"Playfair Display",fw:800, c:"215,215,228", hi:"255,255,255", deep:"#4d4d58", mood:"noir",
     rx:/\balien\b|aliens|predator|terminator|robocop|pennywise|it movie|beetlejuice|gremlin|godzilla|indiana jones|jack sparrow|john wick|toretto|tommy shelby|miercoles|hofstadter|the boys|homelander|juego de tronos|jon nieve/ }
 ];
@@ -2490,7 +2492,7 @@ let UNI_LIST=[],UNI_BY={};
 const uniTxt=d=>norm([d.nombre,d.linea,d.personajes].join(" | "));
 const titleCase=s=>s===s.toUpperCase()&&s.length>3?s.toLowerCase().replace(/(^|\s|-)\S/g,m=>m.toUpperCase()):s;
 function computeUniverses(){
-  const byName={};UNIVERSES.forEach(u=>{byName[norm(u.name)]=u.id;byName[norm(u.name).replace(/\s+/g,"")]=u.id;byName[u.id]=u.id});
+  const byName={};UNIVERSES.forEach(u=>{byName[norm(u.name)]=u.id;byName[norm(u.name).replace(/\s+/g,"")]=u.id;byName[u.id]=u.id;(u.al||[]).forEach(a=>{byName[norm(a)]=u.id;byName[norm(a).replace(/\s+/g,"")]=u.id})});
   const extra={};
   DATA.forEach(d=>{let id="";const f=norm(d.franquicia||"").trim();
     if(f&&f!=="manga"&&f!=="mangas"){id=byName[f]||byName[f.replace(/\s+/g,"")]||"";
@@ -2498,7 +2500,9 @@ function computeUniverses(){
         if(!extra[id])extra[id]={id,name:titleCase(String(d.franquicia).trim()),logo:"",sp:"",yt:"",font:"",fw:700,c:"212,175,55",hi:"240,212,138",deep:"#8a6d1f",mood:"cosmic"}}}
     if(!id){const t=uniTxt(d);const u=UNIVERSES.find(u=>u.rx&&u.rx.test(t));if(u)id=u.id}
     d.uni=id});
-  const cnt={};DATA.forEach(d=>{if(d.uni)cnt[d.uni]=(cnt[d.uni]||0)+1});
+  let cnt={};DATA.forEach(d=>{if(d.uni)cnt[d.uni]=(cnt[d.uni]||0)+1});
+  DATA.forEach(d=>{if(d.uni&&extra[d.uni]&&cnt[d.uni]<UNI_MIN){const t=uniTxt(d);const u=UNIVERSES.find(u=>u.rx&&u.rx.test(t));if(u){d.uni=u.id}}});
+  cnt={};DATA.forEach(d=>{if(d.uni)cnt[d.uni]=(cnt[d.uni]||0)+1});
   UNI_BY={};UNI_LIST=[...UNIVERSES,...Object.values(extra)].filter(u=>(cnt[u.id]||0)>=UNI_MIN).map(u=>{
     const L=DATA.filter(d=>d.uni===u.id);
     const sc=d=>(/hot toys|tamashii|mezco/i.test(d.marca||"")||/masterpiece|master series|1\/6|grandista|maximatic/i.test(d.linea||"")?5:0)+(d.firmado?3:0)+(d.categoria==="Figuras y Réplicas"?2:0)+(d.categoria==="Cómics"?1:0);
