@@ -964,6 +964,7 @@ body.busy-ui .eq i{animation-play-state:paused}
 .sd-card table{width:100%;border-collapse:collapse;margin:10px 0}.sd-card td{padding:6px 4px;border-bottom:1px solid var(--line-soft);vertical-align:top}.sd-card td:first-child{color:var(--muted);width:44%}
 .sd-card p{color:var(--muted);font-size:12px}.sd-card button{margin-top:6px;background:var(--gold);color:#111;border:0;border-radius:999px;padding:8px 16px;font-weight:700;cursor:pointer}
 .uni-tile.has-logo .ut-meta{left:0;right:0;justify-content:center}
+.um-txt em a{color:inherit;text-decoration:underline}
 /* transición «portal» */
 .uni-wipe{position:fixed;inset:0;z-index:300;pointer-events:none;display:none;align-items:center;justify-content:center;background:radial-gradient(circle at var(--wx) var(--wy),rgb(var(--uc)) 0%,var(--ud) 38%,#050506 85%)}
 .uni-wipe.on{display:flex}
@@ -1413,42 +1414,43 @@ const GAUTH_KEY="mc-gauth";
        sin anuncios; con la sesión de Spotify abierta en el navegador suena entera, sin sesión son 30 s de muestra.
    cover: referencia de la pieza cuya foto representa al universo (p. ej. "FIG-123"); varias separadas por comas = rota cada día.
        Vacío = la web elige sola entre tus mejores piezas.
+   am: ID de la canción en Apple Music/iTunes. En el móvil (y para los visitantes) suena de fondo su muestra oficial de 30 s, sin anuncios ni apps.
    logo: imagen opcional que pones tú (mejor PNG/SVG con fondo transparente), p. ej. "logos/marvel.png" subida al repositorio.
    Si está vacío se usa el nombre con su tipografía. */
 const UNIVERSES = [
-  { id:"marvel",      name:"Marvel",            cover:"", logo:"logos/marvel.png", sp:"5SXsXjVJCWeJuf7FHvgBYR", yt:"XNCQZ0wxphY", font:"Bebas Neue",      fw:400, c:"226,54,54",   hi:"255,150,135", deep:"#8f1d1d", mood:"heroic",
+  { id:"marvel",      name:"Marvel",            cover:"", logo:"logos/marvel.png", sp:"5SXsXjVJCWeJuf7FHvgBYR", am:"1440663698", yt:"XNCQZ0wxphY", font:"Bebas Neue",      fw:400, c:"226,54,54",   hi:"255,150,135", deep:"#8f1d1d", mood:"heroic",
     rx:/\bmarvel\b|spider|iron ?man|tony stark|capitan(a)? (america|marvel)|c\.america|\bthor\b|\bhulk\b|lobezno|wolverine|deadpool|daredevil|matt murdock|elektra|kingpin|punisher|venom|carnage|x-men|tormenta|magneto|picara|ciclope|gambito|\bbishop\b|jean grey|rondador nocturno|mr\. fantastico|mujer invisible|la cosa|antorcha humana|galactus|silver surfer|doctor (doom|strange)|black (panther|cat)|moon knight|mr\. knight|ant ?man|star ?lord|miss minutes|\bloki\b|tesseracto|mjolnir|stormbreaker|hawkeye|miles morales|peter parker|arachknight|supreme soldier|thanos|gamerverse/ },
-  { id:"dc",          name:"DC",                cover:"", logo:"logos/dc.png", sp:"4Dp4Sd86S7EEGhNJ13E5VT", yt:"gsbsYMPvdec", font:"Oswald",          fw:700, c:"40,120,255",  hi:"150,195,255", deep:"#123c8a", mood:"dark",
+  { id:"dc",          name:"DC",                cover:"", logo:"logos/dc.png", sp:"4Dp4Sd86S7EEGhNJ13E5VT", am:"1454322151", yt:"gsbsYMPvdec", font:"Oswald",          fw:700, c:"40,120,255",  hi:"150,195,255", deep:"#123c8a", mood:"dark",
     rx:/\bdc\b|batman|batmobile|batcycle|superman|joker|wonder woman|pacificador|peacemaker|\bhush\b|black adam|harley quinn|aquaman|green lantern|\bflash\b/ },
-  { id:"starwars",    name:"Star Wars",         cover:"", logo:"logos/starwars.png", sp:"4r1YlrbFqesleiLkO8p9dZ", yt:"ya3ZCEWhHmo", font:"Orbitron",        fw:700, c:"255,214,10",  hi:"255,236,150", deep:"#8a6d00", mood:"cosmic",
+  { id:"starwars",    name:"Star Wars",         cover:"", logo:"logos/starwars.png", sp:"4r1YlrbFqesleiLkO8p9dZ", am:"1375814284", yt:"ya3ZCEWhHmo", font:"Orbitron",        fw:700, c:"255,214,10",  hi:"255,236,150", deep:"#8a6d00", mood:"cosmic",
     rx:/star wars|black series|mandaloria|grogu|ahsoka|anakin|skywalker|darth|vader|boba fett|chewbacca|stormtro|kylo|palpatine|obi[ -]?wan|bo[ -]katan|paz vizsla|armorer|sabine|halcon milenario|star destroyer|\bbb-8\b|\bd-0\b|\big-\d|\byoda\b|han solo|\bleia\b|\bjedi\b/ },
-  { id:"dragonball",  name:"Dragon Ball",       cover:"", logo:"logos/dragonball.png", sp:"1HetdN8ZgBcO5FXp69OspB", yt:"", font:"Bangers",         fw:400, c:"255,140,26",  hi:"255,205,130", deep:"#9a4a00", mood:"anime",
+  { id:"dragonball",  name:"Dragon Ball",       cover:"", logo:"logos/dragonball.png", sp:"1HetdN8ZgBcO5FXp69OspB", am:"129251737", yt:"", font:"Bangers",         fw:400, c:"255,140,26",  hi:"255,205,130", deep:"#9a4a00", mood:"anime",
     rx:/dragon ball|bola de drac|\bgoku\b|vegeta|gogeta|gohan|freezer|frieza|piccolo|trunks|majin|broly|daima/ },
-  { id:"onepiece",    name:"One Piece",         cover:"", logo:"logos/onepiece.png", sp:"1PdWDLJNk040dkuXoLLE2F", yt:"YoeP9w5UIlg", font:"Bangers",         fw:400, c:"0,175,205",   hi:"130,230,245", deep:"#005f73", mood:"ocean",
+  { id:"onepiece",    name:"One Piece",         cover:"", logo:"logos/onepiece.png", sp:"1PdWDLJNk040dkuXoLLE2F", am:"1770907052", yt:"YoeP9w5UIlg", font:"Bangers",         fw:400, c:"0,175,205",   hi:"130,230,245", deep:"#005f73", mood:"ocean",
     rx:/one piece|luffy|\bzoro\b|\bsanji\b|\bnami\b|nico robin|boa hancock|going merry|sombrero de paja|chopper|usopp/ },
-  { id:"mha",         name:"My Hero Academia",  cover:"", logo:"logos/mha.png", sp:"0hHc2igYYlSUyZdByauJmB", yt:"QwACoXnNcwg", font:"Russo One",       fw:400, c:"46,204,113",  hi:"155,240,185", deep:"#146b3a", mood:"anime",
+  { id:"mha",         name:"My Hero Academia",  cover:"", logo:"logos/mha.png", sp:"0hHc2igYYlSUyZdByauJmB", am:"1475094797", yt:"QwACoXnNcwg", font:"Russo One",       fw:400, c:"46,204,113",  hi:"155,240,185", deep:"#146b3a", mood:"anime",
     rx:/my hero|boku no hero|all might|\bdeku\b|izuku|bakugo|todoroki|ochako|uraraka|mirio|\btoga\b|\bhawks\b|endeavor|eraser ?head|shigaraki/ },
-  { id:"kimetsu",     name:"Demon Slayer", al:["kimetsu no yaiba"],  cover:"", logo:"logos/kimetsu.png", sp:"0qMip0B2D4ePEjBJvAtYre", yt:"Uku3t8qAloc", font:"Shippori Mincho", fw:800, c:"255,82,120",  hi:"255,175,195", deep:"#8c1c3c", mood:"zen",
+  { id:"kimetsu",     name:"Demon Slayer", al:["kimetsu no yaiba"],  cover:"", logo:"logos/kimetsu.png", sp:"0qMip0B2D4ePEjBJvAtYre", am:"1538286723", yt:"Uku3t8qAloc", font:"Shippori Mincho", fw:800, c:"255,82,120",  hi:"255,175,195", deep:"#8c1c3c", mood:"zen",
     rx:/kimetsu|demon slayer|tanjiro|nezuko|zenitsu|inosuke|rengoku|tengen|muichiro|haganezuka|giyu|shinobu/ },
-  { id:"aot",         name:"Attack on Titan", al:["ataque a los titanes","shingeki no kyojin"], cover:"", logo:"logos/aot.png", sp:"5uraJqtCBvLpwt3VeomZdq", yt:"", font:"Cinzel",       fw:700, c:"176,150,105", hi:"225,205,165", deep:"#4d4030", mood:"dark",
+  { id:"aot",         name:"Attack on Titan", al:["ataque a los titanes","shingeki no kyojin"], cover:"", logo:"logos/aot.png", sp:"5uraJqtCBvLpwt3VeomZdq", am:"1229977150", yt:"", font:"Cinzel",       fw:700, c:"176,150,105", hi:"225,205,165", deep:"#4d4030", mood:"dark",
     rx:/ataque a los titanes|attack on titan|shingeki|\blevi\b|\beren\b|mikasa/ },
-  { id:"jjk",         name:"Jujutsu Kaisen",    cover:"", logo:"logos/jjk.png", sp:"6y4GYuZszeXNOXuBFsJlos", yt:"1tk1pqwrOys", font:"Russo One",       fw:400, c:"140,90,255",  hi:"200,175,255", deep:"#432b8f", mood:"dark",
+  { id:"jjk",         name:"Jujutsu Kaisen",    cover:"", logo:"logos/jjk.png", sp:"6y4GYuZszeXNOXuBFsJlos", am:"1542180247", yt:"1tk1pqwrOys", font:"Russo One",       fw:400, c:"140,90,255",  hi:"200,175,255", deep:"#432b8f", mood:"dark",
     rx:/jujutsu|sukuna|\bgojo\b|itadori|megumi/ },
-  { id:"cosplaydoll", name:"My Dress Up Darling", al:["sexy cosplay doll","sono bisque doll"], cover:"", logo:"logos/cosplaydoll.png", sp:"4CebKGVZUJw18tnDzsjv2d", yt:"8pGN2YEMXHo", font:"Fredoka",         fw:600, c:"255,120,200", hi:"255,195,232", deep:"#8a2f66", mood:"lofi",
+  { id:"cosplaydoll", name:"My Dress Up Darling", al:["sexy cosplay doll","sono bisque doll"], cover:"", logo:"logos/cosplaydoll.png", sp:"4CebKGVZUJw18tnDzsjv2d", am:"1599259865", yt:"8pGN2YEMXHo", font:"Fredoka",         fw:600, c:"255,120,200", hi:"255,195,232", deep:"#8a2f66", mood:"lofi",
     rx:/sexy cosplay doll|marin kitagawa|kitagawa/ },
-  { id:"apothecary",  name:"The Apothecary Diaries", al:["kusuriya no hitorigoto","los diarios de la boticaria"], cover:"", logo:"logos/apothecary.png", sp:"79zgdvnTPyWSuTrd48Ik5O", yt:"", font:"Shippori Mincho", fw:800, fs:.78, c:"70,185,150", hi:"175,238,215", deep:"#1d5c4b", mood:"zen",
+  { id:"apothecary",  name:"The Apothecary Diaries", al:["kusuriya no hitorigoto","los diarios de la boticaria"], cover:"", logo:"logos/apothecary.png", sp:"79zgdvnTPyWSuTrd48Ik5O", am:"1786972177", yt:"", font:"Shippori Mincho", fw:800, fs:.78, c:"70,185,150", hi:"175,238,215", deep:"#1d5c4b", mood:"zen",
     rx:/apothecary|kusuriya|boticaria|maomao|jinshi/ },
-  { id:"stranger",    name:"Stranger Things",   cover:"", logo:"logos/stranger.png", sp:"0kwuKfWntoGh0EWyYb7Mpf", yt:"2obv0DHuhu4", font:"Monoton",         fw:400, fs:.82, c:"255,45,70",   hi:"255,150,150", deep:"#7a0f1e", mood:"eerie",
+  { id:"stranger",    name:"Stranger Things",   cover:"", logo:"logos/stranger.png", sp:"0kwuKfWntoGh0EWyYb7Mpf", am:"1142771420", yt:"2obv0DHuhu4", font:"Monoton",         fw:400, fs:.82, c:"255,45,70",   hi:"255,150,150", deep:"#7a0f1e", mood:"eerie",
     rx:/stranger things|^once\b|\bdustin\b|hopper|eddie munson|steve harrington|will byers|demogorgon|demodog|^dart\b|vecna/ },
-  { id:"bttf",        name:"Regreso al Futuro", cover:"", logo:"logos/bttf.png", sp:"1FI5hblwy9ZwyPg4Jr5hni", yt:"cgBvhmxun5M", font:"Audiowide",       fw:400, fs:.86, c:"255,120,40",  hi:"255,195,125", deep:"#8a3a00", mood:"retro",
+  { id:"bttf",        name:"Regreso al Futuro", cover:"", logo:"logos/bttf.png", sp:"1FI5hblwy9ZwyPg4Jr5hni", am:"1440745741", yt:"cgBvhmxun5M", font:"Audiowide",       fw:400, fs:.86, c:"255,120,40",  hi:"255,195,125", deep:"#8a3a00", mood:"retro",
     rx:/bttf|regreso al futuro|back to the future|marty mcfly|doc\.? (emmet )?brown|delorean/ },
-  { id:"twd",         name:"The Walking Dead",  cover:"", logo:"logos/twd.png", sp:"2cji350vUbvxQ9QwyL5Nkp", yt:"gMs7gzFzoLU", font:"Special Elite",   fw:400, c:"150,170,110", hi:"205,220,170", deep:"#3f4a2c", mood:"dark",
+  { id:"twd",         name:"The Walking Dead",  cover:"", logo:"logos/twd.png", sp:"2cji350vUbvxQ9QwyL5Nkp", am:"1275301945", yt:"gMs7gzFzoLU", font:"Special Elite",   fw:400, c:"150,170,110", hi:"205,220,170", deep:"#3f4a2c", mood:"dark",
     rx:/walking dead|negan|lucille|eugene porter|rick grimes|daryl/ },
-  { id:"harrypotter", name:"Harry Potter",      cover:"", logo:"logos/harrypotter.png", sp:"1n8NKQRg8LVHy7oUhUgbFF", yt:"42ytXvVzPts", font:"Cinzel",          fw:700, c:"200,55,60",   hi:"240,195,130", deep:"#5c1218", mood:"magic",
+  { id:"harrypotter", name:"Harry Potter",      cover:"", logo:"logos/harrypotter.png", sp:"1n8NKQRg8LVHy7oUhUgbFF", am:"89285956", yt:"42ytXvVzPts", font:"Cinzel",          fw:700, c:"200,55,60",   hi:"240,195,130", deep:"#5c1218", mood:"magic",
     rx:/harry potter|gryffindor|varita de sauco|hogwarts|dumbledore|voldemort/ },
-  { id:"videojuegos", name:"Videojuegos",       cover:"", logo:"logos/videojuegos.png", sp:"", yt:"", font:"Press Start 2P",  fw:400, fs:.52, c:"215,80,255",  hi:"240,180,255", deep:"#6a1b80", mood:"chip",
+  { id:"videojuegos", name:"Videojuegos",       cover:"", logo:"logos/videojuegos.png", sp:"", am:"", yt:"", font:"Press Start 2P",  fw:400, fs:.52, c:"215,80,255",  hi:"240,180,255", deep:"#6a1b80", mood:"chip",
     rx:/\bsonic\b|super mario|\bjinx\b|arcane|last of us|zelda|pokemon/ },
-  { id:"cine",        name:"Cine y Series",     cover:"", logo:"logos/cine.png", sp:"5duZVZ4m1TaJDTCbeHG8TG", yt:"IgQGqTvd29c", font:"Playfair Display",fw:800, c:"215,215,228", hi:"255,255,255", deep:"#4d4d58", mood:"noir",
+  { id:"cine",        name:"Cine y Series",     cover:"", logo:"logos/cine.png", sp:"5duZVZ4m1TaJDTCbeHG8TG", am:"1400941657", yt:"IgQGqTvd29c", font:"Playfair Display",fw:800, c:"215,215,228", hi:"255,255,255", deep:"#4d4d58", mood:"noir",
     rx:/\balien\b|aliens|predator|terminator|robocop|pennywise|it movie|beetlejuice|gremlin|godzilla|indiana jones|jack sparrow|john wick|toretto|tommy shelby|miercoles|hofstadter|the boys|homelander|juego de tronos|jon nieve/ }
 ];
 const UNI_MIN = 3;
@@ -2572,7 +2574,7 @@ function renderUniHero(){const hero=document.getElementById("uniHero");if(!hero)
       <div class="uh-stats">${st.map(x=>`<span><b>${x[0]}</b>${x[1]}</span>`).join("")}</div>
       <div class="uh-act"><button type="button" class="uh-amb" id="uhAmb" aria-pressed="${AMB.on}"><span class="eq"><i></i><i></i><i></i><i></i></span><span class="uh-ambt">${AMB.on?"Ambiente":"Ambiente apagado"}</span></button>
         ${(OWNER||spOn())&&u.sp?`<button type="button" class="uh-spc${spOn()?" on":""}" id="uhSpc"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20Zm4.6 14.4a.62.62 0 0 1-.86.2c-2.35-1.44-5.3-1.76-8.79-.96a.62.62 0 1 1-.28-1.21c3.81-.87 7.08-.5 9.72 1.11.3.18.39.56.21.86Zm1.22-2.72a.78.78 0 0 1-1.07.26c-2.69-1.65-6.79-2.13-9.97-1.17a.78.78 0 0 1-.45-1.49c3.63-1.1 8.15-.57 11.23 1.33.37.22.48.7.26 1.07Zm.1-2.84C14.7 8.93 9.38 8.75 6.3 9.69a.94.94 0 1 1-.54-1.8c3.53-1.07 9.4-.86 13.1 1.34a.94.94 0 0 1-.96 1.61Z"/></svg>${spOn()?"Mi Spotify ✓":"Conectar mi Spotify"}</button>`:""}
-        ${(u.sp||u.yt)?`<button type="button" class="uh-yt${u.sp?" sp":""}" id="uhYt"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg><span>Banda sonora oficial</span></button>`:""}</div>
+        ${(u.sp||u.yt||u.am)?`<button type="button" class="uh-yt${u.sp?" sp":""}" id="uhYt"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg><span>Banda sonora oficial</span></button>`:""}</div>
     </div>`;
   document.getElementById("uhBack").onclick=exitUni;uniLogoFix(hero);
   document.getElementById("uhAmb").onclick=()=>{AMB.on=!AMB.on;try{localStorage.setItem("mc-amb",AMB.on?"1":"0")}catch(_){}
@@ -2585,13 +2587,20 @@ function renderUniHero(){const hero=document.getElementById("uniHero");if(!hero)
 function uniAmbUI(){const b=document.getElementById("uhAmb");if(!b)return;b.setAttribute("aria-pressed",AMB.on);b.classList.toggle("playing",!!AMB.bus);
   const t=b.querySelector(".uh-ambt");if(t)t.textContent=AMB.on?"Ambiente":"Ambiente apagado";
   const y=document.getElementById("uhYt");if(y){const d=document.getElementById("uniDock"),my=AMB.yt&&d&&d.classList.contains("is-my");
-    y.classList.toggle("on",AMB.yt);y.querySelector("span").textContent=my?(d.classList.contains("mini")?"Ver canción":"Ocultar canción"):AMB.yt?"Sonando · cerrar":(y.classList.contains("sp")?"Escuchar en Spotify":"Banda sonora oficial")}}
+    y.classList.toggle("on",AMB.yt);y.querySelector("span").textContent=my?(d.classList.contains("mini")?"Ver canción":"Ocultar canción"):AMB.yt?"Sonando · cerrar":(UNI_BY[state.fr]&&useAp(UNI_BY[state.fr])?"Banda sonora":(y.classList.contains("sp")?"Escuchar en Spotify":"Banda sonora oficial"))}}
 let SPAPI=null,SPWAIT=[],SPCTL=null;
 function spApi(cb){if(SPAPI){cb(SPAPI);return}SPWAIT.push(cb);if(SPWAIT.length>1)return;
   window.onSpotifyIframeApiReady=api=>{SPAPI=api;const w=SPWAIT;SPWAIT=[];w.forEach(f=>f(api))};
   const s=document.createElement("script");s.src="https://open.spotify.com/embed/iframe-api/v1";s.async=true;
   s.onerror=()=>{const w=SPWAIT;SPWAIT=[];w.forEach(f=>f(null))};document.head.appendChild(s)}
-function openYT(u){const p=document.getElementById("uniDock");if(!p||!(u.sp||u.yt))return;AMB.yt=true;AMB.ytId=u.id;ambStop();
+function openYT(u){const p=document.getElementById("uniDock");if(!p||!(u.sp||u.yt||u.am))return;
+  if(useAp(u)){AMB.yt=true;AMB.ytId=u.id;ambStop();apStart(u);p.setAttribute("style",uniStyle(u));p.hidden=false;p.classList.remove("is-sp");p.classList.add("is-my","is-ap","mini");
+    p.innerHTML=`<button type="button" class="ud-pill" aria-label="Ver la canción que suena"><span class="eq"><i></i><i></i><i></i><i></i></span></button>
+      <div class="ud-head"><span class="eq"><i></i><i></i><i></i><i></i></span><span class="ud-t">Banda sonora · <b>${esc(u.name)}</b></span><button type="button" class="ud-min" aria-label="Ocultar tarjeta">–</button><button type="button" class="ud-x" aria-label="Parar música">×</button></div><div class="ud-my"></div>`;
+    p.querySelector(".ud-pill").onclick=()=>{p.classList.remove("mini");uniAmbUI()};p.querySelector(".ud-min").onclick=()=>{p.classList.add("mini");uniAmbUI()};
+    p.querySelector(".ud-x").onclick=()=>{closeYT();if(AMB.on&&state.fr===u.id)ambStart(u,true)};
+    requestAnimationFrame(()=>p.classList.add("on"));apUI();uniAmbUI();return}
+  if(!(u.sp||u.yt))return;AMB.yt=true;AMB.ytId=u.id;ambStop();p.classList.remove("is-ap");
   p.setAttribute("style",uniStyle(u));p.hidden=false;p.classList.toggle("is-sp",!!u.sp);
   const head=`<div class="ud-head"><span class="eq"><i></i><i></i><i></i><i></i></span><span class="ud-t">${u.sp?"Spotify":"Banda sonora oficial"} · <b>${esc(u.name)}</b></span><button type="button" class="ud-x" aria-label="Cerrar reproductor">×</button></div>`;
   if(u.sp&&spOn()){p.classList.add("is-my","mini");p.classList.remove("is-sp");
@@ -2613,16 +2622,17 @@ function openYT(u){const p=document.getElementById("uniDock");if(!p||!(u.sp||u.y
   else p.innerHTML=head+ytFrame();
   requestAnimationFrame(()=>p.classList.add("on"));
   p.querySelector(".ud-x").onclick=()=>{closeYT();if(AMB.on&&state.fr===u.id)ambStart(u,true)};uniAmbUI()}
-function closeYT(silent){AMB.yt=false;if(SPM.uid||SPM.mode)spStop();const dd=document.getElementById("uniDock");if(dd)dd.classList.remove("is-my","mini");if(SPCTL){try{SPCTL.pause();SPCTL.destroy()}catch(_){}SPCTL=null}
+function closeYT(silent){AMB.yt=false;if(SPM.uid||SPM.mode)spStop();if(APV.uid&&APV.uid!==APV.keep)apStop();const dd=document.getElementById("uniDock");if(dd)dd.classList.remove("is-my","mini","is-ap","playing");if(SPCTL){try{SPCTL.pause();SPCTL.destroy()}catch(_){}SPCTL=null}
   const p=document.getElementById("uniDock");if(p&&!p.hidden){p.classList.remove("on");p.innerHTML="";p.hidden=true}uniAmbUI()}
 function uniSync(rerender){renderUniShelf();renderUniHero();if(rerender!==false){renderChips();buildRefine();render()}
   if(curView==="coleccion")uniViewHook("coleccion")}
 function enterUni(id,fromEl){const u=UNI_BY[id];if(!u)return;ac();
+  const ap=AMB.on&&useAp(u);if(ap){APV.keep=u.id;apStart(u)}
   const go=()=>{state.fr=id;state.cat="Todo";state.refine="";state.signed=false;state.q="";state.pending=false;
     const s=document.getElementById("search");if(s)s.value="";document.body.dataset.cat="Todo";
-    closeYT(true);const auto=!!(u.sp&&spOn()&&AMB.on);if(auto)AMB.yt=true;uniSync(true);
+    closeYT(true);const auto=ap||!!(u.sp&&spOn()&&AMB.on&&!spIsMobile());if(auto)AMB.yt=true;uniSync(true);
     if(location.hash!=="#u/"+id)history.pushState(null,"",hashFor("coleccion"));
-    applyView("coleccion");if(auto)openYT(u)};
+    applyView("coleccion");if(auto)openYT(u);APV.keep=""};
   uniWipe(u,fromEl,go)}
 function exitUni(){if(!state.fr)return;closeYT(true);state.fr="";state.cat="Todo";state.refine="";document.body.dataset.cat="Todo";
   uniSync(true);history.pushState(null,"",hashFor("coleccion"));applyView("coleccion")}
@@ -2716,7 +2726,8 @@ function ambStart(u,force){if(!AMB.on||AMB.yt||document.hidden||!u)return;if(AMB
 function ambStop(quick){if(!AMB.bus){AMB.id="";return}const c=ac(),bus=AMB.bus,os=AMB.o;AMB.t.forEach(x=>{clearInterval(x);clearTimeout(x)});AMB.t=[];AMB.bus=null;AMB.o=[];AMB.id="";
   try{bus.gain.cancelScheduledValues(c.currentTime);bus.gain.setTargetAtTime(0,c.currentTime,quick?.08:.25)}catch(_){}
   setTimeout(()=>{os.forEach(o=>{try{o.stop()}catch(_){}});try{bus.disconnect()}catch(_){}},quick?400:1300);uniAmbUI()}
-document.addEventListener("visibilitychange",()=>{if(!document.hidden&&SPM.retry&&state.fr===SPM.retry&&AMB.yt&&UNI_BY[SPM.retry])setTimeout(()=>{if(SPM.retry)spPlay(UNI_BY[SPM.retry])},700);
+document.addEventListener("visibilitychange",()=>{if(APV.el&&APV.uid){if(document.hidden){APV.wasOn=!APV.el.paused;APV.el.pause()}else if(APV.wasOn&&state.fr===APV.uid&&curView==="coleccion")APV.el.play().catch(()=>{})}
+  if(!document.hidden&&SPM.retry&&state.fr===SPM.retry&&AMB.yt&&UNI_BY[SPM.retry])setTimeout(()=>{if(SPM.retry)spPlay(UNI_BY[SPM.retry])},700);
   if(document.hidden)ambStop(true);else if(curView==="coleccion"&&state.fr)ambStart(UNI_BY[state.fr])});
 
 /* ===================== MI SPOTIFY (solo el dueño: cuenta Premium conectada) =====================
@@ -2834,6 +2845,27 @@ function spMenu(btn){let m=document.getElementById("spMenu");if(m){m.remove();re
   addEventListener("scroll",()=>{if(!raf)raf=requestAnimationFrame(upd)},{passive:true});
   document.getElementById("search").addEventListener("focus",()=>c.classList.remove("hid"))})();
 
+/* ===================== MUESTRAS OFICIALES (Apple Music, 30 s) — móvil y visitantes ===================== */
+const APV={meta:{},el:null,uid:"",keep:""};
+function apPrefetch(){const ids=[...new Set(UNIVERSES.map(u=>u.am).filter(Boolean))];if(!ids.length)return;
+  fetch("https://itunes.apple.com/lookup?country=ES&entity=song&id="+ids.join(",")).then(r=>r.json()).then(j=>{(j.results||[]).forEach(t=>{if(t.previewUrl)APV.meta[t.trackId]=t})}).catch(()=>{})}
+function apEl(){if(!APV.el){const a=new Audio();a.loop=true;a.preload="auto";a.setAttribute("playsinline","");
+  ["play","pause","playing"].forEach(e=>a.addEventListener(e,apUI));APV.el=a}return APV.el}
+const useAp=u=>!!(u&&u.am&&APV.meta[u.am]&&!(u.sp&&spOn()&&!spIsMobile()));
+function apStart(u){const t=APV.meta[u.am];if(!t)return false;const a=apEl();
+  if(a.dataset.id!==String(u.am)){a.src=t.previewUrl;a.dataset.id=String(u.am)}APV.uid=u.id;audioSess("playback");
+  try{const pr=a.play();if(pr&&pr.catch)pr.catch(()=>apUI())}catch(_){}return true}
+function apStop(){if(APV.el)try{APV.el.pause()}catch(_){}APV.uid=""}
+function apUI(){const p=document.getElementById("uniDock");if(!p||p.hidden||!p.classList.contains("is-ap"))return;const b=p.querySelector(".ud-my");if(!b)return;
+  const u=UNI_BY[APV.uid],t=u&&APV.meta[u.am],a=APV.el,on=a&&!a.paused;
+  const img=t&&t.artworkUrl100?t.artworkUrl100.replace(/100x100bb/,"300x300bb"):"";
+  b.innerHTML=`<div class="um-art">${img?`<img src="${esc(img)}" alt="">`:""}</div>
+    <div class="um-txt"><b>${esc(t?t.trackName:"…")}</b><span>${esc(t?t.artistName:"")}</span>
+      <em>${on?"Sonando":"En pausa"} · muestra de 30 s${t&&t.trackViewUrl?` · <a href="${esc(t.trackViewUrl)}" target="_blank" rel="noopener">Apple Music</a>`:""}</em></div>
+    <button type="button" class="um-pp" aria-label="${on?"Pausa":"Reproducir"}">${on?'<svg viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg>':'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>'}</button>`;
+  p.classList.toggle("playing",!!on);
+  b.querySelector(".um-pp").onclick=()=>{if(!a)return;if(a.paused){audioSess("playback");a.play().catch(()=>{})}else a.pause()}}
+
 async function boot(){
   try{await spCallback()}catch(_){}
   const _sp=splashStart();
@@ -2854,6 +2886,7 @@ async function boot(){
   renderNovedades();renderDay();renderTape();wireRail();applyVSel();delete document.body.dataset.firstPaint;
   observeReveal(document);
   if(spOn()&&!spIsMobile())setTimeout(()=>spSdk(),4000);
+  apPrefetch();
   initCircuit();splashEnd(_sp);setTimeout(()=>{document.body.dataset.ready="1"},50);
   const hs=decodeURIComponent((location.hash||"").slice(1));
   if(hs==="mantenedor"||hs==="acceso"){history.replaceState(null,"",hashFor("home"));setTimeout(gLogin,400)}
