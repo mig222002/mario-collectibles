@@ -1452,6 +1452,9 @@ const UNIVERSES = [
     rx:/\balien\b|aliens|predator|terminator|robocop|pennywise|it movie|beetlejuice|gremlin|godzilla|indiana jones|jack sparrow|john wick|toretto|tommy shelby|miercoles|hofstadter|the boys|homelander|juego de tronos|jon nieve/ }
 ];
 const UNI_MIN = 3;
+/* Si cambias algún logo y tu navegador sigue enseñando el viejo, sube este número (2, 3, 4…). */
+const LOGO_VER = "2";
+const uLogoUrl=u=>u.logo?u.logo+(u.logo.includes("?")?"&":"?")+"v="+LOGO_VER:"";
 /* Tu cuenta de Spotify (solo para ti): app creada en developer.spotify.com. El Client ID es público, no es una contraseña. */
 const SPOTIFY_CLIENT_ID = "1edd75ca39674d6b88ff550c8b8ef675";
 const SPOTIFY_REDIRECT = "https://mig222002.github.io/mario-collectibles/";
@@ -2551,7 +2554,7 @@ function renderUniShelf(){const sh=document.getElementById("uniShelf"),row=docum
   row.innerHTML=UNI_LIST.map(u=>{const im=u.cover?(u.cover.imagen||(u.cover.fotos||[])[0]):"";
     return `<button type="button" class="uni-tile${u.logo?" has-logo":""}" role="listitem" data-u="${u.id}" style="${uniStyle(u)}" aria-label="${esc(u.name)}: ${u.n} piezas">
       ${im?`<img src="${esc(im)}" alt="" loading="lazy" decoding="async" fetchpriority="low" onerror="this.remove()">`:""}<span class="ut-shade"></span>
-      ${u.logo?`<span class="ut-logo"><img src="${esc(u.logo)}" data-logo="${esc(u.logo)}" alt="${esc(u.name)}" decoding="async" onload="if(this.naturalHeight>this.naturalWidth*1.1)this.parentNode.classList.add('tall')" onerror="this.parentNode.outerHTML='<span class=&quot;ut-name&quot;>${esc(u.name)}</span>'"></span>`:`<span class="ut-name">${esc(u.name)}</span>`}<span class="ut-meta">${u.n} piezas${u.firm?` · <i>${PEN_SVG}${u.firm}</i>`:""}</span></button>`}).join("");
+      ${u.logo?`<span class="ut-logo"><img src="${esc(uLogoUrl(u))}" data-logo="${esc(uLogoUrl(u))}" alt="${esc(u.name)}" decoding="async" onload="if(this.naturalHeight>this.naturalWidth*1.1)this.parentNode.classList.add('tall')" onerror="this.parentNode.outerHTML='<span class=&quot;ut-name&quot;>${esc(u.name)}</span>'"></span>`:`<span class="ut-name">${esc(u.name)}</span>`}<span class="ut-meta">${u.n} piezas${u.firm?` · <i>${PEN_SVG}${u.firm}</i>`:""}</span></button>`}).join("");
   row.querySelectorAll(".uni-tile").forEach(b=>b.onclick=()=>enterUni(b.dataset.u,b));uniLogoFix(row);
   sh.querySelectorAll(".uni-arr").forEach(b=>b.onclick=()=>row.scrollBy({left:+b.dataset.d*row.clientWidth*.8,behavior:"smooth"}));
   if(curView==="coleccion")uniFonts();else setTimeout(uniFonts,2500)}
@@ -2565,7 +2568,7 @@ function renderUniHero(){const hero=document.getElementById("uniHero");if(!hero)
     <div class="uh-in">
       <button type="button" class="uh-back" id="uhBack">← Todos los universos</button>
       <div class="uh-kick">Universo</div>
-      <h2 class="uh-name${u.logo?" has-logo":""}">${u.logo?`<img src="${esc(u.logo)}" data-logo="${esc(u.logo)}" alt="${esc(u.name)}" onload="if(this.naturalHeight>this.naturalWidth*1.1)this.classList.add('tall')" onerror="this.parentNode.classList.remove('has-logo');this.outerHTML='${esc(u.name)}'">`:esc(u.name)}</h2>
+      <h2 class="uh-name${u.logo?" has-logo":""}">${u.logo?`<img src="${esc(uLogoUrl(u))}" data-logo="${esc(uLogoUrl(u))}" alt="${esc(u.name)}" onload="if(this.naturalHeight>this.naturalWidth*1.1)this.classList.add('tall')" onerror="this.parentNode.classList.remove('has-logo');this.outerHTML='${esc(u.name)}'">`:esc(u.name)}</h2>
       <div class="uh-stats">${st.map(x=>`<span><b>${x[0]}</b>${x[1]}</span>`).join("")}</div>
       <div class="uh-act"><button type="button" class="uh-amb" id="uhAmb" aria-pressed="${AMB.on}"><span class="eq"><i></i><i></i><i></i><i></i></span><span class="uh-ambt">${AMB.on?"Ambiente":"Ambiente apagado"}</span></button>
         ${(OWNER||spOn())&&u.sp?`<button type="button" class="uh-spc${spOn()?" on":""}" id="uhSpc"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20Zm4.6 14.4a.62.62 0 0 1-.86.2c-2.35-1.44-5.3-1.76-8.79-.96a.62.62 0 1 1-.28-1.21c3.81-.87 7.08-.5 9.72 1.11.3.18.39.56.21.86Zm1.22-2.72a.78.78 0 0 1-1.07.26c-2.69-1.65-6.79-2.13-9.97-1.17a.78.78 0 0 1-.45-1.49c3.63-1.1 8.15-.57 11.23 1.33.37.22.48.7.26 1.07Zm.1-2.84C14.7 8.93 9.38 8.75 6.3 9.69a.94.94 0 1 1-.54-1.8c3.53-1.07 9.4-.86 13.1 1.34a.94.94 0 0 1-.96 1.61Z"/></svg>${spOn()?"Mi Spotify ✓":"Conectar mi Spotify"}</button>`:""}
@@ -2627,7 +2630,7 @@ function uniWipe(u,el,cb){const w=document.getElementById("uniWipe");
   if(!w||matchMedia("(prefers-reduced-motion:reduce)").matches||!w.animate){cb();return}
   const r=el&&el.getBoundingClientRect?el.getBoundingClientRect():null,x=r?r.left+r.width/2:innerWidth/2,y=r?r.top+r.height/2:innerHeight/2;
   w.style.setProperty("--uc",u.c);w.style.setProperty("--ud",u.deep);w.style.setProperty("--wx",x+"px");w.style.setProperty("--wy",y+"px");
-  w.innerHTML=u.logo?`<span class="uw-logo"><img src="${esc(u.logo)}" data-logo="${esc(u.logo)}" alt=""></span>`:`<span style="font-family:${uniFF(u)};font-weight:${u.fw||700};font-size:calc(clamp(46px,10vw,120px) * ${u.fs||1})">${esc(u.name)}</span>`;w.classList.add("on");uniLogoFix(w);
+  w.innerHTML=u.logo?`<span class="uw-logo"><img src="${esc(uLogoUrl(u))}" data-logo="${esc(uLogoUrl(u))}" alt=""></span>`:`<span style="font-family:${uniFF(u)};font-weight:${u.fw||700};font-size:calc(clamp(46px,10vw,120px) * ${u.fs||1})">${esc(u.name)}</span>`;w.classList.add("on");uniLogoFix(w);
   const R=Math.hypot(Math.max(x,innerWidth-x),Math.max(y,innerHeight-y))+40;
   w.animate([{clipPath:`circle(0px at ${x}px ${y}px)`},{clipPath:`circle(${R}px at ${x}px ${y}px)`}],{duration:460,easing:"cubic-bezier(.7,0,.3,1)",fill:"forwards"}).onfinish=()=>{
     cb();setTimeout(()=>{w.animate([{opacity:1},{opacity:0}],{duration:380,easing:"ease-out",fill:"forwards"}).onfinish=()=>{w.classList.remove("on");w.getAnimations().forEach(a=>a.cancel())}},140)}}
