@@ -956,6 +956,7 @@ body.busy-ui .eq i{animation-play-state:paused}
   .controls .chips::-webkit-scrollbar{display:none}
   .controls .chips .chip{flex:none}
 }
+.um-open{align-self:flex-start;margin-top:6px;font-family:var(--mono);font-size:11px;color:#000;background:#1ed760;border-radius:999px;padding:6px 12px;text-decoration:none;font-weight:700}
 /* transición «portal» */
 .uni-wipe{position:fixed;inset:0;z-index:300;pointer-events:none;display:none;align-items:center;justify-content:center;background:radial-gradient(circle at var(--wx) var(--wy),rgb(var(--uc)) 0%,var(--ud) 38%,#050506 85%)}
 .uni-wipe.on{display:flex}
@@ -2681,7 +2682,8 @@ function ambStart(u,force){if(!AMB.on||AMB.yt||document.hidden||!u)return;if(AMB
 function ambStop(quick){if(!AMB.bus){AMB.id="";return}const c=ac(),bus=AMB.bus,os=AMB.o;AMB.t.forEach(x=>{clearInterval(x);clearTimeout(x)});AMB.t=[];AMB.bus=null;AMB.o=[];AMB.id="";
   try{bus.gain.cancelScheduledValues(c.currentTime);bus.gain.setTargetAtTime(0,c.currentTime,quick?.08:.25)}catch(_){}
   setTimeout(()=>{os.forEach(o=>{try{o.stop()}catch(_){}});try{bus.disconnect()}catch(_){}},quick?400:1300);uniAmbUI()}
-document.addEventListener("visibilitychange",()=>{if(document.hidden)ambStop(true);else if(curView==="coleccion"&&state.fr)ambStart(UNI_BY[state.fr])});
+document.addEventListener("visibilitychange",()=>{if(!document.hidden&&SPM.retry&&state.fr===SPM.retry&&AMB.yt&&UNI_BY[SPM.retry])setTimeout(()=>{if(SPM.retry)spPlay(UNI_BY[SPM.retry])},700);
+  if(document.hidden)ambStop(true);else if(curView==="coleccion"&&state.fr)ambStart(UNI_BY[state.fr])});
 
 /* ===================== MI SPOTIFY (solo el dueño: cuenta Premium conectada) =====================
    Ordenador: la canción suena dentro de la web (Web Playback SDK).
@@ -2729,8 +2731,10 @@ function spSdk(){return new Promise(res=>{if(SPM.dev){res(SPM.dev);return}SPM.sd
     p.connect().then(ok=>{if(!ok)done("")})}catch(_){done("")}};
   if(window.Spotify&&Spotify.Player)make();else{window.onSpotifyWebPlaybackSDKReady=make;const s=document.createElement("script");s.src="https://sdk.scdn.co/spotify-player.js";s.onerror=()=>done("");document.head.appendChild(s)}
   setTimeout(()=>done(SPM.dev),12000)})}
-async function spPick(){const r=await spWeb("/me/player/devices");const L=(r.j&&r.j.devices)||[];
-  return L.find(d=>d.is_active&&d.id!==SPM.dev)||L.find(d=>/smartphone/i.test(d.type))||L.find(d=>d.id!==SPM.dev)||null}
+async function spPick(){const r=await spWeb("/me/player/devices");const L=((r.j&&r.j.devices)||[]).filter(d=>d.id&&d.id!==SPM.dev&&!d.is_restricted);
+  if(spIsMobile()){const ph=L.filter(d=>/smartphone|tablet/i.test(d.type));   /* en el móvil: SOLO el propio móvil, nunca otro aparato */
+    return ph.find(d=>d.is_active)||ph.find(d=>/iphone/i.test(d.name))||ph[0]||null}
+  const pc=L.filter(d=>/computer/i.test(d.type));return pc.find(d=>d.is_active)||pc[0]||L.find(d=>d.is_active)||null}
 async function spPlay(u){const p=document.getElementById("uniDock");SPM.uid=u.id;
   const tr=await spWeb("/tracks/"+u.sp);if(SPM.uid!==u.id)return;SPM.track=tr.j||null;spDockState("Conectando con tu Spotify…");
   let dev="",where="";
@@ -2738,7 +2742,8 @@ async function spPlay(u){const p=document.getElementById("uniDock");SPM.uid=u.id
   if(SPM.uid!==u.id)return;
   if(!dev){const d=await spPick();if(d){dev=d.id;where="en "+d.name}}
   if(SPM.uid!==u.id)return;
-  if(!dev){SPM.mode="";spDockState("",`Abre Spotify en tu ${spIsMobile()?"móvil":"ordenador"} y vuelve a pulsar ▶.`);return}
+  if(!dev){SPM.mode="";SPM.retry=u.id;spDockState("",spIsMobile()?"Tu Spotify del móvil está dormido. Ábrelo un momento y vuelve: la canción arrancará sola.":"Abre Spotify en tu ordenador y vuelve a pulsar ▶.",spIsMobile());return}
+  SPM.retry="";
   const r=await spWeb("/me/player/play?device_id="+encodeURIComponent(dev),{method:"PUT",body:JSON.stringify({uris:["spotify:track:"+u.sp]})});
   if(SPM.uid!==u.id)return;
   if(r.status===204||r.status===202||r.status===200){SPM.mode=dev===SPM.dev?"sdk":"connect";SPM.paused=false;SPM.where=where;spDockState()}
@@ -2749,11 +2754,11 @@ async function spToggle(){if(!SPM.mode){const u=UNI_BY[SPM.uid];if(u)spPlay(u);r
   if(SPM.mode==="sdk"&&SPM.sdk){SPM.sdk.togglePlay();return}
   const r=await spWeb(SPM.paused?"/me/player/play":"/me/player/pause",{method:"PUT"});if(r.status<300){SPM.paused=!SPM.paused;spDockState()}}
 function spStop(){const m=SPM.mode;SPM.uid="";SPM.mode="";if(m==="sdk"&&SPM.sdk){try{SPM.sdk.pause()}catch(_){}}else if(m==="connect")spWeb("/me/player/pause",{method:"PUT"})}
-function spDockState(busy,err){const p=document.getElementById("uniDock");if(!p||p.hidden||!p.classList.contains("is-my"))return;const b=p.querySelector(".ud-my");if(!b)return;
+function spDockState(busy,err,openBtn){const p=document.getElementById("uniDock");if(!p||p.hidden||!p.classList.contains("is-my"))return;const b=p.querySelector(".ud-my");if(!b)return;
   const t=SPM.track,img=t&&t.album&&t.album.images&&t.album.images.length?t.album.images[Math.min(1,t.album.images.length-1)].url:"";
   b.innerHTML=`<div class="um-art">${img?`<img src="${esc(img)}" alt="">`:""}</div>
     <div class="um-txt"><b>${esc(t?t.name:"…")}</b><span>${esc(t?(t.artists||[]).map(a=>a.name).join(", "):"")}</span>
-      <em>${err?esc(err):busy?esc(busy):SPM.mode?(SPM.paused?"En pausa · ":"Sonando · ")+esc(SPM.where||""):""}</em></div>
+      <em>${err?esc(err):busy?esc(busy):SPM.mode?(SPM.paused?"En pausa · ":"Sonando · ")+esc(SPM.where||""):""}</em>${openBtn?`<a class="um-open" href="spotify:">Abrir Spotify</a>`:""}</div>
     <button type="button" class="um-pp" aria-label="${SPM.mode&&!SPM.paused?"Pausa":"Reproducir"}">${SPM.mode&&!SPM.paused?'<svg viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg>':'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>'}</button>`;
   p.classList.toggle("playing",!!SPM.mode&&!SPM.paused);
   if(err&&p.classList.contains("mini")){p.classList.remove("mini");uniAmbUI()}
