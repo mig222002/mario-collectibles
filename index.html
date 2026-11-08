@@ -914,12 +914,14 @@ body.busy-ui .eq i{animation-play-state:paused}
 .ud-sp{padding:0 8px 8px;min-height:160px}
 .ud-sp iframe{height:152px!important;border-radius:12px}
 @media(max-width:700px){.uni-dock{left:12px;right:12px;width:auto;bottom:calc(74px + env(safe-area-inset-bottom))}}
-.ut-logo{position:absolute;left:14px;right:14px;bottom:40px;height:78px;display:flex;align-items:flex-end}
-.ut-logo img{max-width:100%;max-height:100%;object-fit:contain;object-position:left bottom;filter:drop-shadow(0 2px 12px rgba(0,0,0,.7)) drop-shadow(0 0 14px rgba(var(--uc),.45))}
+.ut-logo{position:absolute;left:14px;right:14px;bottom:40px;height:78px;display:flex;align-items:center;justify-content:center}
+.ut-logo img{max-width:100%;max-height:100%;object-fit:contain;object-position:center;filter:drop-shadow(0 2px 12px rgba(0,0,0,.7)) drop-shadow(0 0 14px rgba(var(--uc),.45))}
 .uh-name.has-logo{line-height:0;margin:10px 0 18px}
 .uh-name.has-logo img{max-height:clamp(70px,12vw,130px);max-width:min(560px,100%);object-fit:contain;filter:drop-shadow(0 0 26px rgba(var(--uc),.5)) drop-shadow(0 2px 6px rgba(0,0,0,.6))}
 .uw-logo img{max-width:min(70vw,620px);max-height:34vh;object-fit:contain;filter:drop-shadow(0 0 40px rgba(var(--uc),.9))}
-@media(max-width:640px){.ut-logo{left:10px;right:10px;bottom:34px;height:58px}}
+.ut-logo.tall{height:150px}
+.uh-name.has-logo img.tall{max-height:clamp(150px,22vw,230px)}
+@media(max-width:640px){.ut-logo{left:10px;right:10px;bottom:34px;height:58px}.ut-logo.tall{height:110px}}
 .uh-spc{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:12px;border-radius:999px;padding:9px 14px;cursor:pointer;color:#1ed760;background:rgba(30,215,96,.08);border:1px solid rgba(30,215,96,.45);transition:all .16s}
 .uh-spc svg{width:15px;height:15px}.uh-spc:hover{background:rgba(30,215,96,.18)}
 .sp-menu{position:absolute;z-index:160;background:#141418;border:1px solid var(--line);border-radius:14px;padding:6px;box-shadow:0 18px 40px rgba(0,0,0,.55);display:flex;flex-direction:column;min-width:240px}
@@ -961,6 +963,7 @@ body.busy-ui .eq i{animation-play-state:paused}
 .sd-card{background:#141418;border:1px solid var(--line);border-radius:16px;padding:18px;max-width:440px;width:100%;color:var(--text);font-size:13px}
 .sd-card table{width:100%;border-collapse:collapse;margin:10px 0}.sd-card td{padding:6px 4px;border-bottom:1px solid var(--line-soft);vertical-align:top}.sd-card td:first-child{color:var(--muted);width:44%}
 .sd-card p{color:var(--muted);font-size:12px}.sd-card button{margin-top:6px;background:var(--gold);color:#111;border:0;border-radius:999px;padding:8px 16px;font-weight:700;cursor:pointer}
+.uni-tile.has-logo .ut-meta{left:0;right:0;justify-content:center}
 /* transición «portal» */
 .uni-wipe{position:fixed;inset:0;z-index:300;pointer-events:none;display:none;align-items:center;justify-content:center;background:radial-gradient(circle at var(--wx) var(--wy),rgb(var(--uc)) 0%,var(--ud) 38%,#050506 85%)}
 .uni-wipe.on{display:flex}
@@ -1408,42 +1411,44 @@ const GAUTH_KEY="mc-gauth";
    (lo que va después de watch?v=). Vacío = no sale el reproductor. Sale un universo si tiene 3 piezas o más.
    sp: ID de una canción de Spotify (lo que va después de open.spotify.com/track/). Tiene prioridad sobre yt:
        sin anuncios; con la sesión de Spotify abierta en el navegador suena entera, sin sesión son 30 s de muestra.
+   cover: referencia de la pieza cuya foto representa al universo (p. ej. "FIG-123"); varias separadas por comas = rota cada día.
+       Vacío = la web elige sola entre tus mejores piezas.
    logo: imagen opcional que pones tú (mejor PNG/SVG con fondo transparente), p. ej. "logos/marvel.png" subida al repositorio.
    Si está vacío se usa el nombre con su tipografía. */
 const UNIVERSES = [
-  { id:"marvel",      name:"Marvel",            logo:"logos/marvel.png", sp:"5SXsXjVJCWeJuf7FHvgBYR", yt:"XNCQZ0wxphY", font:"Bebas Neue",      fw:400, c:"226,54,54",   hi:"255,150,135", deep:"#8f1d1d", mood:"heroic",
+  { id:"marvel",      name:"Marvel",            cover:"", logo:"logos/marvel.png", sp:"5SXsXjVJCWeJuf7FHvgBYR", yt:"XNCQZ0wxphY", font:"Bebas Neue",      fw:400, c:"226,54,54",   hi:"255,150,135", deep:"#8f1d1d", mood:"heroic",
     rx:/\bmarvel\b|spider|iron ?man|tony stark|capitan(a)? (america|marvel)|c\.america|\bthor\b|\bhulk\b|lobezno|wolverine|deadpool|daredevil|matt murdock|elektra|kingpin|punisher|venom|carnage|x-men|tormenta|magneto|picara|ciclope|gambito|\bbishop\b|jean grey|rondador nocturno|mr\. fantastico|mujer invisible|la cosa|antorcha humana|galactus|silver surfer|doctor (doom|strange)|black (panther|cat)|moon knight|mr\. knight|ant ?man|star ?lord|miss minutes|\bloki\b|tesseracto|mjolnir|stormbreaker|hawkeye|miles morales|peter parker|arachknight|supreme soldier|thanos|gamerverse/ },
-  { id:"dc",          name:"DC",                logo:"logos/dc.png", sp:"4Dp4Sd86S7EEGhNJ13E5VT", yt:"gsbsYMPvdec", font:"Oswald",          fw:700, c:"40,120,255",  hi:"150,195,255", deep:"#123c8a", mood:"dark",
+  { id:"dc",          name:"DC",                cover:"", logo:"logos/dc.png", sp:"4Dp4Sd86S7EEGhNJ13E5VT", yt:"gsbsYMPvdec", font:"Oswald",          fw:700, c:"40,120,255",  hi:"150,195,255", deep:"#123c8a", mood:"dark",
     rx:/\bdc\b|batman|batmobile|batcycle|superman|joker|wonder woman|pacificador|peacemaker|\bhush\b|black adam|harley quinn|aquaman|green lantern|\bflash\b/ },
-  { id:"starwars",    name:"Star Wars",         logo:"logos/starwars.png", sp:"4r1YlrbFqesleiLkO8p9dZ", yt:"ya3ZCEWhHmo", font:"Orbitron",        fw:700, c:"255,214,10",  hi:"255,236,150", deep:"#8a6d00", mood:"cosmic",
+  { id:"starwars",    name:"Star Wars",         cover:"", logo:"logos/starwars.png", sp:"4r1YlrbFqesleiLkO8p9dZ", yt:"ya3ZCEWhHmo", font:"Orbitron",        fw:700, c:"255,214,10",  hi:"255,236,150", deep:"#8a6d00", mood:"cosmic",
     rx:/star wars|black series|mandaloria|grogu|ahsoka|anakin|skywalker|darth|vader|boba fett|chewbacca|stormtro|kylo|palpatine|obi[ -]?wan|bo[ -]katan|paz vizsla|armorer|sabine|halcon milenario|star destroyer|\bbb-8\b|\bd-0\b|\big-\d|\byoda\b|han solo|\bleia\b|\bjedi\b/ },
-  { id:"dragonball",  name:"Dragon Ball",       logo:"logos/dragonball.png", sp:"1HetdN8ZgBcO5FXp69OspB", yt:"", font:"Bangers",         fw:400, c:"255,140,26",  hi:"255,205,130", deep:"#9a4a00", mood:"anime",
+  { id:"dragonball",  name:"Dragon Ball",       cover:"", logo:"logos/dragonball.png", sp:"1HetdN8ZgBcO5FXp69OspB", yt:"", font:"Bangers",         fw:400, c:"255,140,26",  hi:"255,205,130", deep:"#9a4a00", mood:"anime",
     rx:/dragon ball|bola de drac|\bgoku\b|vegeta|gogeta|gohan|freezer|frieza|piccolo|trunks|majin|broly|daima/ },
-  { id:"onepiece",    name:"One Piece",         logo:"logos/onepiece.png", sp:"1PdWDLJNk040dkuXoLLE2F", yt:"YoeP9w5UIlg", font:"Bangers",         fw:400, c:"0,175,205",   hi:"130,230,245", deep:"#005f73", mood:"ocean",
+  { id:"onepiece",    name:"One Piece",         cover:"", logo:"logos/onepiece.png", sp:"1PdWDLJNk040dkuXoLLE2F", yt:"YoeP9w5UIlg", font:"Bangers",         fw:400, c:"0,175,205",   hi:"130,230,245", deep:"#005f73", mood:"ocean",
     rx:/one piece|luffy|\bzoro\b|\bsanji\b|\bnami\b|nico robin|boa hancock|going merry|sombrero de paja|chopper|usopp/ },
-  { id:"mha",         name:"My Hero Academia",  logo:"logos/mha.png", sp:"0hHc2igYYlSUyZdByauJmB", yt:"QwACoXnNcwg", font:"Russo One",       fw:400, c:"46,204,113",  hi:"155,240,185", deep:"#146b3a", mood:"anime",
+  { id:"mha",         name:"My Hero Academia",  cover:"", logo:"logos/mha.png", sp:"0hHc2igYYlSUyZdByauJmB", yt:"QwACoXnNcwg", font:"Russo One",       fw:400, c:"46,204,113",  hi:"155,240,185", deep:"#146b3a", mood:"anime",
     rx:/my hero|boku no hero|all might|\bdeku\b|izuku|bakugo|todoroki|ochako|uraraka|mirio|\btoga\b|\bhawks\b|endeavor|eraser ?head|shigaraki/ },
-  { id:"kimetsu",     name:"Demon Slayer", al:["kimetsu no yaiba"],  logo:"logos/kimetsu.png", sp:"0qMip0B2D4ePEjBJvAtYre", yt:"Uku3t8qAloc", font:"Shippori Mincho", fw:800, c:"255,82,120",  hi:"255,175,195", deep:"#8c1c3c", mood:"zen",
+  { id:"kimetsu",     name:"Demon Slayer", al:["kimetsu no yaiba"],  cover:"", logo:"logos/kimetsu.png", sp:"0qMip0B2D4ePEjBJvAtYre", yt:"Uku3t8qAloc", font:"Shippori Mincho", fw:800, c:"255,82,120",  hi:"255,175,195", deep:"#8c1c3c", mood:"zen",
     rx:/kimetsu|demon slayer|tanjiro|nezuko|zenitsu|inosuke|rengoku|tengen|muichiro|haganezuka|giyu|shinobu/ },
-  { id:"aot",         name:"Attack on Titan", al:["ataque a los titanes","shingeki no kyojin"], logo:"logos/aot.png", sp:"5uraJqtCBvLpwt3VeomZdq", yt:"", font:"Cinzel",       fw:700, c:"176,150,105", hi:"225,205,165", deep:"#4d4030", mood:"dark",
+  { id:"aot",         name:"Attack on Titan", al:["ataque a los titanes","shingeki no kyojin"], cover:"", logo:"logos/aot.png", sp:"5uraJqtCBvLpwt3VeomZdq", yt:"", font:"Cinzel",       fw:700, c:"176,150,105", hi:"225,205,165", deep:"#4d4030", mood:"dark",
     rx:/ataque a los titanes|attack on titan|shingeki|\blevi\b|\beren\b|mikasa/ },
-  { id:"jjk",         name:"Jujutsu Kaisen",    logo:"logos/jjk.png", sp:"6y4GYuZszeXNOXuBFsJlos", yt:"1tk1pqwrOys", font:"Russo One",       fw:400, c:"140,90,255",  hi:"200,175,255", deep:"#432b8f", mood:"dark",
+  { id:"jjk",         name:"Jujutsu Kaisen",    cover:"", logo:"logos/jjk.png", sp:"6y4GYuZszeXNOXuBFsJlos", yt:"1tk1pqwrOys", font:"Russo One",       fw:400, c:"140,90,255",  hi:"200,175,255", deep:"#432b8f", mood:"dark",
     rx:/jujutsu|sukuna|\bgojo\b|itadori|megumi/ },
-  { id:"cosplaydoll", name:"My Dress Up Darling", al:["sexy cosplay doll","sono bisque doll"], logo:"logos/cosplaydoll.png", sp:"4CebKGVZUJw18tnDzsjv2d", yt:"8pGN2YEMXHo", font:"Fredoka",         fw:600, c:"255,120,200", hi:"255,195,232", deep:"#8a2f66", mood:"lofi",
+  { id:"cosplaydoll", name:"My Dress Up Darling", al:["sexy cosplay doll","sono bisque doll"], cover:"", logo:"logos/cosplaydoll.png", sp:"4CebKGVZUJw18tnDzsjv2d", yt:"8pGN2YEMXHo", font:"Fredoka",         fw:600, c:"255,120,200", hi:"255,195,232", deep:"#8a2f66", mood:"lofi",
     rx:/sexy cosplay doll|marin kitagawa|kitagawa/ },
-  { id:"apothecary",  name:"The Apothecary Diaries", al:["kusuriya no hitorigoto","los diarios de la boticaria"], logo:"logos/apothecary.png", sp:"79zgdvnTPyWSuTrd48Ik5O", yt:"", font:"Shippori Mincho", fw:800, fs:.78, c:"70,185,150", hi:"175,238,215", deep:"#1d5c4b", mood:"zen",
+  { id:"apothecary",  name:"The Apothecary Diaries", al:["kusuriya no hitorigoto","los diarios de la boticaria"], cover:"", logo:"logos/apothecary.png", sp:"79zgdvnTPyWSuTrd48Ik5O", yt:"", font:"Shippori Mincho", fw:800, fs:.78, c:"70,185,150", hi:"175,238,215", deep:"#1d5c4b", mood:"zen",
     rx:/apothecary|kusuriya|boticaria|maomao|jinshi/ },
-  { id:"stranger",    name:"Stranger Things",   logo:"logos/stranger.png", sp:"0kwuKfWntoGh0EWyYb7Mpf", yt:"2obv0DHuhu4", font:"Monoton",         fw:400, fs:.82, c:"255,45,70",   hi:"255,150,150", deep:"#7a0f1e", mood:"eerie",
+  { id:"stranger",    name:"Stranger Things",   cover:"", logo:"logos/stranger.png", sp:"0kwuKfWntoGh0EWyYb7Mpf", yt:"2obv0DHuhu4", font:"Monoton",         fw:400, fs:.82, c:"255,45,70",   hi:"255,150,150", deep:"#7a0f1e", mood:"eerie",
     rx:/stranger things|^once\b|\bdustin\b|hopper|eddie munson|steve harrington|will byers|demogorgon|demodog|^dart\b|vecna/ },
-  { id:"bttf",        name:"Regreso al Futuro", logo:"logos/bttf.png", sp:"1FI5hblwy9ZwyPg4Jr5hni", yt:"cgBvhmxun5M", font:"Audiowide",       fw:400, fs:.86, c:"255,120,40",  hi:"255,195,125", deep:"#8a3a00", mood:"retro",
+  { id:"bttf",        name:"Regreso al Futuro", cover:"", logo:"logos/bttf.png", sp:"1FI5hblwy9ZwyPg4Jr5hni", yt:"cgBvhmxun5M", font:"Audiowide",       fw:400, fs:.86, c:"255,120,40",  hi:"255,195,125", deep:"#8a3a00", mood:"retro",
     rx:/bttf|regreso al futuro|back to the future|marty mcfly|doc\.? (emmet )?brown|delorean/ },
-  { id:"twd",         name:"The Walking Dead",  logo:"logos/twd.png", sp:"2cji350vUbvxQ9QwyL5Nkp", yt:"gMs7gzFzoLU", font:"Special Elite",   fw:400, c:"150,170,110", hi:"205,220,170", deep:"#3f4a2c", mood:"dark",
+  { id:"twd",         name:"The Walking Dead",  cover:"", logo:"logos/twd.png", sp:"2cji350vUbvxQ9QwyL5Nkp", yt:"gMs7gzFzoLU", font:"Special Elite",   fw:400, c:"150,170,110", hi:"205,220,170", deep:"#3f4a2c", mood:"dark",
     rx:/walking dead|negan|lucille|eugene porter|rick grimes|daryl/ },
-  { id:"harrypotter", name:"Harry Potter",      logo:"logos/harrypotter.png", sp:"1n8NKQRg8LVHy7oUhUgbFF", yt:"42ytXvVzPts", font:"Cinzel",          fw:700, c:"200,55,60",   hi:"240,195,130", deep:"#5c1218", mood:"magic",
+  { id:"harrypotter", name:"Harry Potter",      cover:"", logo:"logos/harrypotter.png", sp:"1n8NKQRg8LVHy7oUhUgbFF", yt:"42ytXvVzPts", font:"Cinzel",          fw:700, c:"200,55,60",   hi:"240,195,130", deep:"#5c1218", mood:"magic",
     rx:/harry potter|gryffindor|varita de sauco|hogwarts|dumbledore|voldemort/ },
-  { id:"videojuegos", name:"Videojuegos",       logo:"logos/videojuegos.png", sp:"", yt:"", font:"Press Start 2P",  fw:400, fs:.52, c:"215,80,255",  hi:"240,180,255", deep:"#6a1b80", mood:"chip",
+  { id:"videojuegos", name:"Videojuegos",       cover:"", logo:"logos/videojuegos.png", sp:"", yt:"", font:"Press Start 2P",  fw:400, fs:.52, c:"215,80,255",  hi:"240,180,255", deep:"#6a1b80", mood:"chip",
     rx:/\bsonic\b|super mario|\bjinx\b|arcane|last of us|zelda|pokemon/ },
-  { id:"cine",        name:"Cine y Series",     logo:"logos/cine.png", sp:"5duZVZ4m1TaJDTCbeHG8TG", yt:"IgQGqTvd29c", font:"Playfair Display",fw:800, c:"215,215,228", hi:"255,255,255", deep:"#4d4d58", mood:"noir",
+  { id:"cine",        name:"Cine y Series",     cover:"", logo:"logos/cine.png", sp:"5duZVZ4m1TaJDTCbeHG8TG", yt:"IgQGqTvd29c", font:"Playfair Display",fw:800, c:"215,215,228", hi:"255,255,255", deep:"#4d4d58", mood:"noir",
     rx:/\balien\b|aliens|predator|terminator|robocop|pennywise|it movie|beetlejuice|gremlin|godzilla|indiana jones|jack sparrow|john wick|toretto|tommy shelby|miercoles|hofstadter|the boys|homelander|juego de tronos|jon nieve/ }
 ];
 const UNI_MIN = 3;
@@ -2513,7 +2518,9 @@ function computeUniverses(){
     const sc=d=>(/hot toys|tamashii|mezco/i.test(d.marca||"")||/masterpiece|master series|1\/6|grandista|maximatic/i.test(d.linea||"")?5:0)+(d.firmado?3:0)+(d.categoria==="Figuras y Réplicas"?2:0)+(d.categoria==="Cómics"?1:0);
     const pics=L.filter(d=>d.imagen).map(d=>({d,s:sc(d)})).sort((a,b)=>b.s-a.s||a.d.ref.localeCompare(b.d.ref)).map(x=>x.d);
     const day=Math.floor(Date.now()/864e5),top=pics.slice(0,6);
-    const cover=top.length?top[day%top.length]:null;
+    const pick=String(u.cover||"").split(",").map(s=>s.trim().toUpperCase()).filter(Boolean).map(r=>L.find(d=>String(d.ref).toUpperCase()===r&&(d.imagen||(d.fotos||[])[0]))).filter(Boolean);
+    const cover=pick.length?pick[day%pick.length]:(top.length?top[day%top.length]:null);
+    if(cover){const i=pics.indexOf(cover);if(i>0)pics.splice(i,1);if(i!==0)pics.unshift(cover)}
     const o=Object.assign({},u,{n:L.length,fig:L.filter(d=>d.categoria==="Figuras y Réplicas").length,com:L.filter(d=>d.categoria==="Cómics").length,
       man:L.filter(d=>d.categoria==="Mangas").length,firm:L.filter(d=>d.firmado).length,cover,pics:pics.slice(0,8)});
     UNI_BY[u.id]=o;return o}).sort((a,b)=>b.n-a.n);
@@ -2528,10 +2535,10 @@ const uniFF=u=>u.font?`'${u.font}',var(--disp)`:"var(--disp)";
 const uniStyle=u=>`--uc:${u.c};--uh:${u.hi};--ud:${u.deep};--uf:${uniFF(u)};--uw:${u.fw||700};--us:${u.fs||1}`;
 function renderUniShelf(){const sh=document.getElementById("uniShelf"),row=document.getElementById("uniRow");if(!sh||!row)return;
   sh.hidden=!UNI_LIST.length||!!state.fr;if(sh.hidden)return;
-  row.innerHTML=UNI_LIST.map(u=>{const im=u.cover?(u.cover.imagen):"";
-    return `<button type="button" class="uni-tile" role="listitem" data-u="${u.id}" style="${uniStyle(u)}" aria-label="${esc(u.name)}: ${u.n} piezas">
+  row.innerHTML=UNI_LIST.map(u=>{const im=u.cover?(u.cover.imagen||(u.cover.fotos||[])[0]):"";
+    return `<button type="button" class="uni-tile${u.logo?" has-logo":""}" role="listitem" data-u="${u.id}" style="${uniStyle(u)}" aria-label="${esc(u.name)}: ${u.n} piezas">
       ${im?`<img src="${esc(im)}" alt="" loading="lazy" decoding="async" fetchpriority="low" onerror="this.remove()">`:""}<span class="ut-shade"></span>
-      ${u.logo?`<span class="ut-logo"><img src="${esc(u.logo)}" alt="${esc(u.name)}" decoding="async" onerror="this.parentNode.outerHTML='<span class=&quot;ut-name&quot;>${esc(u.name)}</span>'"></span>`:`<span class="ut-name">${esc(u.name)}</span>`}<span class="ut-meta">${u.n} piezas${u.firm?` · <i>${PEN_SVG}${u.firm}</i>`:""}</span></button>`}).join("");
+      ${u.logo?`<span class="ut-logo"><img src="${esc(u.logo)}" alt="${esc(u.name)}" decoding="async" onload="if(this.naturalHeight>this.naturalWidth*1.1)this.parentNode.classList.add('tall')" onerror="this.parentNode.outerHTML='<span class=&quot;ut-name&quot;>${esc(u.name)}</span>'"></span>`:`<span class="ut-name">${esc(u.name)}</span>`}<span class="ut-meta">${u.n} piezas${u.firm?` · <i>${PEN_SVG}${u.firm}</i>`:""}</span></button>`}).join("");
   row.querySelectorAll(".uni-tile").forEach(b=>b.onclick=()=>enterUni(b.dataset.u,b));
   sh.querySelectorAll(".uni-arr").forEach(b=>b.onclick=()=>row.scrollBy({left:+b.dataset.d*row.clientWidth*.8,behavior:"smooth"}));
   if(curView==="coleccion")uniFonts();else setTimeout(uniFonts,2500)}
@@ -2545,7 +2552,7 @@ function renderUniHero(){const hero=document.getElementById("uniHero");if(!hero)
     <div class="uh-in">
       <button type="button" class="uh-back" id="uhBack">← Todos los universos</button>
       <div class="uh-kick">Universo</div>
-      <h2 class="uh-name${u.logo?" has-logo":""}">${u.logo?`<img src="${esc(u.logo)}" alt="${esc(u.name)}" onerror="this.parentNode.classList.remove('has-logo');this.outerHTML='${esc(u.name)}'">`:esc(u.name)}</h2>
+      <h2 class="uh-name${u.logo?" has-logo":""}">${u.logo?`<img src="${esc(u.logo)}" alt="${esc(u.name)}" onload="if(this.naturalHeight>this.naturalWidth*1.1)this.classList.add('tall')" onerror="this.parentNode.classList.remove('has-logo');this.outerHTML='${esc(u.name)}'">`:esc(u.name)}</h2>
       <div class="uh-stats">${st.map(x=>`<span><b>${x[0]}</b>${x[1]}</span>`).join("")}</div>
       <div class="uh-act"><button type="button" class="uh-amb" id="uhAmb" aria-pressed="${AMB.on}"><span class="eq"><i></i><i></i><i></i><i></i></span><span class="uh-ambt">${AMB.on?"Ambiente":"Ambiente apagado"}</span></button>
         ${(OWNER||spOn())&&u.sp?`<button type="button" class="uh-spc${spOn()?" on":""}" id="uhSpc"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20Zm4.6 14.4a.62.62 0 0 1-.86.2c-2.35-1.44-5.3-1.76-8.79-.96a.62.62 0 1 1-.28-1.21c3.81-.87 7.08-.5 9.72 1.11.3.18.39.56.21.86Zm1.22-2.72a.78.78 0 0 1-1.07.26c-2.69-1.65-6.79-2.13-9.97-1.17a.78.78 0 0 1-.45-1.49c3.63-1.1 8.15-.57 11.23 1.33.37.22.48.7.26 1.07Zm.1-2.84C14.7 8.93 9.38 8.75 6.3 9.69a.94.94 0 1 1-.54-1.8c3.53-1.07 9.4-.86 13.1 1.34a.94.94 0 0 1-.96 1.61Z"/></svg>${spOn()?"Mi Spotify ✓":"Conectar mi Spotify"}</button>`:""}
