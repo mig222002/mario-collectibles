@@ -2776,11 +2776,16 @@ async function spPlay(u){const p=document.getElementById("uniDock");SPM.uid=u.id
   if(SPM.uid!==u.id)return;
   if(!dev){const d=await spPick();if(d){dev=d.id;where="en "+d.name}}
   if(SPM.uid!==u.id)return;
-  if(!dev){SPM.mode="";SPM.retry=u.id;spDockState("",spIsMobile()?"Tu Spotify del móvil está dormido. Ábrelo un momento y vuelve: la canción arrancará sola.":"Abre Spotify en tu ordenador y vuelve a pulsar ▶.",spIsMobile());return}
+  const openUrl="https://open.spotify.com/track/"+u.sp;
+  if(!dev){SPM.mode="";SPM.retry=u.id;spDockState("",spIsMobile()?"Tu Spotify del móvil está dormido. Ábrelo, dale al play y vuelve: desde ahí la web cambiará la canción sola.":"Abre Spotify en tu ordenador y vuelve a pulsar ▶.",spIsMobile()?openUrl:"");return}
   SPM.retry="";
   const r=await spWeb("/me/player/play?device_id="+encodeURIComponent(dev),{method:"PUT",body:JSON.stringify({uris:["spotify:track:"+u.sp]})});
   if(SPM.uid!==u.id)return;
-  if(r.status===204||r.status===202||r.status===200){SPM.mode=dev===SPM.dev?"sdk":"connect";SPM.paused=false;SPM.where=where;spDockState()}
+  if(r.status===204||r.status===202||r.status===200){SPM.mode=dev===SPM.dev?"sdk":"connect";SPM.paused=false;SPM.where=where;spDockState();
+    if(SPM.mode==="connect"){await new Promise(x=>setTimeout(x,2200));if(SPM.uid!==u.id)return;   /* comprobar que de verdad suena */
+      const st=await spWeb("/me/player");const j=st.j;
+      if(!(j&&j.is_playing&&j.device&&j.device.id===dev&&j.item&&j.item.id===u.sp)){SPM.mode="";SPM.retry=u.id;
+        spDockState("",spIsMobile()?"Tu iPhone no ha respondido (Spotify estaba dormido). Ábrelo con el botón, dale al play y vuelve: después la web cambiará la canción sola.":"Tu Spotify no ha respondido. Ábrelo y vuelve a pulsar ▶.",spIsMobile()?openUrl:"")}}}
   else if(r.status===403){SPM.mode="";spDockState("","Spotify no deja reproducir con esta cuenta (hace falta Premium y estar añadido en la app de desarrollador).")}
   else if(r.status===401){SPM.mode="";spDockState("","La sesión de Spotify ha caducado: vuelve a conectar desde el botón del universo.")}
   else{SPM.mode="";spDockState("",`No se pudo reproducir (${r.status}). Abre Spotify y pulsa ▶.`)}}
@@ -2792,7 +2797,7 @@ function spDockState(busy,err,openBtn){const p=document.getElementById("uniDock"
   const t=SPM.track,img=t&&t.album&&t.album.images&&t.album.images.length?t.album.images[Math.min(1,t.album.images.length-1)].url:"";
   b.innerHTML=`<div class="um-art">${img?`<img src="${esc(img)}" alt="">`:""}</div>
     <div class="um-txt"><b>${esc(t?t.name:"…")}</b><span>${esc(t?(t.artists||[]).map(a=>a.name).join(", "):"")}</span>
-      <em>${err?esc(err):busy?esc(busy):SPM.mode?(SPM.paused?"En pausa · ":"Sonando · ")+esc(SPM.where||""):""}</em>${openBtn?`<a class="um-open" href="spotify:">Abrir Spotify</a>`:""}</div>
+      <em>${err?esc(err):busy?esc(busy):SPM.mode?(SPM.paused?"En pausa · ":"Sonando · ")+esc(SPM.where||""):""}</em>${openBtn?`<a class="um-open" href="${esc(typeof openBtn==="string"?openBtn:"spotify:")}">Abrir en Spotify</a>`:""}</div>
     <button type="button" class="um-pp" aria-label="${SPM.mode&&!SPM.paused?"Pausa":"Reproducir"}">${SPM.mode&&!SPM.paused?'<svg viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg>':'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>'}</button>`;
   p.classList.toggle("playing",!!SPM.mode&&!SPM.paused);
   if(err&&p.classList.contains("mini")){p.classList.remove("mini");uniAmbUI()}
