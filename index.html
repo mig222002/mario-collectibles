@@ -2526,6 +2526,19 @@ function computeUniverses(){
     UNI_BY[u.id]=o;return o}).sort((a,b)=>b.n-a.n);
   DATA.forEach(d=>{if(d.uni&&!UNI_BY[d.uni])d.uni=""});
 }
+/* recorta el borde transparente de los logos para que todos queden del mismo tamaño y centrados */
+const LOGO_T={};
+function uniLogo(src){if(LOGO_T[src])return LOGO_T[src];
+  LOGO_T[src]=new Promise(res=>{const im=new Image();im.decoding="async";
+    im.onload=()=>{try{const s=Math.min(1,900/Math.max(im.naturalWidth,im.naturalHeight)),w=Math.max(1,Math.round(im.naturalWidth*s)),hh=Math.max(1,Math.round(im.naturalHeight*s));
+      const c=document.createElement("canvas");c.width=w;c.height=hh;const x=c.getContext("2d");x.drawImage(im,0,0,w,hh);const d=x.getImageData(0,0,w,hh).data;
+      let x0=w,y0=hh,x1=-1,y1=-1;for(let y=0;y<hh;y++)for(let X=0;X<w;X++)if(d[(y*w+X)*4+3]>16){if(X<x0)x0=X;if(X>x1)x1=X;if(y<y0)y0=y;if(y>y1)y1=y}
+      if(x1<0||(x0<3&&y0<3&&x1>w-4&&y1>hh-4)){res(src);return}
+      x0=Math.max(0,x0-2);y0=Math.max(0,y0-2);x1=Math.min(w-1,x1+2);y1=Math.min(hh-1,y1+2);
+      const c2=document.createElement("canvas");c2.width=x1-x0+1;c2.height=y1-y0+1;c2.getContext("2d").drawImage(c,x0,y0,c2.width,c2.height,0,0,c2.width,c2.height);
+      c2.toBlob(b=>res(b?URL.createObjectURL(b):src),"image/png")}catch(_){res(src)}};
+    im.onerror=()=>res(src);im.src=src});return LOGO_T[src]}
+function uniLogoFix(root){(root||document).querySelectorAll("img[data-logo]").forEach(im=>uniLogo(im.dataset.logo).then(u=>{if(im.getAttribute("src")!==u)im.src=u}))}
 let _uniFonts=false;
 function uniFonts(){if(_uniFonts||!UNI_LIST.length)return;_uniFonts=true;const seen={};
   UNI_LIST.forEach(u=>{if(u.font&&!seen[u.font])seen[u.font]=u.fw>400?u.fw:0});
@@ -2538,8 +2551,8 @@ function renderUniShelf(){const sh=document.getElementById("uniShelf"),row=docum
   row.innerHTML=UNI_LIST.map(u=>{const im=u.cover?(u.cover.imagen||(u.cover.fotos||[])[0]):"";
     return `<button type="button" class="uni-tile${u.logo?" has-logo":""}" role="listitem" data-u="${u.id}" style="${uniStyle(u)}" aria-label="${esc(u.name)}: ${u.n} piezas">
       ${im?`<img src="${esc(im)}" alt="" loading="lazy" decoding="async" fetchpriority="low" onerror="this.remove()">`:""}<span class="ut-shade"></span>
-      ${u.logo?`<span class="ut-logo"><img src="${esc(u.logo)}" alt="${esc(u.name)}" decoding="async" onload="if(this.naturalHeight>this.naturalWidth*1.1)this.parentNode.classList.add('tall')" onerror="this.parentNode.outerHTML='<span class=&quot;ut-name&quot;>${esc(u.name)}</span>'"></span>`:`<span class="ut-name">${esc(u.name)}</span>`}<span class="ut-meta">${u.n} piezas${u.firm?` · <i>${PEN_SVG}${u.firm}</i>`:""}</span></button>`}).join("");
-  row.querySelectorAll(".uni-tile").forEach(b=>b.onclick=()=>enterUni(b.dataset.u,b));
+      ${u.logo?`<span class="ut-logo"><img src="${esc(u.logo)}" data-logo="${esc(u.logo)}" alt="${esc(u.name)}" decoding="async" onload="if(this.naturalHeight>this.naturalWidth*1.1)this.parentNode.classList.add('tall')" onerror="this.parentNode.outerHTML='<span class=&quot;ut-name&quot;>${esc(u.name)}</span>'"></span>`:`<span class="ut-name">${esc(u.name)}</span>`}<span class="ut-meta">${u.n} piezas${u.firm?` · <i>${PEN_SVG}${u.firm}</i>`:""}</span></button>`}).join("");
+  row.querySelectorAll(".uni-tile").forEach(b=>b.onclick=()=>enterUni(b.dataset.u,b));uniLogoFix(row);
   sh.querySelectorAll(".uni-arr").forEach(b=>b.onclick=()=>row.scrollBy({left:+b.dataset.d*row.clientWidth*.8,behavior:"smooth"}));
   if(curView==="coleccion")uniFonts();else setTimeout(uniFonts,2500)}
 function renderUniHero(){const hero=document.getElementById("uniHero");if(!hero)return;const u=state.fr&&UNI_BY[state.fr];
@@ -2552,13 +2565,13 @@ function renderUniHero(){const hero=document.getElementById("uniHero");if(!hero)
     <div class="uh-in">
       <button type="button" class="uh-back" id="uhBack">← Todos los universos</button>
       <div class="uh-kick">Universo</div>
-      <h2 class="uh-name${u.logo?" has-logo":""}">${u.logo?`<img src="${esc(u.logo)}" alt="${esc(u.name)}" onload="if(this.naturalHeight>this.naturalWidth*1.1)this.classList.add('tall')" onerror="this.parentNode.classList.remove('has-logo');this.outerHTML='${esc(u.name)}'">`:esc(u.name)}</h2>
+      <h2 class="uh-name${u.logo?" has-logo":""}">${u.logo?`<img src="${esc(u.logo)}" data-logo="${esc(u.logo)}" alt="${esc(u.name)}" onload="if(this.naturalHeight>this.naturalWidth*1.1)this.classList.add('tall')" onerror="this.parentNode.classList.remove('has-logo');this.outerHTML='${esc(u.name)}'">`:esc(u.name)}</h2>
       <div class="uh-stats">${st.map(x=>`<span><b>${x[0]}</b>${x[1]}</span>`).join("")}</div>
       <div class="uh-act"><button type="button" class="uh-amb" id="uhAmb" aria-pressed="${AMB.on}"><span class="eq"><i></i><i></i><i></i><i></i></span><span class="uh-ambt">${AMB.on?"Ambiente":"Ambiente apagado"}</span></button>
         ${(OWNER||spOn())&&u.sp?`<button type="button" class="uh-spc${spOn()?" on":""}" id="uhSpc"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20Zm4.6 14.4a.62.62 0 0 1-.86.2c-2.35-1.44-5.3-1.76-8.79-.96a.62.62 0 1 1-.28-1.21c3.81-.87 7.08-.5 9.72 1.11.3.18.39.56.21.86Zm1.22-2.72a.78.78 0 0 1-1.07.26c-2.69-1.65-6.79-2.13-9.97-1.17a.78.78 0 0 1-.45-1.49c3.63-1.1 8.15-.57 11.23 1.33.37.22.48.7.26 1.07Zm.1-2.84C14.7 8.93 9.38 8.75 6.3 9.69a.94.94 0 1 1-.54-1.8c3.53-1.07 9.4-.86 13.1 1.34a.94.94 0 0 1-.96 1.61Z"/></svg>${spOn()?"Mi Spotify ✓":"Conectar mi Spotify"}</button>`:""}
         ${(u.sp||u.yt)?`<button type="button" class="uh-yt${u.sp?" sp":""}" id="uhYt"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg><span>Banda sonora oficial</span></button>`:""}</div>
     </div>`;
-  document.getElementById("uhBack").onclick=exitUni;
+  document.getElementById("uhBack").onclick=exitUni;uniLogoFix(hero);
   document.getElementById("uhAmb").onclick=()=>{AMB.on=!AMB.on;try{localStorage.setItem("mc-amb",AMB.on?"1":"0")}catch(_){}
     if(AMB.on){AMB.yt=false;closeYT(true);ambStart(u,true)}else ambStop();uniAmbUI()};
   const sc=document.getElementById("uhSpc");if(sc)sc.onclick=e=>{e.stopPropagation();spMenu(sc)};
@@ -2614,7 +2627,7 @@ function uniWipe(u,el,cb){const w=document.getElementById("uniWipe");
   if(!w||matchMedia("(prefers-reduced-motion:reduce)").matches||!w.animate){cb();return}
   const r=el&&el.getBoundingClientRect?el.getBoundingClientRect():null,x=r?r.left+r.width/2:innerWidth/2,y=r?r.top+r.height/2:innerHeight/2;
   w.style.setProperty("--uc",u.c);w.style.setProperty("--ud",u.deep);w.style.setProperty("--wx",x+"px");w.style.setProperty("--wy",y+"px");
-  w.innerHTML=u.logo?`<span class="uw-logo"><img src="${esc(u.logo)}" alt=""></span>`:`<span style="font-family:${uniFF(u)};font-weight:${u.fw||700};font-size:calc(clamp(46px,10vw,120px) * ${u.fs||1})">${esc(u.name)}</span>`;w.classList.add("on");
+  w.innerHTML=u.logo?`<span class="uw-logo"><img src="${esc(u.logo)}" data-logo="${esc(u.logo)}" alt=""></span>`:`<span style="font-family:${uniFF(u)};font-weight:${u.fw||700};font-size:calc(clamp(46px,10vw,120px) * ${u.fs||1})">${esc(u.name)}</span>`;w.classList.add("on");uniLogoFix(w);
   const R=Math.hypot(Math.max(x,innerWidth-x),Math.max(y,innerHeight-y))+40;
   w.animate([{clipPath:`circle(0px at ${x}px ${y}px)`},{clipPath:`circle(${R}px at ${x}px ${y}px)`}],{duration:460,easing:"cubic-bezier(.7,0,.3,1)",fill:"forwards"}).onfinish=()=>{
     cb();setTimeout(()=>{w.animate([{opacity:1},{opacity:0}],{duration:380,easing:"ease-out",fill:"forwards"}).onfinish=()=>{w.classList.remove("on");w.getAnimations().forEach(a=>a.cancel())}},140)}}
