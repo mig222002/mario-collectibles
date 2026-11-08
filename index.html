@@ -858,14 +858,14 @@ body.no-form .ask-only{display:none!important}
 .uni-row::-webkit-scrollbar{display:none}
 .uni-tile{position:relative;flex:0 0 auto;width:210px;height:270px;border-radius:18px;overflow:hidden;scroll-snap-align:start;border:1px solid rgba(var(--uc),.35);background:radial-gradient(120% 90% at 50% 0%,rgba(var(--uc),.35),#0a0a0c 70%);cursor:pointer;padding:0;text-align:left;color:#fff;
   box-shadow:0 10px 30px rgba(0,0,0,.35);transition:transform .25s cubic-bezier(.2,.8,.2,1),border-color .25s,box-shadow .25s;isolation:isolate}
-.uni-tile img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 25%;z-index:-2;transform:scale(1.04);transition:transform .6s cubic-bezier(.2,.8,.2,1),filter .4s;filter:saturate(.9) brightness(.85)}
+.uni-tile>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 25%;z-index:-2;transform:scale(1.04);transition:transform .6s cubic-bezier(.2,.8,.2,1),filter .4s;filter:saturate(.9) brightness(.85)}
 .ut-shade{position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,rgba(0,0,0,.05) 25%,rgba(0,0,0,.55) 58%,rgba(var(--uc),.0) 0),linear-gradient(0deg,rgba(6,6,8,.96) 8%,rgba(6,6,8,.0) 62%),linear-gradient(0deg,rgba(var(--uc),.45),transparent 45%)}
 .ut-name{position:absolute;left:16px;right:14px;bottom:42px;font-family:var(--uf);font-weight:var(--uw);font-size:calc(30px * var(--us,1));line-height:1;letter-spacing:.01em;color:#fff;text-shadow:0 2px 18px rgba(var(--uc),.7),0 1px 2px rgba(0,0,0,.8);overflow-wrap:break-word;hyphens:none}
 .ut-meta{position:absolute;left:16px;bottom:16px;font-family:var(--mono);font-size:11px;letter-spacing:.08em;color:rgb(var(--uh));display:flex;align-items:center;gap:6px}
 .ut-meta i{font-style:normal;display:inline-flex;align-items:center;gap:3px}.ut-meta svg{width:11px;height:11px}
 .uni-tile::after{content:"";position:absolute;inset:0;border-radius:inherit;box-shadow:inset 0 0 0 1px rgba(255,255,255,.06);pointer-events:none}
 @media(hover:hover){.uni-tile:hover{transform:translateY(-4px);border-color:rgba(var(--uc),.85);box-shadow:0 18px 40px rgba(0,0,0,.45),0 0 30px rgba(var(--uc),.25)}
-  .uni-tile:hover img{transform:scale(1.1);filter:saturate(1.05) brightness(.95)}}
+  .uni-tile:hover>img{transform:scale(1.1);filter:saturate(1.05) brightness(.95)}}
 .uni-tile:focus-visible{outline:2px solid rgb(var(--uh));outline-offset:3px}
 @media(max-width:640px){.uni-tile{width:150px;height:200px;border-radius:14px}.ut-name{font-size:calc(23px * var(--us,1));bottom:36px;left:12px}.ut-meta{left:12px;bottom:12px;font-size:10px}}
 /* héroe del universo */
@@ -910,7 +910,52 @@ body.busy-ui .eq i{animation-play-state:paused}
 .ud-t{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.ud-t b{color:#fff;font-weight:700}
 .ud-x{width:28px;height:28px;border-radius:50%;border:1px solid var(--line);background:transparent;color:var(--muted);font-size:17px;cursor:pointer}.ud-x:hover{color:#fff}
 .uni-dock iframe{display:block;width:100%;height:200px;border:0}
+.uni-dock.is-sp{background:#121212}
+.ud-sp{padding:0 8px 8px;min-height:160px}
+.ud-sp iframe{height:152px!important;border-radius:12px}
 @media(max-width:700px){.uni-dock{left:12px;right:12px;width:auto;bottom:calc(74px + env(safe-area-inset-bottom))}}
+.ut-logo{position:absolute;left:14px;right:14px;bottom:40px;height:78px;display:flex;align-items:flex-end}
+.ut-logo img{max-width:100%;max-height:100%;object-fit:contain;object-position:left bottom;filter:drop-shadow(0 2px 12px rgba(0,0,0,.7)) drop-shadow(0 0 14px rgba(var(--uc),.45))}
+.uh-name.has-logo{line-height:0;margin:10px 0 18px}
+.uh-name.has-logo img{max-height:clamp(70px,12vw,130px);max-width:min(560px,100%);object-fit:contain;filter:drop-shadow(0 0 26px rgba(var(--uc),.5)) drop-shadow(0 2px 6px rgba(0,0,0,.6))}
+.uw-logo img{max-width:min(70vw,620px);max-height:34vh;object-fit:contain;filter:drop-shadow(0 0 40px rgba(var(--uc),.9))}
+@media(max-width:640px){.ut-logo{left:10px;right:10px;bottom:34px;height:58px}}
+.uh-spc{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:12px;border-radius:999px;padding:9px 14px;cursor:pointer;color:#1ed760;background:rgba(30,215,96,.08);border:1px solid rgba(30,215,96,.45);transition:all .16s}
+.uh-spc svg{width:15px;height:15px}.uh-spc:hover{background:rgba(30,215,96,.18)}
+.sp-menu{position:absolute;z-index:160;background:#141418;border:1px solid var(--line);border-radius:14px;padding:6px;box-shadow:0 18px 40px rgba(0,0,0,.55);display:flex;flex-direction:column;min-width:240px}
+.sp-menu button{text-align:left;background:transparent;border:0;color:var(--text);font:inherit;font-size:14px;padding:10px 12px;border-radius:9px;cursor:pointer}
+.sp-menu button:hover{background:var(--panel-2)}
+.uni-dock.is-my{background:linear-gradient(180deg,#16161a,#0e0e11)}
+.uni-dock.is-my .ud-head .eq i{animation-play-state:paused}.uni-dock.is-my.playing .ud-head .eq i{animation-play-state:running}
+.ud-my{display:flex;align-items:center;gap:12px;padding:4px 12px 12px}
+.um-art{width:64px;height:64px;border-radius:10px;overflow:hidden;flex:none;background:var(--panel-2);box-shadow:0 6px 18px rgba(0,0,0,.5)}
+.um-art img{width:100%;height:100%;object-fit:cover}
+.um-txt{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+.um-txt b{color:#fff;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.um-txt span{color:var(--muted);font-size:12.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.um-txt em{font-style:normal;font-family:var(--mono);font-size:10.5px;color:#1ed760;line-height:1.35}
+.um-pp{width:44px;height:44px;border-radius:50%;border:0;background:#1ed760;color:#000;display:flex;align-items:center;justify-content:center;cursor:pointer;flex:none;transition:transform .15s}
+.um-pp:hover{transform:scale(1.06)}.um-pp svg{width:20px;height:20px}
+.ud-pill{display:none}
+.ud-min{width:28px;height:28px;border-radius:50%;border:1px solid var(--line);background:transparent;color:var(--muted);font-size:16px;line-height:1;cursor:pointer}.ud-min:hover{color:#fff}
+.uni-dock.mini{width:46px;height:46px;border-radius:50%;padding:0;box-shadow:0 8px 24px rgba(0,0,0,.5),0 0 18px rgba(var(--uc),.25)}
+.uni-dock.mini>*:not(.ud-pill){display:none}
+.uni-dock.mini .ud-pill{display:flex;width:100%;height:100%;align-items:center;justify-content:center;border:0;background:transparent;color:rgb(var(--uh));cursor:pointer}
+.uni-dock.mini .ud-pill .eq{height:16px}.uni-dock.mini .ud-pill .eq i{width:3px;animation-play-state:paused}
+.uni-dock.mini.playing .ud-pill .eq i{animation:eqb .9s ease-in-out infinite alternate}
+.uni-dock.mini.playing .ud-pill .eq i:nth-child(2){animation-delay:-.3s}.uni-dock.mini.playing .ud-pill .eq i:nth-child(3){animation-delay:-.6s}.uni-dock.mini.playing .ud-pill .eq i:nth-child(4){animation-delay:-.15s}
+@media(max-width:700px){.uni-dock.mini{left:auto;right:14px;width:46px}}
+/* buscador de Colección en móvil: compacto y se esconde al bajar */
+@media(max-width:760px){
+  .controls{transition:transform .28s cubic-bezier(.2,.8,.2,1),opacity .2s;padding:10px 0 8px}
+  .controls.hid{transform:translateY(calc(-100% - 8px));opacity:0;pointer-events:none}
+  .controls .searchrow{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  .controls .searchrow .search{grid-column:1/-1}
+  .controls .selectwrap select{width:100%;padding:10px 32px 10px 12px;font-size:12px}
+  .controls .chips{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;-webkit-mask-image:linear-gradient(90deg,#000 85%,transparent);mask-image:linear-gradient(90deg,#000 85%,transparent);padding-bottom:2px}
+  .controls .chips::-webkit-scrollbar{display:none}
+  .controls .chips .chip{flex:none}
+}
 /* transición «portal» */
 .uni-wipe{position:fixed;inset:0;z-index:300;pointer-events:none;display:none;align-items:center;justify-content:center;background:radial-gradient(circle at var(--wx) var(--wy),rgb(var(--uc)) 0%,var(--ud) 38%,#050506 85%)}
 .uni-wipe.on{display:flex}
@@ -1355,42 +1400,49 @@ const GAUTH_KEY="mc-gauth";
 /* ===== UNIVERSOS (escaparate por franquicia) =====
    Cada pieza entra en un universo por su columna «franquicia» del Excel; si está vacía, se deduce por el nombre/línea.
    Para poner la banda sonora oficial de un universo: pega en yt el ID de un vídeo OFICIAL de YouTube
-   (lo que va después de watch?v=). Vacío = no sale el reproductor. Sale un universo si tiene 3 piezas o más. */
+   (lo que va después de watch?v=). Vacío = no sale el reproductor. Sale un universo si tiene 3 piezas o más.
+   sp: ID de una canción de Spotify (lo que va después de open.spotify.com/track/). Tiene prioridad sobre yt:
+       sin anuncios; con la sesión de Spotify abierta en el navegador suena entera, sin sesión son 30 s de muestra.
+   logo: imagen opcional que pones tú (mejor PNG/SVG con fondo transparente), p. ej. "logos/marvel.png" subida al repositorio.
+   Si está vacío se usa el nombre con su tipografía. */
 const UNIVERSES = [
-  { id:"marvel",      name:"Marvel",            yt:"XNCQZ0wxphY", font:"Bebas Neue",      fw:400, c:"226,54,54",   hi:"255,150,135", deep:"#8f1d1d", mood:"heroic",
+  { id:"marvel",      name:"Marvel",            logo:"", sp:"5SXsXjVJCWeJuf7FHvgBYR", yt:"XNCQZ0wxphY", font:"Bebas Neue",      fw:400, c:"226,54,54",   hi:"255,150,135", deep:"#8f1d1d", mood:"heroic",
     rx:/\bmarvel\b|spider|iron ?man|tony stark|capitan(a)? (america|marvel)|c\.america|\bthor\b|\bhulk\b|lobezno|wolverine|deadpool|daredevil|matt murdock|elektra|kingpin|punisher|venom|carnage|x-men|tormenta|magneto|picara|ciclope|gambito|\bbishop\b|jean grey|rondador nocturno|mr\. fantastico|mujer invisible|la cosa|antorcha humana|galactus|silver surfer|doctor (doom|strange)|black (panther|cat)|moon knight|mr\. knight|ant ?man|star ?lord|miss minutes|\bloki\b|tesseracto|mjolnir|stormbreaker|hawkeye|miles morales|peter parker|arachknight|supreme soldier|thanos|gamerverse/ },
-  { id:"dc",          name:"DC",                yt:"gsbsYMPvdec", font:"Oswald",          fw:700, c:"40,120,255",  hi:"150,195,255", deep:"#123c8a", mood:"dark",
+  { id:"dc",          name:"DC",                logo:"", sp:"0hs3unYvc0bFG2NgheFdkO", yt:"gsbsYMPvdec", font:"Oswald",          fw:700, c:"40,120,255",  hi:"150,195,255", deep:"#123c8a", mood:"dark",
     rx:/\bdc\b|batman|batmobile|batcycle|superman|joker|wonder woman|pacificador|peacemaker|\bhush\b|black adam|harley quinn|aquaman|green lantern|\bflash\b/ },
-  { id:"starwars",    name:"Star Wars",         yt:"ya3ZCEWhHmo", font:"Orbitron",        fw:700, c:"255,214,10",  hi:"255,236,150", deep:"#8a6d00", mood:"cosmic",
+  { id:"starwars",    name:"Star Wars",         logo:"", sp:"4r1YlrbFqesleiLkO8p9dZ", yt:"ya3ZCEWhHmo", font:"Orbitron",        fw:700, c:"255,214,10",  hi:"255,236,150", deep:"#8a6d00", mood:"cosmic",
     rx:/star wars|black series|mandaloria|grogu|ahsoka|anakin|skywalker|darth|vader|boba fett|chewbacca|stormtro|kylo|palpatine|obi[ -]?wan|bo[ -]katan|paz vizsla|armorer|sabine|halcon milenario|star destroyer|\bbb-8\b|\bd-0\b|\big-\d|\byoda\b|han solo|\bleia\b|\bjedi\b/ },
-  { id:"dragonball",  name:"Dragon Ball",       yt:"", font:"Bangers",         fw:400, c:"255,140,26",  hi:"255,205,130", deep:"#9a4a00", mood:"anime",
+  { id:"dragonball",  name:"Dragon Ball",       logo:"", sp:"1HetdN8ZgBcO5FXp69OspB", yt:"", font:"Bangers",         fw:400, c:"255,140,26",  hi:"255,205,130", deep:"#9a4a00", mood:"anime",
     rx:/dragon ball|bola de drac|\bgoku\b|vegeta|gogeta|gohan|freezer|frieza|piccolo|trunks|majin|broly|daima/ },
-  { id:"onepiece",    name:"One Piece",         yt:"YoeP9w5UIlg", font:"Bangers",         fw:400, c:"0,175,205",   hi:"130,230,245", deep:"#005f73", mood:"ocean",
+  { id:"onepiece",    name:"One Piece",         logo:"", sp:"42esJ6BgSoV1DS3Onns03h", yt:"YoeP9w5UIlg", font:"Bangers",         fw:400, c:"0,175,205",   hi:"130,230,245", deep:"#005f73", mood:"ocean",
     rx:/one piece|luffy|\bzoro\b|\bsanji\b|\bnami\b|nico robin|boa hancock|going merry|sombrero de paja|chopper|usopp/ },
-  { id:"mha",         name:"My Hero Academia",  yt:"QwACoXnNcwg", font:"Russo One",       fw:400, c:"46,204,113",  hi:"155,240,185", deep:"#146b3a", mood:"anime",
+  { id:"mha",         name:"My Hero Academia",  logo:"", sp:"0hHc2igYYlSUyZdByauJmB", yt:"QwACoXnNcwg", font:"Russo One",       fw:400, c:"46,204,113",  hi:"155,240,185", deep:"#146b3a", mood:"anime",
     rx:/my hero|boku no hero|all might|\bdeku\b|izuku|bakugo|todoroki|ochako|uraraka|mirio|\btoga\b|\bhawks\b|endeavor|eraser ?head|shigaraki/ },
-  { id:"kimetsu",     name:"Kimetsu no Yaiba",  yt:"Uku3t8qAloc", font:"Shippori Mincho", fw:800, c:"255,82,120",  hi:"255,175,195", deep:"#8c1c3c", mood:"zen",
+  { id:"kimetsu",     name:"Kimetsu no Yaiba",  logo:"", sp:"23DbzwNJSLo7nkSWjODMvY", yt:"Uku3t8qAloc", font:"Shippori Mincho", fw:800, c:"255,82,120",  hi:"255,175,195", deep:"#8c1c3c", mood:"zen",
     rx:/kimetsu|demon slayer|tanjiro|nezuko|zenitsu|inosuke|rengoku|tengen|muichiro|haganezuka|giyu|shinobu/ },
-  { id:"aot",         name:"Ataque a los Titanes", yt:"", font:"Cinzel",       fw:700, c:"176,150,105", hi:"225,205,165", deep:"#4d4030", mood:"dark",
+  { id:"aot",         name:"Ataque a los Titanes", logo:"", sp:"70p3HYq9iHZisJqpDmWd1U", yt:"", font:"Cinzel",       fw:700, c:"176,150,105", hi:"225,205,165", deep:"#4d4030", mood:"dark",
     rx:/ataque a los titanes|attack on titan|shingeki|\blevi\b|\beren\b|mikasa/ },
-  { id:"jjk",         name:"Jujutsu Kaisen",    yt:"1tk1pqwrOys", font:"Russo One",       fw:400, c:"140,90,255",  hi:"200,175,255", deep:"#432b8f", mood:"dark",
+  { id:"jjk",         name:"Jujutsu Kaisen",    logo:"", sp:"6y4GYuZszeXNOXuBFsJlos", yt:"1tk1pqwrOys", font:"Russo One",       fw:400, c:"140,90,255",  hi:"200,175,255", deep:"#432b8f", mood:"dark",
     rx:/jujutsu|sukuna|\bgojo\b|itadori|megumi/ },
-  { id:"cosplaydoll", name:"Sexy Cosplay Doll", yt:"8pGN2YEMXHo", font:"Fredoka",         fw:600, c:"255,120,200", hi:"255,195,232", deep:"#8a2f66", mood:"lofi",
+  { id:"cosplaydoll", name:"Sexy Cosplay Doll", logo:"", sp:"6RFXBsfywZrIGK2PP7m54W", yt:"8pGN2YEMXHo", font:"Fredoka",         fw:600, c:"255,120,200", hi:"255,195,232", deep:"#8a2f66", mood:"lofi",
     rx:/sexy cosplay doll|marin kitagawa|kitagawa/ },
-  { id:"stranger",    name:"Stranger Things",   yt:"2obv0DHuhu4", font:"Monoton",         fw:400, fs:.82, c:"255,45,70",   hi:"255,150,150", deep:"#7a0f1e", mood:"eerie",
+  { id:"stranger",    name:"Stranger Things",   logo:"", sp:"0kwuKfWntoGh0EWyYb7Mpf", yt:"2obv0DHuhu4", font:"Monoton",         fw:400, fs:.82, c:"255,45,70",   hi:"255,150,150", deep:"#7a0f1e", mood:"eerie",
     rx:/stranger things|^once\b|\bdustin\b|hopper|eddie munson|steve harrington|will byers|demogorgon|demodog|^dart\b|vecna/ },
-  { id:"bttf",        name:"Regreso al Futuro", yt:"cgBvhmxun5M", font:"Audiowide",       fw:400, fs:.86, c:"255,120,40",  hi:"255,195,125", deep:"#8a3a00", mood:"retro",
+  { id:"bttf",        name:"Regreso al Futuro", logo:"", sp:"1FI5hblwy9ZwyPg4Jr5hni", yt:"cgBvhmxun5M", font:"Audiowide",       fw:400, fs:.86, c:"255,120,40",  hi:"255,195,125", deep:"#8a3a00", mood:"retro",
     rx:/bttf|regreso al futuro|back to the future|marty mcfly|doc\.? (emmet )?brown|delorean/ },
-  { id:"twd",         name:"The Walking Dead",  yt:"gMs7gzFzoLU", font:"Special Elite",   fw:400, c:"150,170,110", hi:"205,220,170", deep:"#3f4a2c", mood:"dark",
+  { id:"twd",         name:"The Walking Dead",  logo:"", sp:"2cji350vUbvxQ9QwyL5Nkp", yt:"gMs7gzFzoLU", font:"Special Elite",   fw:400, c:"150,170,110", hi:"205,220,170", deep:"#3f4a2c", mood:"dark",
     rx:/walking dead|negan|lucille|eugene porter|rick grimes|daryl/ },
-  { id:"harrypotter", name:"Harry Potter",      yt:"42ytXvVzPts", font:"Cinzel",          fw:700, c:"200,55,60",   hi:"240,195,130", deep:"#5c1218", mood:"magic",
+  { id:"harrypotter", name:"Harry Potter",      logo:"", sp:"1n8NKQRg8LVHy7oUhUgbFF", yt:"42ytXvVzPts", font:"Cinzel",          fw:700, c:"200,55,60",   hi:"240,195,130", deep:"#5c1218", mood:"magic",
     rx:/harry potter|gryffindor|varita de sauco|hogwarts|dumbledore|voldemort/ },
-  { id:"videojuegos", name:"Videojuegos",       yt:"", font:"Press Start 2P",  fw:400, fs:.52, c:"215,80,255",  hi:"240,180,255", deep:"#6a1b80", mood:"chip",
+  { id:"videojuegos", name:"Videojuegos",       logo:"", sp:"", yt:"", font:"Press Start 2P",  fw:400, fs:.52, c:"215,80,255",  hi:"240,180,255", deep:"#6a1b80", mood:"chip",
     rx:/\bsonic\b|super mario|\bjinx\b|last of us|zelda|pokemon/ },
-  { id:"cine",        name:"Cine y Series",     yt:"IgQGqTvd29c", font:"Playfair Display",fw:800, c:"215,215,228", hi:"255,255,255", deep:"#4d4d58", mood:"noir",
+  { id:"cine",        name:"Cine y Series",     logo:"", sp:"5duZVZ4m1TaJDTCbeHG8TG", yt:"IgQGqTvd29c", font:"Playfair Display",fw:800, c:"215,215,228", hi:"255,255,255", deep:"#4d4d58", mood:"noir",
     rx:/\balien\b|aliens|predator|terminator|robocop|pennywise|it movie|beetlejuice|gremlin|godzilla|indiana jones|jack sparrow|john wick|toretto|tommy shelby|miercoles|hofstadter|the boys|homelander|juego de tronos|jon nieve/ }
 ];
 const UNI_MIN = 3;
+/* Tu cuenta de Spotify (solo para ti): app creada en developer.spotify.com. El Client ID es público, no es una contraseña. */
+const SPOTIFY_CLIENT_ID = "1edd75ca39674d6b88ff550c8b8ef675";
+const SPOTIFY_REDIRECT = "https://mig222002.github.io/mario-collectibles/";
 const FORM = { id: "", entries: { tipo: "", pieza: "", mensaje: "", nombre: "", email: "" } };
 try{localStorage.removeItem("mc-owner")}catch(_){}
 </script>
@@ -2443,7 +2495,7 @@ function computeUniverses(){
   DATA.forEach(d=>{let id="";const f=norm(d.franquicia||"").trim();
     if(f&&f!=="manga"&&f!=="mangas"){id=byName[f]||byName[f.replace(/\s+/g,"")]||"";
       if(!id){id="x-"+f.replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"");
-        if(!extra[id])extra[id]={id,name:titleCase(String(d.franquicia).trim()),yt:"",font:"",fw:700,c:"212,175,55",hi:"240,212,138",deep:"#8a6d1f",mood:"cosmic"}}}
+        if(!extra[id])extra[id]={id,name:titleCase(String(d.franquicia).trim()),logo:"",sp:"",yt:"",font:"",fw:700,c:"212,175,55",hi:"240,212,138",deep:"#8a6d1f",mood:"cosmic"}}}
     if(!id){const t=uniTxt(d);const u=UNIVERSES.find(u=>u.rx&&u.rx.test(t));if(u)id=u.id}
     d.uni=id});
   const cnt={};DATA.forEach(d=>{if(d.uni)cnt[d.uni]=(cnt[d.uni]||0)+1});
@@ -2470,7 +2522,7 @@ function renderUniShelf(){const sh=document.getElementById("uniShelf"),row=docum
   row.innerHTML=UNI_LIST.map(u=>{const im=u.cover?(u.cover.imagen):"";
     return `<button type="button" class="uni-tile" role="listitem" data-u="${u.id}" style="${uniStyle(u)}" aria-label="${esc(u.name)}: ${u.n} piezas">
       ${im?`<img src="${esc(im)}" alt="" loading="lazy" decoding="async" fetchpriority="low" onerror="this.remove()">`:""}<span class="ut-shade"></span>
-      <span class="ut-name">${esc(u.name)}</span><span class="ut-meta">${u.n} piezas${u.firm?` · <i>${PEN_SVG}${u.firm}</i>`:""}</span></button>`}).join("");
+      ${u.logo?`<span class="ut-logo"><img src="${esc(u.logo)}" alt="${esc(u.name)}" decoding="async" onerror="this.parentNode.outerHTML='<span class=&quot;ut-name&quot;>${esc(u.name)}</span>'"></span>`:`<span class="ut-name">${esc(u.name)}</span>`}<span class="ut-meta">${u.n} piezas${u.firm?` · <i>${PEN_SVG}${u.firm}</i>`:""}</span></button>`}).join("");
   row.querySelectorAll(".uni-tile").forEach(b=>b.onclick=()=>enterUni(b.dataset.u,b));
   sh.querySelectorAll(".uni-arr").forEach(b=>b.onclick=()=>row.scrollBy({left:+b.dataset.d*row.clientWidth*.8,behavior:"smooth"}));
   if(curView==="coleccion")uniFonts();else setTimeout(uniFonts,2500)}
@@ -2484,32 +2536,58 @@ function renderUniHero(){const hero=document.getElementById("uniHero");if(!hero)
     <div class="uh-in">
       <button type="button" class="uh-back" id="uhBack">← Todos los universos</button>
       <div class="uh-kick">Universo</div>
-      <h2 class="uh-name">${esc(u.name)}</h2>
+      <h2 class="uh-name${u.logo?" has-logo":""}">${u.logo?`<img src="${esc(u.logo)}" alt="${esc(u.name)}" onerror="this.parentNode.classList.remove('has-logo');this.outerHTML='${esc(u.name)}'">`:esc(u.name)}</h2>
       <div class="uh-stats">${st.map(x=>`<span><b>${x[0]}</b>${x[1]}</span>`).join("")}</div>
       <div class="uh-act"><button type="button" class="uh-amb" id="uhAmb" aria-pressed="${AMB.on}"><span class="eq"><i></i><i></i><i></i><i></i></span><span class="uh-ambt">${AMB.on?"Ambiente":"Ambiente apagado"}</span></button>
-        ${u.yt?`<button type="button" class="uh-yt" id="uhYt"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg><span>Banda sonora oficial</span></button>`:""}</div>
+        ${(OWNER||spOn())&&u.sp?`<button type="button" class="uh-spc${spOn()?" on":""}" id="uhSpc"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20Zm4.6 14.4a.62.62 0 0 1-.86.2c-2.35-1.44-5.3-1.76-8.79-.96a.62.62 0 1 1-.28-1.21c3.81-.87 7.08-.5 9.72 1.11.3.18.39.56.21.86Zm1.22-2.72a.78.78 0 0 1-1.07.26c-2.69-1.65-6.79-2.13-9.97-1.17a.78.78 0 0 1-.45-1.49c3.63-1.1 8.15-.57 11.23 1.33.37.22.48.7.26 1.07Zm.1-2.84C14.7 8.93 9.38 8.75 6.3 9.69a.94.94 0 1 1-.54-1.8c3.53-1.07 9.4-.86 13.1 1.34a.94.94 0 0 1-.96 1.61Z"/></svg>${spOn()?"Mi Spotify ✓":"Conectar mi Spotify"}</button>`:""}
+        ${(u.sp||u.yt)?`<button type="button" class="uh-yt${u.sp?" sp":""}" id="uhYt"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg><span>Banda sonora oficial</span></button>`:""}</div>
     </div>`;
   document.getElementById("uhBack").onclick=exitUni;
   document.getElementById("uhAmb").onclick=()=>{AMB.on=!AMB.on;try{localStorage.setItem("mc-amb",AMB.on?"1":"0")}catch(_){}
     if(AMB.on){AMB.yt=false;closeYT(true);ambStart(u,true)}else ambStop();uniAmbUI()};
-  const yb=document.getElementById("uhYt");if(yb)yb.onclick=()=>{if(AMB.yt)closeYT(),AMB.on&&ambStart(u,true);else openYT(u)};
+  const sc=document.getElementById("uhSpc");if(sc)sc.onclick=e=>{e.stopPropagation();spMenu(sc)};
+  const yb=document.getElementById("uhYt");if(yb)yb.onclick=()=>{const d=document.getElementById("uniDock");
+    if(AMB.yt&&d&&d.classList.contains("is-my")){d.classList.toggle("mini");uniAmbUI();return}
+    if(AMB.yt)closeYT(),AMB.on&&ambStart(u,true);else openYT(u)};
   uniAmbUI()}
 function uniAmbUI(){const b=document.getElementById("uhAmb");if(!b)return;b.setAttribute("aria-pressed",AMB.on);b.classList.toggle("playing",!!AMB.bus);
   const t=b.querySelector(".uh-ambt");if(t)t.textContent=AMB.on?"Ambiente":"Ambiente apagado";
-  const y=document.getElementById("uhYt");if(y){y.classList.toggle("on",AMB.yt);y.querySelector("span").textContent=AMB.yt?"Sonando · cerrar":"Banda sonora oficial"}}
-function openYT(u){const p=document.getElementById("uniDock");if(!p||!u.yt)return;AMB.yt=true;AMB.ytId=u.id;ambStop();
-  p.setAttribute("style",uniStyle(u));p.hidden=false;
-  p.innerHTML=`<div class="ud-head"><span class="eq"><i></i><i></i><i></i><i></i></span><span class="ud-t">Banda sonora oficial · <b>${esc(u.name)}</b></span><button type="button" class="ud-x" aria-label="Cerrar reproductor">×</button></div>
-    <iframe src="https://www.youtube-nocookie.com/embed/${encodeURIComponent(u.yt)}?autoplay=1&rel=0&playsinline=1&modestbranding=1" title="Banda sonora oficial de ${esc(u.name)}" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>`;
+  const y=document.getElementById("uhYt");if(y){const d=document.getElementById("uniDock"),my=AMB.yt&&d&&d.classList.contains("is-my");
+    y.classList.toggle("on",AMB.yt);y.querySelector("span").textContent=my?(d.classList.contains("mini")?"Ver canción":"Ocultar canción"):AMB.yt?"Sonando · cerrar":(y.classList.contains("sp")?"Escuchar en Spotify":"Banda sonora oficial")}}
+let SPAPI=null,SPWAIT=[],SPCTL=null;
+function spApi(cb){if(SPAPI){cb(SPAPI);return}SPWAIT.push(cb);if(SPWAIT.length>1)return;
+  window.onSpotifyIframeApiReady=api=>{SPAPI=api;const w=SPWAIT;SPWAIT=[];w.forEach(f=>f(api))};
+  const s=document.createElement("script");s.src="https://open.spotify.com/embed/iframe-api/v1";s.async=true;
+  s.onerror=()=>{const w=SPWAIT;SPWAIT=[];w.forEach(f=>f(null))};document.head.appendChild(s)}
+function openYT(u){const p=document.getElementById("uniDock");if(!p||!(u.sp||u.yt))return;AMB.yt=true;AMB.ytId=u.id;ambStop();
+  p.setAttribute("style",uniStyle(u));p.hidden=false;p.classList.toggle("is-sp",!!u.sp);
+  const head=`<div class="ud-head"><span class="eq"><i></i><i></i><i></i><i></i></span><span class="ud-t">${u.sp?"Spotify":"Banda sonora oficial"} · <b>${esc(u.name)}</b></span><button type="button" class="ud-x" aria-label="Cerrar reproductor">×</button></div>`;
+  if(u.sp&&spOn()){p.classList.add("is-my","mini");p.classList.remove("is-sp");
+    p.innerHTML=`<button type="button" class="ud-pill" aria-label="Ver la canción que suena"><span class="eq"><i></i><i></i><i></i><i></i></span></button>
+      <div class="ud-head"><span class="eq"><i></i><i></i><i></i><i></i></span><span class="ud-t">Tu Spotify · <b>${esc(u.name)}</b></span><button type="button" class="ud-min" aria-label="Ocultar tarjeta">–</button><button type="button" class="ud-x" aria-label="Parar música">×</button></div><div class="ud-my"></div>`;
+    p.querySelector(".ud-pill").onclick=()=>{p.classList.remove("mini");uniAmbUI()};
+    p.querySelector(".ud-min").onclick=()=>{p.classList.add("mini");uniAmbUI()};
+    requestAnimationFrame(()=>p.classList.add("on"));SPM.track=null;spDockState("Conectando con tu Spotify…");spPlay(u);
+    p.querySelector(".ud-x").onclick=()=>{closeYT();if(AMB.on&&state.fr===u.id)ambStart(u,true)};uniAmbUI();return}
+  p.classList.remove("is-my");
+  const ytFrame=()=>`<iframe src="https://www.youtube-nocookie.com/embed/${encodeURIComponent(u.yt)}?autoplay=1&rel=0&playsinline=1&modestbranding=1" title="Banda sonora oficial de ${esc(u.name)}" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>`;
+  if(u.sp){p.innerHTML=head+`<div class="ud-sp"><div id="spMount"></div></div>`;
+    spApi(api=>{if(!AMB.yt||AMB.ytId!==u.id)return;const m=document.getElementById("spMount");if(!m)return;
+      if(!api){if(u.yt){p.classList.remove("is-sp");p.querySelector(".ud-sp").outerHTML=ytFrame()}else{closeYT();if(AMB.on)ambStart(u,true)}return}
+      api.createController(m,{uri:"spotify:track:"+u.sp,width:"100%",height:152,theme:"dark"},ctl=>{
+        if(!AMB.yt||AMB.ytId!==u.id){try{ctl.destroy()}catch(_){}return}
+        SPCTL=ctl;ctl.addListener("ready",()=>{try{ctl.play()}catch(_){}})})})}
+  else p.innerHTML=head+ytFrame();
   requestAnimationFrame(()=>p.classList.add("on"));
   p.querySelector(".ud-x").onclick=()=>{closeYT();if(AMB.on&&state.fr===u.id)ambStart(u,true)};uniAmbUI()}
-function closeYT(silent){AMB.yt=false;const p=document.getElementById("uniDock");if(p&&!p.hidden){p.classList.remove("on");p.innerHTML="";p.hidden=true}uniAmbUI()}
+function closeYT(silent){AMB.yt=false;if(SPM.uid||SPM.mode)spStop();const dd=document.getElementById("uniDock");if(dd)dd.classList.remove("is-my","mini");if(SPCTL){try{SPCTL.pause();SPCTL.destroy()}catch(_){}SPCTL=null}
+  const p=document.getElementById("uniDock");if(p&&!p.hidden){p.classList.remove("on");p.innerHTML="";p.hidden=true}uniAmbUI()}
 function uniSync(rerender){renderUniShelf();renderUniHero();if(rerender!==false){renderChips();buildRefine();render()}
   if(curView==="coleccion")uniViewHook("coleccion")}
 function enterUni(id,fromEl){const u=UNI_BY[id];if(!u)return;ac();
   const go=()=>{state.fr=id;state.cat="Todo";state.refine="";state.signed=false;state.q="";state.pending=false;
     const s=document.getElementById("search");if(s)s.value="";document.body.dataset.cat="Todo";
-    closeYT(true);const auto=!!(u.yt&&AMB.on);if(auto)AMB.yt=true;uniSync(true);
+    closeYT(true);const auto=!!(u.sp&&spOn()&&AMB.on);if(auto)AMB.yt=true;uniSync(true);
     if(location.hash!=="#u/"+id)history.pushState(null,"",hashFor("coleccion"));
     applyView("coleccion");if(auto)openYT(u)};
   uniWipe(u,fromEl,go)}
@@ -2519,7 +2597,7 @@ function uniWipe(u,el,cb){const w=document.getElementById("uniWipe");
   if(!w||matchMedia("(prefers-reduced-motion:reduce)").matches||!w.animate){cb();return}
   const r=el&&el.getBoundingClientRect?el.getBoundingClientRect():null,x=r?r.left+r.width/2:innerWidth/2,y=r?r.top+r.height/2:innerHeight/2;
   w.style.setProperty("--uc",u.c);w.style.setProperty("--ud",u.deep);w.style.setProperty("--wx",x+"px");w.style.setProperty("--wy",y+"px");
-  w.innerHTML=`<span style="font-family:${uniFF(u)};font-weight:${u.fw||700};font-size:calc(clamp(46px,10vw,120px) * ${u.fs||1})">${esc(u.name)}</span>`;w.classList.add("on");
+  w.innerHTML=u.logo?`<span class="uw-logo"><img src="${esc(u.logo)}" alt=""></span>`:`<span style="font-family:${uniFF(u)};font-weight:${u.fw||700};font-size:calc(clamp(46px,10vw,120px) * ${u.fs||1})">${esc(u.name)}</span>`;w.classList.add("on");
   const R=Math.hypot(Math.max(x,innerWidth-x),Math.max(y,innerHeight-y))+40;
   w.animate([{clipPath:`circle(0px at ${x}px ${y}px)`},{clipPath:`circle(${R}px at ${x}px ${y}px)`}],{duration:460,easing:"cubic-bezier(.7,0,.3,1)",fill:"forwards"}).onfinish=()=>{
     cb();setTimeout(()=>{w.animate([{opacity:1},{opacity:0}],{duration:380,easing:"ease-out",fill:"forwards"}).onfinish=()=>{w.classList.remove("on");w.getAnimations().forEach(a=>a.cancel())}},140)}}
@@ -2601,7 +2679,103 @@ function ambStop(quick){if(!AMB.bus){AMB.id="";return}const c=ac(),bus=AMB.bus,o
   setTimeout(()=>{os.forEach(o=>{try{o.stop()}catch(_){}});try{bus.disconnect()}catch(_){}},quick?400:1300);uniAmbUI()}
 document.addEventListener("visibilitychange",()=>{if(document.hidden)ambStop(true);else if(curView==="coleccion"&&state.fr)ambStart(UNI_BY[state.fr])});
 
+/* ===================== MI SPOTIFY (solo el dueño: cuenta Premium conectada) =====================
+   Ordenador: la canción suena dentro de la web (Web Playback SDK).
+   Móvil: la web hace de mando y la pone en la app de Spotify (Spotify Connect).
+   Visitantes: nada cambia (reproductor de Spotify con muestra / YouTube / ambiente). */
+const SP_KEY="mc-spotify",SP_SCOPES="streaming user-read-email user-read-private user-read-playback-state user-modify-playback-state";
+const SPM={sdk:null,dev:"",sdkWait:[],track:null,mode:"",paused:false,uid:""};
+const spIsMobile=()=>/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)||(navigator.platform==="MacIntel"&&navigator.maxTouchPoints>1);
+function spLoad(){try{return JSON.parse(localStorage.getItem(SP_KEY)||"null")}catch(_){return null}}
+function spSave(t){try{t?localStorage.setItem(SP_KEY,JSON.stringify(t)):localStorage.removeItem(SP_KEY)}catch(_){}}
+const spOn=()=>!!(SPOTIFY_CLIENT_ID&&spLoad());
+const b64u=buf=>btoa(String.fromCharCode(...new Uint8Array(buf))).replace(/\+/g,"-").replace(/\//g,"_").replace(/=+$/,"");
+async function spLogin(){if(!SPOTIFY_CLIENT_ID)return;
+  const rnd=new Uint8Array(48);crypto.getRandomValues(rnd);const ver=b64u(rnd),st=b64u(crypto.getRandomValues(new Uint8Array(12)));
+  const ch=b64u(await crypto.subtle.digest("SHA-256",new TextEncoder().encode(ver)));
+  try{localStorage.setItem("mc-sp-pkce",JSON.stringify({ver,st,back:location.hash||"#coleccion"}))}catch(_){}
+  location.href="https://accounts.spotify.com/authorize?"+new URLSearchParams({response_type:"code",client_id:SPOTIFY_CLIENT_ID,scope:SP_SCOPES,
+    redirect_uri:SPOTIFY_REDIRECT,state:st,code_challenge_method:"S256",code_challenge:ch})}
+async function spTokenReq(body){const r=await fetch("https://accounts.spotify.com/api/token",{method:"POST",headers:{"Content-Type":"application/x-www-form-urlencoded"},body:new URLSearchParams(body)});
+  if(!r.ok)throw new Error("token "+r.status);const j=await r.json();const old=spLoad()||{};
+  const t={at:j.access_token,rt:j.refresh_token||old.rt,exp:Date.now()+(j.expires_in||3600)*1000-60000};spSave(t);return t}
+async function spCallback(){const q=new URLSearchParams(location.search);if(!q.has("state")||!(q.has("code")||q.has("error")))return;
+  let pk=null;try{pk=JSON.parse(localStorage.getItem("mc-sp-pkce")||"null");localStorage.removeItem("mc-sp-pkce")}catch(_){}
+  const back=(pk&&pk.back)||"#coleccion";history.replaceState(null,"",location.pathname+back);
+  if(!pk||q.get("state")!==pk.st||!q.get("code")){setTimeout(()=>toast("No se pudo conectar Spotify"),900);return}
+  try{await spTokenReq({grant_type:"authorization_code",code:q.get("code"),redirect_uri:SPOTIFY_REDIRECT,client_id:SPOTIFY_CLIENT_ID,code_verifier:pk.ver});
+    setTimeout(()=>toast("Spotify conectado ✓"),900)}catch(e){setTimeout(()=>toast("No se pudo conectar Spotify"),900)}}
+let _spRef=null;
+async function spToken(){const t=spLoad();if(!t)return null;if(Date.now()<t.exp)return t.at;
+  if(!_spRef)_spRef=spTokenReq({grant_type:"refresh_token",refresh_token:t.rt,client_id:SPOTIFY_CLIENT_ID}).then(x=>x.at).catch(e=>{if(/token 4/.test(e.message))spSave(null);return null}).finally(()=>{_spRef=null});
+  return _spRef}
+async function spWeb(path,opt,retry){const at=await spToken();if(!at)return {status:401};
+  const r=await fetch("https://api.spotify.com/v1"+path,Object.assign({},opt,{headers:Object.assign({Authorization:"Bearer "+at},opt&&opt.body?{"Content-Type":"application/json"}:{})}));
+  if(r.status===401&&!retry){const t=spLoad();if(t){t.exp=0;spSave(t)}return spWeb(path,opt,true)}
+  let j=null;try{if(r.status!==204)j=await r.json()}catch(_){}return {status:r.status,j}}
+function spLogout(){spStop();if(SPM.sdk){try{SPM.sdk.disconnect()}catch(_){}SPM.sdk=null;SPM.dev=""}spSave(null);toast("Spotify desconectado");if(state.fr)renderUniHero()}
+/* reproductor dentro de la web (ordenador) */
+function spSdk(){return new Promise(res=>{if(SPM.dev){res(SPM.dev);return}SPM.sdkWait.push(res);if(SPM.sdkWait.length>1)return;
+  const done=v=>{const w=SPM.sdkWait;SPM.sdkWait=[];w.forEach(f=>f(v))};
+  const make=()=>{try{const p=new Spotify.Player({name:"Mario Collectibles",getOAuthToken:cb=>spToken().then(t=>cb(t||"")),volume:.7});SPM.sdk=p;
+    p.addListener("ready",({device_id})=>{SPM.dev=device_id;done(device_id)});
+    p.addListener("not_ready",()=>{SPM.dev=""});
+    ["initialization_error","authentication_error","account_error"].forEach(ev=>p.addListener(ev,()=>{SPM.sdk=null;done("")}));
+    p.addListener("player_state_changed",s=>{if(s){SPM.paused=s.paused;spDockState()}});
+    p.connect().then(ok=>{if(!ok)done("")})}catch(_){done("")}};
+  if(window.Spotify&&Spotify.Player)make();else{window.onSpotifyWebPlaybackSDKReady=make;const s=document.createElement("script");s.src="https://sdk.scdn.co/spotify-player.js";s.onerror=()=>done("");document.head.appendChild(s)}
+  setTimeout(()=>done(SPM.dev),12000)})}
+async function spPick(){const r=await spWeb("/me/player/devices");const L=(r.j&&r.j.devices)||[];
+  return L.find(d=>d.is_active&&d.id!==SPM.dev)||L.find(d=>/smartphone/i.test(d.type))||L.find(d=>d.id!==SPM.dev)||null}
+async function spPlay(u){const p=document.getElementById("uniDock");SPM.uid=u.id;
+  const tr=await spWeb("/tracks/"+u.sp);if(SPM.uid!==u.id)return;SPM.track=tr.j||null;spDockState("Conectando con tu Spotify…");
+  let dev="",where="";
+  if(!spIsMobile()){dev=await spSdk();where="en este ordenador"}
+  if(SPM.uid!==u.id)return;
+  if(!dev){const d=await spPick();if(d){dev=d.id;where="en "+d.name}}
+  if(SPM.uid!==u.id)return;
+  if(!dev){SPM.mode="";spDockState("",`Abre Spotify en tu ${spIsMobile()?"móvil":"ordenador"} y vuelve a pulsar ▶.`);return}
+  const r=await spWeb("/me/player/play?device_id="+encodeURIComponent(dev),{method:"PUT",body:JSON.stringify({uris:["spotify:track:"+u.sp]})});
+  if(SPM.uid!==u.id)return;
+  if(r.status===204||r.status===202||r.status===200){SPM.mode=dev===SPM.dev?"sdk":"connect";SPM.paused=false;SPM.where=where;spDockState()}
+  else if(r.status===403){SPM.mode="";spDockState("","Spotify no deja reproducir con esta cuenta (hace falta Premium y estar añadido en la app de desarrollador).")}
+  else if(r.status===401){SPM.mode="";spDockState("","La sesión de Spotify ha caducado: vuelve a conectar desde el botón del universo.")}
+  else{SPM.mode="";spDockState("",`No se pudo reproducir (${r.status}). Abre Spotify y pulsa ▶.`)}}
+async function spToggle(){if(!SPM.mode){const u=UNI_BY[SPM.uid];if(u)spPlay(u);return}
+  if(SPM.mode==="sdk"&&SPM.sdk){SPM.sdk.togglePlay();return}
+  const r=await spWeb(SPM.paused?"/me/player/play":"/me/player/pause",{method:"PUT"});if(r.status<300){SPM.paused=!SPM.paused;spDockState()}}
+function spStop(){const m=SPM.mode;SPM.uid="";SPM.mode="";if(m==="sdk"&&SPM.sdk){try{SPM.sdk.pause()}catch(_){}}else if(m==="connect")spWeb("/me/player/pause",{method:"PUT"})}
+function spDockState(busy,err){const p=document.getElementById("uniDock");if(!p||p.hidden||!p.classList.contains("is-my"))return;const b=p.querySelector(".ud-my");if(!b)return;
+  const t=SPM.track,img=t&&t.album&&t.album.images&&t.album.images.length?t.album.images[Math.min(1,t.album.images.length-1)].url:"";
+  b.innerHTML=`<div class="um-art">${img?`<img src="${esc(img)}" alt="">`:""}</div>
+    <div class="um-txt"><b>${esc(t?t.name:"…")}</b><span>${esc(t?(t.artists||[]).map(a=>a.name).join(", "):"")}</span>
+      <em>${err?esc(err):busy?esc(busy):SPM.mode?(SPM.paused?"En pausa · ":"Sonando · ")+esc(SPM.where||""):""}</em></div>
+    <button type="button" class="um-pp" aria-label="${SPM.mode&&!SPM.paused?"Pausa":"Reproducir"}">${SPM.mode&&!SPM.paused?'<svg viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg>':'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>'}</button>`;
+  p.classList.toggle("playing",!!SPM.mode&&!SPM.paused);
+  if(err&&p.classList.contains("mini")){p.classList.remove("mini");uniAmbUI()}
+  b.querySelector(".um-pp").onclick=()=>{if(SPM.sdk&&SPM.sdk.activateElement)try{SPM.sdk.activateElement()}catch(_){}spToggle()}}
+function spMenu(btn){let m=document.getElementById("spMenu");if(m){m.remove();return}
+  m=document.createElement("div");m.id="spMenu";m.className="sp-menu";
+  m.innerHTML=spOn()?`<button data-a="out">Desconectar Spotify</button><button data-a="copy">Copiar código para otro dispositivo</button><button data-a="paste">Pegar código</button>`
+    :`<button data-a="in">Conectar con Spotify</button><button data-a="paste">Pegar código de otro dispositivo</button>`;
+  document.body.appendChild(m);const r=btn.getBoundingClientRect();m.style.top=(r.bottom+8+scrollY)+"px";m.style.left=Math.max(8,Math.min(innerWidth-m.offsetWidth-8,r.left))+"px";
+  m.querySelectorAll("button").forEach(b=>b.onclick=async()=>{m.remove();const a=b.dataset.a;
+    if(a==="in")spLogin();else if(a==="out")spLogout();
+    else if(a==="copy"){const t=spLoad();try{await navigator.clipboard.writeText("MCSP:"+t.rt);toast("Código copiado ✓ (pégalo en el otro dispositivo)")}catch(_){prompt("Copia este código:","MCSP:"+t.rt)}}
+    else if(a==="paste"){const c=(prompt("Pega el código de Spotify (empieza por MCSP:)")||"").trim();if(!/^MCSP:\S+$/.test(c))return;
+      spSave({at:"",rt:c.slice(5),exp:0});const ok=await spToken();if(ok){toast("Spotify conectado ✓");if(state.fr)renderUniHero()}else{spSave(null);toast("Código no válido")}}});
+  setTimeout(()=>document.addEventListener("pointerdown",function off(e){if(!m.contains(e.target)){m.remove();document.removeEventListener("pointerdown",off,true)}},true),0)}
+
+/* ===================== BUSCADOR QUE SE ESCONDE AL BAJAR (móvil) ===================== */
+(function autoHideControls(){const c=document.querySelector("#view-coleccion .controls");if(!c)return;let ly=scrollY,raf=0;
+  const upd=()=>{raf=0;const y=scrollY,dy=y-ly;
+    if(curView!=="coleccion"||innerWidth>760||document.activeElement===document.getElementById("search")||y<260){c.classList.remove("hid");ly=y;return}
+    if(dy>8){c.classList.add("hid");ly=y}else if(dy<-8){c.classList.remove("hid");ly=y}};
+  addEventListener("scroll",()=>{if(!raf)raf=requestAnimationFrame(upd)},{passive:true});
+  document.getElementById("search").addEventListener("focus",()=>c.classList.remove("hid"))})();
+
 async function boot(){
+  try{await spCallback()}catch(_){}
   const _sp=splashStart();
   {const h0=decodeURIComponent((location.hash||"").slice(1));if(!h0.startsWith("p/"))applyViewNow(h0.startsWith("u/")?"coleccion":VIEWS.includes(h0)?h0:"home")}
   const params=new URLSearchParams(location.search);
@@ -2619,6 +2793,7 @@ async function boot(){
   renderCanal();renderVideos();renderHero();renderChips();buildRefine();render();renderUniShelf();renderUniHero();
   renderNovedades();renderDay();renderTape();wireRail();applyVSel();delete document.body.dataset.firstPaint;
   observeReveal(document);
+  if(spOn()&&!spIsMobile())setTimeout(()=>spSdk(),4000);
   initCircuit();splashEnd(_sp);setTimeout(()=>{document.body.dataset.ready="1"},50);
   const hs=decodeURIComponent((location.hash||"").slice(1));
   if(hs==="mantenedor"||hs==="acceso"){history.replaceState(null,"",hashFor("home"));setTimeout(gLogin,400)}
