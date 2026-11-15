@@ -1044,6 +1044,14 @@ body.stark .sr2-plank,body.th-sym .sr2-plank{background:linear-gradient(180deg,#
   .sr2-seal{top:7px;right:7px;font-size:8px;padding:3px 6px;letter-spacing:.08em}
   .sr2-body{padding:10px 11px 12px}.sr2-top{flex-direction:column;gap:3px}.sr2-top b{font-size:13px}.sr2-top span{font-size:10.5px}.sr2-st{font-size:9.5px}.sr2-seg{gap:2px}.sr2-seg i{height:5px}}
 .sr2{content-visibility:auto;contain-intrinsic-size:auto 290px}
+.sr2-tag{display:inline-block;margin-top:7px;font-family:var(--mono);font-size:10px;letter-spacing:.06em;padding:3px 8px;border-radius:999px;border:1px solid var(--line);color:var(--muted)}
+.sr2-tag.cur{color:#7ee2a8;border-color:rgba(126,226,168,.4);background:rgba(126,226,168,.07)}
+.sr2-tag.fin{color:var(--gold-hi);border-color:rgba(var(--gold-rgb),.35)}
+.sr2-seal.cur{background:linear-gradient(145deg,#c9ffe0,#46c97f 60%,#1f7a48);color:#06210f}
+.sr2-seg.open::after,.sr2-bar.open+.x{content:""}
+.sr2-seg.open{position:relative;padding-right:14px}.sr2-seg.open::after{content:"›";position:absolute;right:0;top:-6px;font-size:14px;color:#7ee2a8}
+.sr2-note{margin-top:6px;font-family:var(--sans,inherit);font-size:11.5px;line-height:1.4;color:var(--muted-2)}
+@media(max-width:640px){.sr2-tag{font-size:8px;padding:2px 6px;white-space:nowrap;max-width:100%;overflow:hidden;text-overflow:ellipsis}.sr2-note{display:none}}
 /* ===== NAVEGACIÓN FICHA ===== */
 .overlay{flex-direction:column;gap:14px}
 .overlay.has-nav .modal{max-height:calc(100vh - 110px)}
@@ -1300,8 +1308,8 @@ body.public .foot .priv-only{display:none}
     <div class="kpis" id="statKpis"></div>
     <div class="stat-grid" id="statGrid"></div>
     <div class="block-head" style="margin-top:44px">
-      <div><div class="eyebrow" style="margin:0">Series</div><p class="stat-note">Detectadas por la numeración del nombre (#N o N/M). Si una serie no tiene el total en el nombre, se comprueban los huecos entre el #1 y el último que tienes.</p></div>
-      <div class="seg" id="seriesMode"><button data-m="all" class="on">Todas</button><button data-m="ok">Completas</button><button data-m="gap">Con huecos</button></div>
+      <div><div class="eyebrow" style="margin:0">Series</div><p class="stat-note">Detectadas por la numeración del nombre (#N o N/M) y contrastadas con los datos reales de cada edición española (números totales, si está cerrada o en publicación). Datos a fecha de <span id="seriesAsof"></span>.</p></div>
+      <div class="seg" id="seriesMode"><button data-m="all" class="on">Todas</button><button data-m="ok">Completas</button><button data-m="gap">Con huecos</button><button data-m="cur">En curso</button></div>
     </div>
     <div class="series-grid" id="seriesGrid"></div>
   </div>
@@ -1576,6 +1584,58 @@ const CHARACTERS = [
   { id:"mando",       name:"Mandaloriano",     rx:/mandaloria|din djarin/,                  c:"175,185,198",hi:"232,237,243", deep:"#3d444d", font:"Orbitron", fw:700, mood:"cosmic", fs:.85, am:"1486687344", sp:"6tJFtthY0rI1x06qb8NjK0", cover:"" },
   { id:"joker",       name:"Joker",            rx:/joker/,                                  c:"145,65,205", hi:"125,232,125", deep:"#3a1a5c", font:"Special Elite", fw:400, mood:"eerie", am:"1481598347", sp:"", cover:"" }
 ];
+/* ===== DATOS REALES DE CADA SERIE (investigado en Tebeosfera, listadomanga, Panini, tiendas · nov 2026) =====
+   Clave = nombre de la serie tal cual sale en Stats. st: "fin" (cerrada) o "curso" (se sigue publicando).
+   total = último número de una serie cerrada · ult = último número a la venta (series en curso) · desde = primer número de la serie.
+   Cuando salgan números nuevos de una serie en curso, sube «ult» (o pídeselo a Claude). */
+const SERIES_ASOF = "nov 2026";
+const SERIES_INFO = {
+  "Daredevil": { st:"fin", total:25, nota:"Etapa de Saladin Ahmed completa (Panini #48-72). En sept. 2026 empezó otra etapa (Phillips/Garbett) que vuelve a empezar en #1: catalógala con otro nombre, p. ej. «Daredevil (2026) #1»." },
+  "Ultimate Spider-Man": { st:"fin", total:24, nota:"Etapa de Hickman. El #24 (abril 2026) es el último." },
+  "Absolute Batman": { st:"curso", ult:20 },
+  "Absolute Superman": { st:"curso", ult:20 },
+  "Absolute Wonder Woman": { st:"curso", ult:20 },
+  "Absolute Flash": { st:"curso", ult:15 },
+  "Absolute Green Lantern": { st:"curso", ult:15 },
+  "Absolute Martian Manhunter": { st:"fin", total:12, nota:"El #12 (nov 2026) cierra la serie." },
+  "All In: Batman en Detective Comics": { st:"curso", ult:20 },
+  "All In: Batman": { st:"curso", ult:10, nota:"Etapa de Matt Fraction y Jorge Jiménez." },
+  "All In: Superman": { st:"fin", total:7, nota:"El #7 es el especial «Summer of Superman». Continúa como «All In Superman Unlimited»." },
+  "All In: Wonder Woman": { st:"curso", desde:8, ult:24, nota:"Continúa la numeración de «Wonder Woman»: empieza en el #8." },
+  "All In: Justice League Unlimited": { st:"curso", ult:20 },
+  "Wonder Woman": { st:"fin", total:7, nota:"Tom King y Daniel Sampere. Continúa como «All In: Wonder Woman» desde el #8." },
+  "Batman y Robin Año Uno": { st:"fin", total:12 },
+  "Batman Hush 2": { st:"fin", total:6 },
+  "Trinity: Hija de Wonder Woman": { st:"fin", total:6 },
+  "DCP: Nightwing": { st:"fin", total:7, nota:"DC Premiere: Amanecer de DC. Nightwing (Tom Taylor y Bruno Redondo). Sigue como «All In Nightwing»." },
+  "Un Mundo Bajo Muerte": { st:"fin", total:9 },
+  "Caza Sangrienta (Red Band)": { st:"fin", total:5 },
+  "Guerra de Veneno": { st:"fin", total:5 },
+  "La Muerte de Estela Plateada": { st:"fin", total:5 },
+  "Lobezno: Venganza (Red Band)": { st:"fin", total:5 },
+  "El Castigador (Red Band)": { st:"fin", total:5 },
+  "Búsqueda de Lobezno: Misterio en Madripur": { st:"fin", total:2 },
+  "Masacre: Peor Sangre": { st:"fin", total:3 },
+  "Secret Wars": { st:"fin", total:9, nota:"Edición en grapa de 2015 (Hickman y Ribić)." },
+  "Lobezno": { st:"curso", ult:15, nota:"Etapa de Saladin Ahmed (número de portada; en el interior lleva la numeración global de Lobezno Vol. 5)." },
+  "Los 4 Fantásticos": { st:"curso", ult:13, nota:"Etapa de Ryan North de 2025 (número de portada)." },
+  "Patrulla-X": { st:"curso", ult:25, nota:"Doble numeración: «Patrulla-X 25» es La Nueva Patrulla-X #112. Durante «La era de Revelación» (#100-104) no hubo número de portada." },
+  "Marvel Knights: Daredevil Vol. I": { st:"fin", total:70 },
+  "Marvel Knights: Daredevil Vol. II": { st:"fin", total:48, nota:"Etapa de Brubaker y Lark (2006-2010)." },
+  "Marvel Knights Edición Especial: Daredevil Vol. II": { st:"fin", total:48, nota:"Versión con portada alternativa de Marvel Knights: Daredevil Vol. II." },
+  "Elektra: American Samurai": { st:"fin", total:3, nota:"Arco de 3 partes publicado en Elektra (Forum) #11-13." },
+  "MP Daredevil": { st:"fin", total:12, nota:"Etapa de Chip Zdarsky. Continúa en «Marvel Premiere. Daredevil de Saladin Ahmed»." },
+  "MS Daredevil": { st:"fin", total:24, nota:"El #24 «Renacimiento» cierra la colección; sigue en «Daredevil de Mark Waid»." },
+  "MS Daredevil de Mark Waid": { st:"fin", total:10 },
+  "Star Wars": { st:"fin", total:64, nota:"Grapa de Planeta (Star Wars de 2015, Aaron y Gillen)." },
+  "Star Wars: Darth Vader": { st:"fin", total:25, nota:"Grapa de Planeta (Darth Vader de 2015, Gillen y Larroca)." },
+  "My Hero Academia": { st:"fin", total:42 },
+  "Bola de Drac": { st:"fin", total:34, nota:"Edició Definitiva." },
+  "Ataque a los Titanes": { st:"fin", total:34 },
+  "Guardianes de la Noche": { st:"fin", total:23 },
+  "Sexy Cosplay Doll": { st:"fin", total:15 },
+  "Los Diarios de la Boticaria": { st:"curso", ult:16, nota:"Versión de Nekokurage, ahora en Devir (los 7 primeros los publicó ECC). En Japón sigue abierta." }
+};
 const FORM = { id: "", entries: { tipo: "", pieza: "", mensaje: "", nombre: "", email: "" } };
 try{localStorage.removeItem("mc-owner")}catch(_){}
 </script>
@@ -2122,28 +2182,35 @@ function detectSeries(){
     const label=base+vol+(redband?" (Red Band)":"");const key=norm(label);
     if(!map.has(key))map.set(key,{label,q:base,nums:new Set(),tot:0,cat:d.categoria,items:[],byNum:{}});
     const s=map.get(key);s.nums.add(num);(s.byNum[num]=s.byNum[num]||[]).push(d);s.tot=Math.max(s.tot,tot);s.items.push(d)});
-  const out=[];map.forEach(s=>{const nums=[...s.nums].sort((a,b)=>a-b);const max=nums[nums.length-1];
-    if(!s.tot&&nums.length<3)return;if(s.tot&&s.tot<2)return;
-    const upto=s.tot||max;const missing=[];for(let i=1;i<=upto;i++)if(!s.nums.has(i))missing.push(i);
-    out.push({...s,nums,max,upto,have:nums.filter(n=>n<=upto).length,missing,ok:missing.length===0,known:!!s.tot})});
+  const INFO={};Object.keys(SERIES_INFO).forEach(k=>INFO[norm(k)]=SERIES_INFO[k]);
+  const out=[];map.forEach(s=>{const nums=[...s.nums].sort((a,b)=>a-b);const max=nums[nums.length-1];const I=INFO[norm(s.label)]||null;
+    if(!I&&!s.tot&&nums.length<3)return;if(!I&&s.tot&&s.tot<2)return;
+    const from=I&&I.desde||1;
+    const upto=I?(I.st==="fin"?(I.total||s.tot||max):Math.max(I.ult||0,max)):(s.tot||max);
+    const missing=[];for(let i=from;i<=upto;i++)if(!s.nums.has(i))missing.push(i);
+    const span=upto-from+1;
+    out.push({...s,nums,max,upto,from,span,info:I,status:I?I.st:"",have:nums.filter(n=>n>=from&&n<=upto).length,missing,ok:missing.length===0,known:!!(s.tot||I)})});
   out.sort((a,b)=>(b.ok-a.ok)||(b.have-a.have)||a.label.localeCompare(b.label,"es"));return out}
 let seriesMode="all";
-function renderSeries(){const g=document.getElementById("seriesGrid");if(!g)return;let S=detectSeries();
-  if(seriesMode==="ok")S=S.filter(s=>s.ok);if(seriesMode==="gap")S=S.filter(s=>!s.ok);
+function renderSeries(){const g=document.getElementById("seriesGrid");if(!g)return;{const a=document.getElementById("seriesAsof");if(a)a.textContent=SERIES_ASOF}let S=detectSeries();
+  if(seriesMode==="ok")S=S.filter(s=>s.ok&&s.status!=="curso");if(seriesMode==="gap")S=S.filter(s=>!s.ok);if(seriesMode==="cur")S=S.filter(s=>s.status==="curso");
   const fmtMiss=m=>m.length>8?m.slice(0,8).map(n=>"#"+n).join(", ")+` y ${m.length-8} más`:m.map(n=>"#"+n).join(", ");
   const pickD=L=>L.slice().sort((a,b)=>(b.fotos.length-a.fotos.length)||(b.firmado-a.firmado)||(!!b.imagen-!!a.imagen))[0];
-  g.innerHTML=S.length?S.map(s=>{const top=Math.max(s.upto,s.max),nums=[];for(let n=1;n<=top;n++)nums.push(n);
+  g.innerHTML=S.length?S.map(s=>{const top=Math.max(s.upto,s.max),nums=[];for(let n=s.from||1;n<=top;n++)nums.push(n);
     const owned=nums.filter(n=>s.byNum[n]&&s.byNum[n].length);
     const sel=owned.length<=5?owned:[0,1,2,3,4].map(i=>owned[Math.round(i*(owned.length-1)/4)]);
     let books=sel.map(n=>{const d=pickD(s.byNum[n]);return {n,u:(d.fotos&&d.fotos[0])||d.imagen||""}});
     if(s.missing.length&&books.length){books=books.slice(0,4);books.splice(Math.min(2,books.length),0,{n:s.missing[0],miss:1})}
     const k=books.length;
     const bk=books.map((b,i)=>{const o=i-(k-1)/2;return `<span class="sr2-bk${b.miss?" miss":""}" style="--o:${o.toFixed(2)};--a:${Math.round(Math.abs(o))};${b.u?`background-image:url('${esc(b.u)}')`:""}"><em>#${b.n}</em></span>`}).join("");
-    const seg=s.upto<=40?`<div class="sr2-seg">${nums.slice(0,s.upto).map(n=>`<i${s.byNum[n]&&s.byNum[n].length?' class="on"':""}></i>`).join("")}</div>`:`<div class="sr2-bar"><i style="width:${Math.round(100*s.have/s.upto)}%"></i></div>`;
+    const span=s.span||s.upto,cur=s.status==="curso";
+    const seg=span<=40?`<div class="sr2-seg${cur?" open":""}">${nums.filter(n=>n<=s.upto).map(n=>`<i${s.byNum[n]&&s.byNum[n].length?' class="on"':""}></i>`).join("")}</div>`:`<div class="sr2-bar${cur?" open":""}"><i style="width:${Math.round(100*s.have/span)}%"></i></div>`;
+    const badge=s.status==="curso"?`<span class="sr2-tag cur">● En curso · último #${s.upto}</span>`:s.status==="fin"?`<span class="sr2-tag fin">Cerrada · ${s.upto} números</span>`:`<span class="sr2-tag unk">Sin datos de la serie</span>`;
+    const seal=s.ok?(cur?'<span class="sr2-seal cur">✓ Al día</span>':'<span class="sr2-seal">✓ Completa</span>'):"";
     return `<div class="sr2${s.ok?" ok":""}" role="button" tabindex="0" aria-label="${esc(s.label)}: ${s.have} de ${s.upto}">
-      <div class="sr2-stage">${s.ok?'<span class="sr2-seal">✓ Completa</span>':""}<div class="sr2-books">${bk}</div><div class="sr2-plank"></div></div>
-      <div class="sr2-body"><div class="sr2-top"><b>${esc(s.label)}</b><span>${s.have} / ${s.upto}</span></div>${seg}
-        <div class="sr2-st">${s.ok?(s.known?"Serie completa":`Completa del #1 al #${s.max}`):`Faltan: <em>${fmtMiss(s.missing)}</em>`}</div></div></div>`}).join("")
+      <div class="sr2-stage">${seal}<div class="sr2-books">${bk}</div><div class="sr2-plank"></div></div>
+      <div class="sr2-body"><div class="sr2-top"><b>${esc(s.label)}</b><span>${s.have} / ${span}</span></div>${badge}${seg}
+        <div class="sr2-st">${s.ok?(cur?`Tienes todo lo publicado hasta ${SERIES_ASOF}`:s.status==="fin"?"La tienes entera":`Completa del #${s.from||1} al #${s.max}`):`Faltan: <em>${fmtMiss(s.missing)}</em>`}${s.info&&s.info.nota?`<div class="sr2-note">${esc(s.info.nota)}</div>`:""}</div></div></div>`}).join("")
     :`<div class="fw-empty">No hay series en este filtro.</div>`;
   observeReveal(g);
   g.querySelectorAll(".sr2").forEach((el,i)=>{const go=()=>openShelf(S[i]);el.onclick=go;el.onkeydown=e=>{if(e.key==="Enter")go()}})}
@@ -2249,10 +2316,10 @@ function splashEnd(t0){if(t0==null)return;const s=document.getElementById("splas
 let shelfSeries=null;
 function openShelf(s){shelfSeries=s;const ov=document.getElementById("shelfOv");
   document.getElementById("shelfTitle").textContent=s.label;
-  document.getElementById("shelfSub").textContent=`${s.have} de ${s.upto}${s.ok?" · completa ✓":` · faltan ${s.missing.length}`}`;
+  document.getElementById("shelfSub").textContent=`${s.have} de ${s.span||s.upto}${s.status==="curso"?(s.ok?" · al día ✓":` · faltan ${s.missing.length}`)+` · en publicación (último a la venta: #${s.upto}, ${SERIES_ASOF})`:(s.ok?" · completa ✓":` · faltan ${s.missing.length}`)+(s.status==="fin"?` · serie cerrada en el #${s.upto}`:"")}${s.info&&s.info.nota?" · "+s.info.nota:""}`;
   const top=Math.max(s.upto,s.max),pick=L=>L.slice().sort((a,b)=>(b.fotos.length-a.fotos.length)||(b.firmado-a.firmado)||(!!b.imagen-!!a.imagen))[0];
   const list=[];let html="";
-  for(let n=1;n<=top;n++){const L=s.byNum[n];
+  for(let n=s.from||1;n<=top;n++){const L=s.byNum[n];
     if(L&&L.length){const d=pick(L);list.push(d);const u=(d.fotos&&d.fotos[0])||d.imagen;
       html+=`<button class="spine${d.firmado?" signed":""}" data-id="${d.id}" title="${esc(d.titulo||d.nombre)}">${u?`<span class="sp-img" style="background-image:url('${esc(u)}')"></span>`:""}<span class="sp-n">#${n}</span><span class="sp-t">${esc(s.label)}</span></button>`}
     else html+=`<div class="spine miss" aria-label="Falta el número ${n}"><span class="sp-n">#${n}</span><span class="sp-t">FALTA</span></div>`}
