@@ -1512,7 +1512,7 @@ body.public .foot .priv-only{display:none}
 <section class="view" id="view-personajes">
   <div class="wrap sec-pad">
     <div class="ch-head"><div><div class="eyebrow" style="margin:0">Personajes</div><h2 class="sec-title" style="margin-top:6px">El salón de la fama</h2>
-      <p>Los personajes con más piezas en la bóveda. Toca uno para entrar en su colección… con su banda sonora.</p></div></div>
+      <p>Los personajes con más piezas en la bóveda (con al menos 3 figuras). Toca uno para entrar en su colección… con su banda sonora.</p></div></div>
     <div id="charsBox"></div>
   </div>
 </section>
@@ -1777,6 +1777,7 @@ const SPOTIFY_REDIRECT = "https://mig222002.github.io/mario-collectibles/";
    am: canción en Apple Music (muestra de 30 s en móvil/visitantes) · sp: canción en Spotify (completa en tu ordenador).
    cover: referencia(s) de la pieza para su foto. Sale en el ranking si tiene CHAR_MIN piezas o más. */
 const CHAR_MIN = 5;
+const CHAR_FIG = 3;   /* mínimo de figuras para entrar en el ranking (no basta con salir en cómics) */
 const CHARACTERS = [
   { id:"daredevil",   name:"Daredevil",        rx:/daredevil|matt murdock/,                 c:"205,30,40",  hi:"255,125,115", deep:"#6e0d14", font:"Bebas Neue", fw:400, mood:"dark",   am:"1443156309", sp:"4il2U822ztOyzLFcIpDCTe", cover:"" },
   { id:"batman",      name:"Batman",           rx:/batman|bruce wayne|batmobile|batcycle/,  c:"250,204,21", hi:"255,232,140", deep:"#5c4a00", font:"Oswald", fw:700, mood:"dark",       am:"1612897598", sp:"0hs3unYvc0bFG2NgheFdkO", cover:"" },
@@ -1792,7 +1793,7 @@ const CHARACTERS = [
   { id:"luffy",       name:"Luffy",            rx:/luffy/,                                  c:"225,45,45",  hi:"255,200,95",  deep:"#6e1010", font:"Bangers", fw:400, mood:"ocean",     am:"1772211459", sp:"1PdWDLJNk040dkuXoLLE2F", cover:"" },
   { id:"venom",       name:"Venom",            rx:/venom/,                                  c:"170,170,185",hi:"245,245,252", deep:"#2a2a33", font:"Bebas Neue", fw:400, mood:"dark",   am:"1434766963", sp:"4lcN22k03kmMXMxI26GYPF", cover:"" },
   { id:"vader",       name:"Darth Vader",      rx:/vader/,                                  c:"225,35,35",  hi:"255,125,125", deep:"#4a0a0a", font:"Orbitron", fw:700, mood:"dark", fs:.9, am:"1375815602", sp:"33eoDVxnvysLqLsMrc4gyZ", cover:"" },
-  { id:"deku",        name:"Deku",             rx:/\bdeku\b|izuku/,                         c:"46,190,120", hi:"165,240,200", deep:"#135c3a", font:"Russo One", fw:400, mood:"anime",  am:"1537458310", sp:"6DNcnUEh0bOSZ7uHDclwIS", cover:"" },
+  { id:"deku",        name:"Deku",             rx:/\bdeku\b|\bizuku\b|\bmidoriya\b/,         c:"46,190,120", hi:"165,240,200", deep:"#135c3a", font:"Russo One", fw:400, mood:"anime",  am:"1537458310", sp:"6DNcnUEh0bOSZ7uHDclwIS", cover:"" },
   { id:"greenlantern",name:"Green Lantern",    rx:/green lantern|linterna verde/,           c:"60,220,95",  hi:"175,255,195", deep:"#136b2a", font:"Orbitron", fw:700, mood:"cosmic", fs:.85, am:"1455158921", sp:"0PfITnExXf6LvxVgZC1hqI", cover:"" },
   { id:"flash",       name:"Flash",            rx:/\bflash\b/,                              c:"235,55,40",  hi:"255,205,85",  deep:"#6e1a0a", font:"Russo One", fw:400, mood:"retro",  am:"1454872721", sp:"1SRQypk1i1ldvmLEYZvFIX", cover:"" },
   { id:"goku",        name:"Goku",             rx:/\bgoku\b/,                               c:"255,140,26", hi:"255,212,135", deep:"#8a3e00", font:"Bangers", fw:400, mood:"anime",     am:"129251737",  sp:"1HetdN8ZgBcO5FXp69OspB", cover:"" },
@@ -1803,7 +1804,10 @@ const CHARACTERS = [
   { id:"surfer",      name:"Silver Surfer",    rx:/silver surfer|estela plateada/,          c:"195,205,222",hi:"248,251,255", deep:"#4a5363", font:"Orbitron", fw:700, mood:"cosmic", fs:.85, am:"1826654298", sp:"3uBASKMg5vbIKwWi6Ya5mb", cover:"" },
   { id:"punisher",    name:"Punisher",         rx:/punisher|castigador/,                    c:"230,230,236",hi:"255,255,255", deep:"#33333a", font:"Special Elite", fw:400, mood:"dark", am:"1442460437", sp:"", cover:"" },
   { id:"mando",       name:"Mandaloriano",     rx:/mandaloria|din djarin/,                  c:"175,185,198",hi:"232,237,243", deep:"#3d444d", font:"Orbitron", fw:700, mood:"cosmic", fs:.85, am:"1486687344", sp:"6tJFtthY0rI1x06qb8NjK0", cover:"" },
-  { id:"joker",       name:"Joker",            rx:/joker/,                                  c:"145,65,205", hi:"125,232,125", deep:"#3a1a5c", font:"Special Elite", fw:400, mood:"eerie", am:"1481598347", sp:"", cover:"" }
+  { id:"joker",       name:"Joker",            rx:/joker/,                                  c:"145,65,205", hi:"125,232,125", deep:"#3a1a5c", font:"Special Elite", fw:400, mood:"eerie", am:"1481598347", sp:"", cover:"" },
+  { id:"chewbacca",   name:"Chewbacca",        rx:/chewbacca|\bchewie\b/,                   c:"160,105,55", hi:"235,195,140", deep:"#4a2e12", font:"Orbitron", fw:700, mood:"cosmic", am:"1376674510", sp:"", cover:"" },
+  { id:"picara",      name:"Pícara",           rx:/\bpicara\b|\brogue\b/,                    c:"40,170,90",  hi:"255,220,120", deep:"#0f4a26", font:"Bangers", fw:400, mood:"retro",     am:"1747396085", sp:"", cover:"" },
+  { id:"moonknight",  name:"Moon Knight",      rx:/moon knight|caballero luna|marc spector/, c:"215,220,232",hi:"255,255,255", deep:"#3a3f4c", font:"Cinzel", fw:700, mood:"eerie",       am:"1620595966", sp:"", cover:"" }
 ];
 /* ===== DATOS REALES DE CADA SERIE (investigado en Tebeosfera, listadomanga, Panini, tiendas · nov 2026) =====
    Clave = nombre de la serie tal cual sale en Stats. st: "fin" (cerrada) o "curso" (se sigue publicando).
@@ -2012,7 +2016,7 @@ function current(){
   if(state.refine){const k=document.getElementById("refine").dataset.key;list=list.filter(d=>d[k]===state.refine)}
   if(state.pending)list=list.filter(d=>!d.imagen);
   if(state.signed)list=list.filter(d=>d.firmado);
-  if(state.q){const toks=norm(state.q).split(/\s+/).filter(Boolean);list=list.filter(d=>toks.every(t=>d._s.includes(t)))}
+  if(state.q){const toks=norm(state.q).split(/\s+/).filter(Boolean).map(t=>new RegExp("(^|[^a-z0-9])"+t.replace(/[.*+?^${}()|[\]\\]/g,"\\$&")));list=list.filter(d=>toks.every(t=>t.test(d._s)))}
   const s=state.sort;
   list.sort((a,b)=>{if(s==="az")return a.nombre.localeCompare(b.nombre,"es",{numeric:true});if(s==="pd")return(b.precio||0)-(a.precio||0);if(s==="pa")return(a.precio||0)-(b.precio||0);return a.ref.localeCompare(b.ref,"es",{numeric:true})});
   return list;
@@ -3360,8 +3364,9 @@ function computeChars(){
     const L=DATA.filter(d=>rx.test(txt(d)));if(L.length<CHAR_MIN)return;
     const h=charHash(k),c=CHAR_PAL[h%CHAR_PAL.length];const [r,g,b]=c.split(",").map(Number);
     const hi=[r,g,b].map(x=>Math.round(x+(255-x)*.55)).join(","),deep="#"+[r,g,b].map(x=>Math.round(x*.3).toString(16).padStart(2,"0")).join("");
-    auto.push(build({id:"c-auto-"+k.replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,""),name,rx,c,hi,deep,font:"Oswald",fw:700,mood:"heroic",auto:true,fs:name.length>14?.85:1,am:"",sp:"",cover:""},L))});
-  CHAR_LIST=conf.concat(auto).filter(c=>c.n>=CHAR_MIN).sort((a,b)=>b.n-a.n);
+    const uc={};L.forEach(d=>{if(d.uni)uc[d.uni]=(uc[d.uni]||0)+1});const um=Object.keys(uc).sort((a,b)=>uc[b]-uc[a]).map(i=>UNI_BY[i]).find(u=>u&&(u.am||u.sp))||null;
+    auto.push(build({id:"c-auto-"+k.replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,""),name,rx,c,hi,deep,font:"Oswald",fw:700,mood:um&&um.mood||"heroic",auto:true,fs:name.length>14?.85:1,am:um?um.am||"":"",sp:um?um.sp||"":"",yt:um?um.yt||"":"",cover:""},L))});
+  CHAR_LIST=conf.concat(auto).filter(c=>c.n>=CHAR_MIN&&c.fig>=CHAR_FIG&&(c.am||c.sp||c.yt)).sort((a,b)=>b.n-a.n);
   CHAR_LIST.forEach(c=>{UNI_BY[c.id]=c});
   const ok=new Set(CHAR_LIST.map(c=>c.id));DATA.forEach(d=>{d.chars=d.chars.filter(x=>ok.has(x))});
 }
