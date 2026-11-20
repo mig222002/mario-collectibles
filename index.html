@@ -1124,9 +1124,11 @@ html.ios #uniDock.is-ap .ud-volrow{display:none}
 .fmap-map .leaflet-container{background:#0b0b0e;font-family:var(--sans,inherit)}
 .fmap-map .leaflet-control-attribution{background:rgba(0,0,0,.6);color:#888;font-size:9px}.fmap-map .leaflet-control-attribution a{color:#aaa}
 .fmap-map .leaflet-bar a{background:#17171c;color:#ddd;border-color:#2a2a30}
-.fm-pin span{display:flex;align-items:center;justify-content:center;border-radius:50%;background:radial-gradient(circle at 35% 30%,var(--gold-lt),var(--gold) 55%,var(--gold-deep));box-shadow:0 0 0 4px rgba(var(--gold-rgb),.25),0 0 26px rgba(var(--gold-rgb),.65),0 8px 18px rgba(0,0,0,.6);animation:fmPulse 2.6s ease-in-out infinite;cursor:pointer}
+.fm-pin span{display:flex;align-items:center;justify-content:center;border-radius:50%;background:radial-gradient(circle at 35% 30%,var(--gold-lt),var(--gold) 55%,var(--gold-deep));box-shadow:0 0 0 4px rgba(var(--gold-rgb),.25),0 0 26px rgba(var(--gold-rgb),.65),0 8px 18px rgba(0,0,0,.6);cursor:pointer}
 .fm-pin b{font-family:var(--disp);font-weight:800;font-size:16px;color:#1a1200}
-@keyframes fmPulse{50%{box-shadow:0 0 0 10px rgba(var(--gold-rgb),0),0 0 34px rgba(var(--gold-rgb),.8),0 8px 18px rgba(0,0,0,.6)}}
+.fm-pin span{position:relative}.fm-pin span::after{content:"";position:absolute;inset:-4px;border-radius:50%;border:2px solid rgba(var(--gold-rgb),.7);animation:fmRing 2.6s ease-out infinite;will-change:transform,opacity;pointer-events:none}
+@keyframes fmRing{from{transform:scale(1);opacity:.9}to{transform:scale(1.6);opacity:0}}
+.fmap-map .fm-tiles{filter:invert(1) hue-rotate(180deg) brightness(.82) contrast(.88) saturate(.35)}
 .fmap-map.nomap{display:flex;align-items:center;justify-content:center;padding:20px}
 .fm-list{display:flex;flex-direction:column;gap:8px;width:100%}
 .fm-list button{display:flex;align-items:center;gap:10px;padding:12px 14px;border-radius:12px;border:1px solid var(--line);background:var(--panel);color:var(--text);cursor:pointer}
@@ -1912,6 +1914,13 @@ const CAT_COLORS={"Figuras y Réplicas":"var(--fig)","Cómics":"var(--com)","Man
 const CAT_GLOW={"Figuras y Réplicas":"rgba(55,208,196,.16)","Cómics":"rgba(242,167,59,.16)","Mangas":"rgba(255,111,163,.16)"};
 const FR_SHORT={"MARVEL":"MRV","DC":"DC","STAR WARS":"SW","Manga":"MANGA"};
 const eur=n=>(n==null?"—":n.toLocaleString("es-ES",{minimumFractionDigits:2,maximumFractionDigits:2})+" €");
+/* Fotos propias (móvil, ~7 MB cada una) → versión reducida servida por images.weserv.nl; si falla, se usa la original */
+const WSRV="https://images.weserv.nl/?url=";
+function IMGW(u,w){if(!u)return u;let a;try{a=new URL(u,location.href)}catch(_){return u}
+  if(a.protocol!=="https:"||!(/github\.io$/.test(a.hostname)||a.hostname===location.hostname))return u;
+  return WSRV+encodeURIComponent(a.host+a.pathname)+"&w="+(w||600)+"&q=80&output=jpg&we"}
+document.addEventListener("error",e=>{const i=e.target;if(!i||i.tagName!=="IMG"||i.dataset.fb||!String(i.src).startsWith(WSRV))return;
+  const m=String(i.src).match(/[?&]url=([^&]+)/);if(!m)return;i.dataset.fb="1";e.stopImmediatePropagation();i.src="https://"+decodeURIComponent(m[1])},true);
 const esc=s=>(s||"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 
 let DATA=[]; let state={cat:"Todo",q:"",refine:"",sort:"ref",pending:false,signed:false,fr:""};
@@ -2114,11 +2123,11 @@ function openModal(d,list,fromRoute){_fromRoute=!!fromRoute;mCur=d;
   const items=fotos.map((u,k)=>({k:"f"+k,u,sign:1,cap:multi?`Firma ${k+1}`:"Mi ejemplar",tab:multi?`Firma ${k+1}`:"Firmado",alt:`Ejemplar firmado de ${T}${multi?" ("+(k+1)+")":""}`}));
   if(d.imagen)items.push({k:"cover",u:d.imagen,cap:"Portada",tab:"Portada",alt:`Portada de ${T}`});
   const dual=items.length>1&&fotos.length>0;
-  const bgU=fotos[0]||d.imagen;
+  const bgU=fotos[0]?IMGW(fotos[0],400):d.imagen;
   const bg=bgU?`<div class="bg" style="background-image:url('${esc(bgU)}')"></div>`:"";
-  const img=dual?`${bg}<div class="stack">${items.map((it,k)=>`<figure class="sk${it.sign?" sk-sign":" sk-cover"}" data-k="${it.k}" data-pos="${Math.min(k,3)}"><img src="${esc(it.u)}" alt="${it.alt}"><figcaption>${it.sign?PEN_SVG:""}${it.cap}</figcaption></figure>`).join("")}</div>
+  const img=dual?`${bg}<div class="stack">${items.map((it,k)=>`<figure class="sk${it.sign?" sk-sign":" sk-cover"}" data-k="${it.k}" data-pos="${Math.min(k,3)}"><img src="${esc(IMGW(it.u,1800))}" alt="${it.alt}" decoding="async"><figcaption>${it.sign?PEN_SVG:""}${it.cap}</figcaption></figure>`).join("")}</div>
     <div class="sk-tabs" role="tablist">${items.map((it,k)=>`<button data-k="${it.k}"${k?"":' class="on"'}>${it.sign?PEN_SVG:""}${it.tab}</button>`).join("")}</div>`
-   :(!d.imagen&&d.fotoFirma)?`${bg}<img class="main zoomable" src="${esc(d.fotoFirma)}" alt="${esc(d.nombre)}">`
+   :(!d.imagen&&d.fotoFirma)?`${bg}<img class="main zoomable" src="${esc(IMGW(d.fotoFirma,1800))}" decoding="async" alt="${esc(d.nombre)}">`
    :d.imagen?`${bg}<img class="main zoomable" src="${esc(d.imagen)}" alt="${esc(d.nombre)}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span class="ph" style="display:none">${ICONS[d.categoria]}</span>`:`<span class="ph">${ICONS[d.categoria]}</span>`;
   const facts=[];facts.push(["Categoría",esc(d.categoria)]);
   if(d.chars&&d.chars.length)facts.push([d.chars.length>1?"Personajes":"Personaje",d.chars.slice(0,3).map(c=>`<button class="tl uni-link" data-u="${c}">${esc(UNI_BY[c].name)} →</button>`).join(" ")]);
@@ -2152,7 +2161,7 @@ function openModal(d,list,fromRoute){_fromRoute=!!fromRoute;mCur=d;
   m.scrollTop=0;updateNav();wireStack(m);if(!already){flyIn(m);sfx("open")}else flyFrom=null;wireModalExtras(m,d);routeModal(d,already);
 
   if(!already){ovEl.classList.add("open");document.body.style.overflow="hidden";m.querySelector(".m-close").focus()}
-  if(mList){[mIdx-1,mIdx+1].forEach(j=>{const n=mList[(j+mList.length)%mList.length];if(n){[n.imagen,...(n.fotos||[])].forEach(u=>{if(u){const im=new Image();im.src=u}})}})}
+  if(mList){[mIdx-1,mIdx+1].forEach(j=>{const n=mList[(j+mList.length)%mList.length];if(n){[n.imagen,...(n.fotos||[]).map(f=>IMGW(f,1800))].forEach(u=>{if(u){const im=new Image();im.src=u}})}})}
 }
 function wireStack(m){const st=m.querySelector(".stack");if(!st)return;const bg=m.querySelector(".m-visual .bg"),tabs=m.querySelector(".sk-tabs");
   const figs=()=>[...st.querySelectorAll(".sk")];
@@ -2422,7 +2431,7 @@ function renderFirmas(){
   const flat=[];G.forEach(([,g])=>g.items.forEach(d=>{if(!flat.includes(d))flat.push(d)}));
   const icon=firmasMode==="evento"?PIN_SVG:PEN_SVG;
   wall.innerHTML=G.length?G.map(([k,g])=>`<section class="fw-group"><div class="fw-head"><h3>${k==="~"?"":icon}${esc(g.label)}</h3><span>${g.items.length} ${g.items.length===1?"pieza":"piezas"}</span></div>
-    <div class="fw-grid">${g.items.map(d=>{const u=(d.fotos&&d.fotos[0])||d.imagen;
+    <div class="fw-grid">${g.items.map(d=>{const u=(d.fotos&&d.fotos[0])?IMGW(d.fotos[0],520):d.imagen;
       return `<button class="fw-tile" data-id="${d.id}">${u?`<img src="${esc(u)}" alt="" loading="lazy" decoding="async" fetchpriority="low" onerror="this.remove()">`:""}<span class="ph">${ICONS[d.categoria]}</span>
       ${d.fotos&&d.fotos.length?`<span class="cam" title="Foto de mi ejemplar">${CAM_SVG}</span>`:""}
       <span class="cap"><b>${esc(d.titulo||d.nombre)}</b><span>${firmasMode==="evento"?"✍ "+esc(d.firmante||"Firmado"):(d.lugarFirma?"📍 "+esc(d.lugarFirma):"✍ Firmado")}</span></span></button>`}).join("")}</div></section>`).join("")
@@ -2461,7 +2470,7 @@ function renderSeries(){const g=document.getElementById("seriesGrid");if(!g)retu
   g.innerHTML=S.length?S.map(s=>{const top=Math.max(s.upto,s.max),nums=[];for(let n=s.from||1;n<=top;n++)nums.push(n);
     const owned=nums.filter(n=>s.byNum[n]&&s.byNum[n].length);
     const sel=owned.length<=5?owned:[0,1,2,3,4].map(i=>owned[Math.round(i*(owned.length-1)/4)]);
-    let books=sel.map(n=>{const d=pickD(s.byNum[n]);return {n,u:(d.fotos&&d.fotos[0])||d.imagen||""}});
+    let books=sel.map(n=>{const d=pickD(s.byNum[n]);return {n,u:(d.fotos&&d.fotos[0])?IMGW(d.fotos[0],240):d.imagen||""}});
     if(s.missing.length&&books.length){books=books.slice(0,4);books.splice(Math.min(2,books.length),0,{n:s.missing[0],miss:1})}
     const k=books.length;
     const bk=books.map((b,i)=>{const o=i-(k-1)/2;return `<span class="sr2-bk${b.miss?" miss":""}" style="--o:${o.toFixed(2)};--a:${Math.round(Math.abs(o))};${b.u?`background-image:url('${esc(b.u)}')`:""}"><em>#${b.n}</em></span>`}).join("");
@@ -2582,7 +2591,7 @@ function openShelf(s){shelfSeries=s;const ov=document.getElementById("shelfOv");
   const top=Math.max(s.upto,s.max),pick=L=>L.slice().sort((a,b)=>(b.fotos.length-a.fotos.length)||(b.firmado-a.firmado)||(!!b.imagen-!!a.imagen))[0];
   const list=[];let html="";
   for(let n=s.from||1;n<=top;n++){const L=s.byNum[n];
-    if(L&&L.length){const d=pick(L);list.push(d);const u=(d.fotos&&d.fotos[0])||d.imagen;
+    if(L&&L.length){const d=pick(L);list.push(d);const u=(d.fotos&&d.fotos[0])?IMGW(d.fotos[0],320):d.imagen;
       html+=`<button class="spine${d.firmado?" signed":""}" data-id="${d.id}" title="${esc(d.titulo||d.nombre)}">${u?`<span class="sp-img" style="background-image:url('${esc(u)}')"></span>`:""}<span class="sp-n">#${n}</span><span class="sp-t">${esc(s.label)}</span></button>`}
     else html+=`<div class="spine miss" aria-label="Falta el número ${n}"><span class="sp-n">#${n}</span><span class="sp-t">FALTA</span></div>`}
   const row=document.getElementById("shelfRow");row.innerHTML=html;
@@ -2598,7 +2607,7 @@ const VIT={pool:"all",dur:8,list:[],i:0,timer:0,t0:0,paused:false,raf:0,ui:0,loc
 function vitBuild(){let L=DATA.filter(d=>d.imagen||(d.fotos&&d.fotos.length));
   if(VIT.pool==="signed")L=L.filter(d=>d.firmado);else if(VIT.pool!=="all")L=L.filter(d=>d.categoria===VIT.pool);
   for(let i=L.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[L[i],L[j]]=[L[j],L[i]]}VIT.list=L;VIT.i=0}
-const vitSrc=d=>(d.fotos&&d.fotos[0])||d.imagen;
+const vitSrc=d=>(d.fotos&&d.fotos[0])?IMGW(d.fotos[0],1920):d.imagen;
 const KB=[["scale(1)","scale(1.07)"],["scale(1.08)","scale(1)"],["scale(1.05) translateX(1.2%)","scale(1.05) translateX(-1.2%)"],["scale(1.05) translateX(-1.2%)","scale(1.05) translateX(1.2%)"],["scale(1) translateY(.8%)","scale(1.06) translateY(-.8%)"]];
 let VSLOT=0;VIT.tok=0;
 function vitShow(){if(!VIT.list.length){document.getElementById("vitTitle").textContent="No hay piezas con imagen en este filtro";return}
@@ -2749,7 +2758,7 @@ let azT;function azJump(idx,k){if(idx==null)return;while(pageN<=idx&&pageN<pageL
 /* ===================== (6) PIEZA DEL DÍA ===================== */
 function renderDay(){const box=document.getElementById("dayPiece");if(!box)return;const pool=DATA.filter(d=>d.imagen||(d.fotos&&d.fotos.length));if(!pool.length){document.getElementById("dayBlock").hidden=true;return}
   const today=new Date(),key=today.getFullYear()*10000+(today.getMonth()+1)*100+today.getDate();
-  let hsh=key;for(let i=0;i<6;i++)hsh=(hsh*1103515245+12345)>>>0;const d=pool[hsh%pool.length];const u=(d.fotos&&d.fotos[0])||d.imagen;
+  let hsh=key;for(let i=0;i<6;i++)hsh=(hsh*1103515245+12345)>>>0;const d=pool[hsh%pool.length];const u=(d.fotos&&d.fotos[0])?IMGW(d.fotos[0],1200):d.imagen;
   const fecha=today.toLocaleDateString("es-ES",{weekday:"long",day:"numeric",month:"long"});
   box.style.setProperty("--ft",tintOf(d));
   box.innerHTML=`<div class="day-vis"><div class="bg" style="background-image:url('${esc(u)}')"></div><img src="${esc(u)}" alt="${esc(d.titulo||d.nombre)}"></div>
@@ -3489,7 +3498,7 @@ function wrapLines(x,t,maxW,maxL){const ws=t.split(/\s+/),L=[];let cur="";ws.for
   if(L.length>maxL){L.length=maxL;let l=L[maxL-1];while(x.measureText(l+"…").width>maxW&&l.length)l=l.slice(0,-1);L[maxL-1]=l+"…"}return L}
 async function drawStory(d,withImg){const W=1080,H=1920,c=document.createElement("canvas");c.width=W;c.height=H;const x=c.getContext("2d");
   const cs=getComputedStyle(document.body),gold=cs.getPropertyValue("--gold-hi").trim()||"#F0D48A",goldRGB=(cs.getPropertyValue("--gold-rgb").trim()||"212,175,55");
-  const ft=tintOf(d);const src=(d.fotos&&d.fotos[0])||d.imagen||d.fotoFirma||"";
+  const ft=tintOf(d);const src=(d.fotos&&d.fotos[0])?IMGW(d.fotos[0],1400):(d.imagen||"");
   const im=withImg?await loadCORS(src):null,em=await loadCORS(typeof EMBLEM!=="undefined"?EMBLEM:"");
   x.fillStyle="#08080a";x.fillRect(0,0,W,H);
   if(im){x.save();x.filter="blur(46px) brightness(.36) saturate(1.25)";coverDraw(x,im,-120,-120,W+240,H+240);x.restore()}
@@ -3555,7 +3564,7 @@ function renderFirmaMap(){const box=document.getElementById("fMapBox");if(!box)r
   const show=g=>{const yr=s=>(String(s).match(/(19|20)\d{2}/)||[0])[0];
     panel.innerHTML=`<div class="fmp-h"><b>${esc(g.p?g.p.city:"Sin ubicar")}</b><span>${g.n} firma${g.n>1?"s":""}</span></div>`+[...g.ev.entries()].sort((a,b)=>yr(b[0])-yr(a[0])).map(([ev,L])=>{const pl=g.p&&g.p.venues?g.p.venues.find(v=>v.rx.test(norm(ev))):null;
       return `<div class="fmp-ev"><div class="fmp-evh">${PIN_SVG}<span><b>${esc(ev)}</b>${pl?`<small>${esc(pl.name)}</small>`:""}</span><em>${L.length}</em></div>
-        <div class="fmp-th">${L.map(d=>{const u=(d.fotos&&d.fotos[0])||d.imagen;return `<button type="button" data-id="${d.id}" title="${esc(d.titulo||d.nombre)}">${u?`<img src="${esc(u)}" alt="" loading="lazy" onerror="this.remove()">`:""}</button>`}).join("")}</div></div>`}).join("");
+        <div class="fmp-th">${L.map(d=>{const u=d.imagen||IMGW((d.fotos||[])[0],160);return `<button type="button" data-id="${d.id}" title="${esc(d.titulo||d.nombre)}">${u?`<img src="${esc(u)}" alt="" loading="lazy" decoding="async" onerror="this.remove()">`:""}</button>`}).join("")}</div></div>`}).join("");
     panel.querySelectorAll("[data-id]").forEach(b=>b.onclick=()=>{const all=DATA.filter(x=>x.firmado);openModal(DATA.find(x=>x.id==b.dataset.id),all)});
     panel.scrollTop=0};
   const first=[...G.values()].sort((a,b)=>(!!b.p-!!a.p)||b.n-a.n)[0];show(first);
@@ -3564,7 +3573,7 @@ function renderFirmaMap(){const box=document.getElementById("fMapBox");if(!box)r
       const arr=[...G.values()];mapEl.querySelectorAll("[data-g]").forEach(b=>b.onclick=()=>show(arr[+b.dataset.g]));return}
     if(FMAP){FMAP.remove();FMAP=null}
     FMAP=L.map(mapEl,{scrollWheelZoom:false,zoomControl:true,attributionControl:true});
-    L.tileLayer("https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png",{subdomains:"abcd",maxZoom:18,attribution:'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>'}).addTo(FMAP);
+    L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png",{maxZoom:18,className:"fm-tiles",attribution:'&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a>'}).addTo(FMAP);
     const mx=Math.max(...places.map(g=>g.n));const B=[];
     places.forEach(g=>{const sz=Math.round(38+30*Math.sqrt(g.n/mx));B.push([g.p.lat,g.p.lng]);
       const m=L.marker([g.p.lat,g.p.lng],{icon:L.divIcon({className:"fm-pin",html:`<span style="width:${sz}px;height:${sz}px"><b>${g.n}</b></span>`,iconSize:[sz,sz],iconAnchor:[sz/2,sz/2]}),title:g.p.city}).addTo(FMAP);
