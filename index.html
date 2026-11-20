@@ -1226,6 +1226,15 @@ html.ios #uniDock.is-ap .ud-volrow{display:none}
 .nx-miss{font-family:var(--mono);font-size:10px;color:#ff9a8a}
 .nx.out .nx-d::before{content:"● ";color:#7ee2a0}
 
+/* copia de imágenes */
+.mir-cta{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-top:22px;padding:16px 18px;border-radius:18px;border:1px dashed var(--gold-deep);background:rgba(var(--gold-rgb),.05)}
+.mir-cta{display:block}.mir-cta em{font-style:normal;color:var(--gold-hi);font-weight:700}.mir-cta b{font-family:var(--disp);font-size:16px}.mir-cta p{font-size:13px;color:var(--muted);margin-top:4px;max-width:620px}
+.mir-info{font-size:14px;margin-bottom:8px}.mir-info b{color:var(--gold-hi)}
+.mir-prog{height:8px;border-radius:6px;background:var(--line);overflow:hidden}.mir-prog i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--gold-deep),var(--gold-hi));transition:width .3s}
+.mir-stat{font-family:var(--mono);font-size:11.5px;color:var(--muted);margin:8px 0 14px}
+.mir-steps{margin:16px 0 0 18px;font-size:13.5px;line-height:1.6;color:var(--text)}.mir-steps b{color:var(--gold-hi)}
+.mir-fail{margin-top:16px;padding:12px 14px;border-radius:12px;border:1px solid rgba(224,82,79,.45);background:rgba(224,82,79,.08);font-size:13px}
+.mir-fail summary{cursor:pointer;font-weight:600}.mir-fail ul{margin:8px 0 0 18px;max-height:200px;overflow:auto}.mir-fail a{color:var(--gold-hi)}
 /* ===== NAVEGACIÓN FICHA ===== */
 .overlay{flex-direction:column;gap:14px}
 .overlay.has-nav .modal{max-height:calc(100vh - 110px)}
@@ -1502,6 +1511,7 @@ body.public .foot .priv-only{display:none}
     <div class="stat-grid" id="statGrid"></div>
     <div class="block-head" style="margin-top:44px"><div><div class="eyebrow" style="margin:0">Logros</div><p class="stat-note" id="achNote"></p></div></div>
     <div class="ach-grid" id="achGrid"></div>
+    <div class="mir-cta owner-only" id="mirState"></div>
     <div class="block-head" style="margin-top:44px">
       <div><div class="eyebrow" style="margin:0">Series</div><p class="stat-note">Detectadas por la numeración del nombre (#N o N/M) y contrastadas con los datos reales de cada edición española (números totales, si está cerrada o en publicación). Datos a fecha de <span id="seriesAsof"></span>.</p></div>
       <div class="row-r" style="display:flex;align-items:center;flex-wrap:wrap;gap:8px"><button type="button" class="x-btn owner-only buy-open" id="buyOpen"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="20" r="1.4"/><circle cx="18" cy="20" r="1.4"/><path d="M2 3h3l2.6 12.4a2 2 0 0 0 2 1.6h8.2a2 2 0 0 0 2-1.5L22 8H6"/></svg>Lista de la compra</button><div class="seg" id="seriesMode"><button data-m="all" class="on">Todas</button><button data-m="ok">Completas</button><button data-m="gap">Con huecos</button><button data-m="cur">En curso</button></div></div>
@@ -2039,7 +2049,32 @@ const PEN_SVG='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke
 const CAM_SVG='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg>';
 const PIN_SVG='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>';
 const SIGN_RE=/\(\s*(?:firmad[oa]s?|autografiad[oa]s?|signed)(?:\s+(?:por|by)\s+([^)]*))?\)/i;
-function markSigned(list){list.forEach(d=>{
+/* ===================== COPIA PROPIA DE LAS IMÁGENES =====================
+   Las fotos de catálogo vienen de enlaces de tiendas que pueden desaparecer. Una tarea automática de GitHub
+   (.github/workflows/copia-imagenes.yml) descarga cada lunes las imágenes nuevas del Sheet, las reduce y las guarda
+   en img/s/ (640 px, para tarjetas) e img/l/ (hasta 1600 px, para la ficha), con el índice imagenes.json (clave = huella del enlace).
+   La web usa la copia si existe y, si no, el enlace original. */
+const MIR={map:null,orig:new Map(),made:"",fails:[]};
+const mirHash=s=>{let h=2166136261;for(let i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619)}return (h>>>0).toString(36)};
+const mirBase=()=>new URL(".",location.href).href;
+function applyMirror(list){if(!MIR.map)return;list.forEach(d=>{const o=d._img0||d.imagen;if(!o)return;d._img0=o;
+  const h=mirHash(o),f=MIR.map[h];
+  if(f){const dir=mirBase()+(MIR.dir||"img")+"/",L=dir+"l/"+h+".webp",S=dir+"s/"+h+".webp";d.imagen=L;d.thumb=S;MIR.orig.set(L,o);MIR.orig.set(S,o)}
+  else{d.imagen=o;d.thumb=""}})}
+fetch("imagenes.json",{cache:"no-cache"}).then(r=>r.ok?r.json():null).then(j=>{if(!j||!j.items)return;MIR.map=j.items;MIR.dir=j.dir||"img";MIR.made=j.made||"";MIR.fails=j.fails||[];
+  if(typeof DATA!=="undefined"&&DATA.length&&typeof afterData==="function"){applyMirror(DATA);afterData()}}).catch(()=>{});
+/* si una copia no carga, vuelve al enlace original */
+document.addEventListener("error",e=>{const i=e.target;if(!i||i.tagName!=="IMG"||i.dataset.mfb)return;const o=MIR.orig.get(i.src);if(!o)return;
+  i.dataset.mfb="1";e.stopImmediatePropagation();i.src=o},true);
+/* estado de la copia (solo propietario, en Stats) */
+function renderMirState(){const box=document.getElementById("mirState");if(!box)return;
+  const withImg=DATA.filter(d=>d._img0||d.imagen),have=withImg.filter(d=>MIR.orig.has(d.imagen)).length;
+  if(!MIR.map){box.innerHTML=`<b>Copia de seguridad de imágenes</b><p>Aún no hay copia en el repositorio. Cuando subas la tarea automática, cada lunes guardará una copia ligera de todas las fotos (también puedes lanzarla a mano desde la pestaña <i>Actions</i> de GitHub).</p>`;return}
+  const pend=withImg.length-have;
+  box.innerHTML=`<b>Copia de seguridad de imágenes</b><p><em>${have}</em> de ${withImg.length} fotos guardadas en tu GitHub${MIR.made?` · última copia: ${esc(MIR.made)}`:""}${pend?` · ${pend} pendientes (se copian el próximo lunes)`:" · todo al día ✓"}.</p>`+
+    (MIR.fails.length?`<details class="mir-fail"><summary>${MIR.fails.length} ${MIR.fails.length>1?"enlaces rotos o bloqueados: cámbialos":"enlace roto o bloqueado: cámbialo"} en el Sheet</summary><ul>${MIR.fails.map(f=>`<li>${esc(f.nombre||"")} · <a href="${esc(f.url)}" target="_blank" rel="noopener">enlace</a>${f.error?` <small>(${esc(f.error)})</small>`:""}</li>`).join("")}</ul></details>`:"")}
+
+function markSigned(list){applyMirror(list);list.forEach(d=>{
   const src=[d.nombre,d.descripcion].join(" ");const m=src.match(SIGN_RE);
   d.fotos=String(d.fotoFirma||"").split(/\s*[|\n]\s*|\s+(?=https?:|firmas\/)/).map(s=>s.trim()).filter(Boolean);
   d.fotoFirma=d.fotos[0]||"";d.lugarFirma=d.lugarFirma||"";
@@ -2049,7 +2084,7 @@ function markSigned(list){list.forEach(d=>{
 });}
 function cardHTML(d,i){
   const frame=`<span class="ph frame">${ICONS[d.categoria]}<em>${esc(d.titulo||d.nombre)}</em><small>${d.imagen?"Imagen no disponible":"Sin imagen todavía"}</small></span>`;
-  const img=d.imagen?`<img class="fade" src="${esc(d.imagen)}" alt="${esc(d.nombre)}" loading="lazy" decoding="async" onload="this.classList.add('ld');this.parentNode.classList.add('ok')" onerror="this.style.display='none';this.parentNode.classList.add('ok','err')">${frame}`:frame;
+  const img=d.imagen?`<img class="fade" src="${esc(d.thumb||d.imagen)}" alt="${esc(d.nombre)}" loading="lazy" decoding="async" onload="this.classList.add('ld');this.parentNode.classList.add('ok')" onerror="this.style.display='none';this.parentNode.classList.add('ok','err')">${frame}`:frame;
   const fr=d.franquicia&&FR_SHORT[d.franquicia]?`<span class="fr-tag">${FR_SHORT[d.franquicia]}</span>`:"";
   const sub=d.categoria==="Figuras y Réplicas"?`<span class="brand">${esc(d.marca)}</span><span>${esc(d.tipo)}${d.linea?" · "+esc(d.linea):""}</span>`:`<span class="brand">${esc(d.marca)}</span><span>${esc(d.autores)||"&nbsp;"}</span>${d.firmado?`<span class="signer">✍ ${d.firmante?"Firmado por "+esc(d.firmante):"Firmado"}</span>`:""}${d.lugarFirma?`<span class="signplace">${PIN_SVG}${esc(d.lugarFirma)}</span>`:""}`;
   const alt=d.fotoFirma?`<img class="alt" src="${esc(d.fotoFirma)}" alt="" loading="lazy" decoding="async" onerror="this.remove()">`:"";
@@ -2431,7 +2466,7 @@ function renderFirmas(){
   const flat=[];G.forEach(([,g])=>g.items.forEach(d=>{if(!flat.includes(d))flat.push(d)}));
   const icon=firmasMode==="evento"?PIN_SVG:PEN_SVG;
   wall.innerHTML=G.length?G.map(([k,g])=>`<section class="fw-group"><div class="fw-head"><h3>${k==="~"?"":icon}${esc(g.label)}</h3><span>${g.items.length} ${g.items.length===1?"pieza":"piezas"}</span></div>
-    <div class="fw-grid">${g.items.map(d=>{const u=(d.fotos&&d.fotos[0])?IMGW(d.fotos[0],520):d.imagen;
+    <div class="fw-grid">${g.items.map(d=>{const u=(d.fotos&&d.fotos[0])?IMGW(d.fotos[0],520):(d.thumb||d.imagen);
       return `<button class="fw-tile" data-id="${d.id}">${u?`<img src="${esc(u)}" alt="" loading="lazy" decoding="async" fetchpriority="low" onerror="this.remove()">`:""}<span class="ph">${ICONS[d.categoria]}</span>
       ${d.fotos&&d.fotos.length?`<span class="cam" title="Foto de mi ejemplar">${CAM_SVG}</span>`:""}
       <span class="cap"><b>${esc(d.titulo||d.nombre)}</b><span>${firmasMode==="evento"?"✍ "+esc(d.firmante||"Firmado"):(d.lugarFirma?"📍 "+esc(d.lugarFirma):"✍ Firmado")}</span></span></button>`}).join("")}</div></section>`).join("")
@@ -2470,7 +2505,7 @@ function renderSeries(){const g=document.getElementById("seriesGrid");if(!g)retu
   g.innerHTML=S.length?S.map(s=>{const top=Math.max(s.upto,s.max),nums=[];for(let n=s.from||1;n<=top;n++)nums.push(n);
     const owned=nums.filter(n=>s.byNum[n]&&s.byNum[n].length);
     const sel=owned.length<=5?owned:[0,1,2,3,4].map(i=>owned[Math.round(i*(owned.length-1)/4)]);
-    let books=sel.map(n=>{const d=pickD(s.byNum[n]);return {n,u:(d.fotos&&d.fotos[0])?IMGW(d.fotos[0],240):d.imagen||""}});
+    let books=sel.map(n=>{const d=pickD(s.byNum[n]);return {n,u:(d.fotos&&d.fotos[0])?IMGW(d.fotos[0],240):(d.thumb||d.imagen||"")}});
     if(s.missing.length&&books.length){books=books.slice(0,4);books.splice(Math.min(2,books.length),0,{n:s.missing[0],miss:1})}
     const k=books.length;
     const bk=books.map((b,i)=>{const o=i-(k-1)/2;return `<span class="sr2-bk${b.miss?" miss":""}" style="--o:${o.toFixed(2)};--a:${Math.round(Math.abs(o))};${b.u?`background-image:url('${esc(b.u)}')`:""}"><em>#${b.n}</em></span>`}).join("");
@@ -2491,7 +2526,7 @@ function countBy(list,fn){const m=new Map();list.forEach(d=>{const ks=fn(d);(Arr
 function barsCard(title,rows,opt){opt=opt||{};rows=rows.slice(0,opt.max||8);if(!rows.length)return"";const key=opt.by==="v"?"v":"n";const mx=Math.max(...rows.map(r=>r[key]))||1;
   return `<div class="sc"><h4>${title}</h4>${rows.map(r=>`<div class="hb" data-q="${esc(r.q||r.label)}" data-tip="<b>${esc(r.label)}</b><br>${r.n} ${r.n===1?"pieza":"piezas"}${OWNER?" · "+eur(r.v):""}">
     <span class="hb-l">${esc(r.label)}</span><span class="hb-t"><i style="width:${Math.max(1.5,100*r[key]/mx)}%;${r.color?`background:${r.color}`:""}"></i></span><span class="hb-v">${key==="v"?eur(r.v).replace(",00",""):r.n}</span></div>`).join("")}</div>`}
-function renderStats(){const kp=document.getElementById("statKpis");if(!kp)return;try{renderAch()}catch(e){console.error(e)}
+function renderStats(){const kp=document.getElementById("statKpis");if(!kp)return;try{renderAch();renderMirState()}catch(e){console.error(e)}
   if(_statsKey===String(DATA_VER)&&kp.childElementCount)return;_statsKey=String(DATA_VER);
   const total=DATA.reduce((a,d)=>a+(d.precio||0),0),wp=DATA.filter(d=>d.precio!=null),avg=wp.length?total/wp.length:0;
   const conImg=DATA.filter(d=>d.imagen).length,firm=DATA.filter(d=>d.firmado).length;
@@ -2591,7 +2626,7 @@ function openShelf(s){shelfSeries=s;const ov=document.getElementById("shelfOv");
   const top=Math.max(s.upto,s.max),pick=L=>L.slice().sort((a,b)=>(b.fotos.length-a.fotos.length)||(b.firmado-a.firmado)||(!!b.imagen-!!a.imagen))[0];
   const list=[];let html="";
   for(let n=s.from||1;n<=top;n++){const L=s.byNum[n];
-    if(L&&L.length){const d=pick(L);list.push(d);const u=(d.fotos&&d.fotos[0])?IMGW(d.fotos[0],320):d.imagen;
+    if(L&&L.length){const d=pick(L);list.push(d);const u=(d.fotos&&d.fotos[0])?IMGW(d.fotos[0],320):(d.thumb||d.imagen);
       html+=`<button class="spine${d.firmado?" signed":""}" data-id="${d.id}" title="${esc(d.titulo||d.nombre)}">${u?`<span class="sp-img" style="background-image:url('${esc(u)}')"></span>`:""}<span class="sp-n">#${n}</span><span class="sp-t">${esc(s.label)}</span></button>`}
     else html+=`<div class="spine miss" aria-label="Falta el número ${n}"><span class="sp-n">#${n}</span><span class="sp-t">FALTA</span></div>`}
   const row=document.getElementById("shelfRow");row.innerHTML=html;
@@ -2925,7 +2960,7 @@ function askSetType(t){ASK.t=t;document.querySelectorAll("#askSeg button").forEa
   document.getElementById("askTitle").textContent=t==="Sugerir vídeo"?"Pídeme un vídeo":t==="Pregunta"?(ASK.d?"Pregúntame por esta pieza":"Hazme una pregunta"):"¿Qué me quieres contar?"}
 function askSetPiece(d){ASK.d=d||null;const w=document.getElementById("askPiece");w.hidden=!d;if(!d)return;
   document.getElementById("askPName").textContent=(d.titulo||d.nombre)+(d.ref?" · "+d.ref:"");
-  const u=d.imagen||(d.fotos||[])[0];document.getElementById("askPThumb").innerHTML=u?`<img src="${esc(u)}" alt="">`:(ICONS[d.categoria]||"")}
+  const u=d.thumb||d.imagen||(d.fotos||[])[0];document.getElementById("askPThumb").innerHTML=u?`<img src="${esc(u)}" alt="">`:(ICONS[d.categoria]||"")}
 function openAsk(t,d){if(!formOn())return;ASK.last=document.activeElement;
   const a=document.getElementById("ask");document.getElementById("askBody").hidden=false;document.getElementById("askOk").hidden=true;
   document.getElementById("askErr").textContent="";askSetPiece(d);askSetType(t||"Pregunta");
@@ -3419,7 +3454,7 @@ const fmtF=f=>{const d=parseF(f);if(!d)return"";return /^\d{4}-\d{2}$/.test(f)?[
 function seriesEff(I){if(!I||I.st!=="curso"||!I.prox)return I;const d=parseF(I.prox.f);if(d&&Date.now()>=d.getTime()&&I.prox.n>(I.ult||0))return Object.assign({},I,{ult:I.prox.n,_adv:true});return I}
 let _serCache={v:-1,S:[]};
 const seriesAll=()=>{if(_serCache.v!==DATA_VER)_serCache={v:DATA_VER,S:detectSeries()};return _serCache.S};
-const lastCover=s=>{const ns=Object.keys(s.byNum).map(Number).sort((a,b)=>b-a);for(const n of ns){const d=s.byNum[n].find(x=>x.imagen||(x.fotos||[])[0]);if(d)return d.imagen||d.fotos[0]}return ""};
+const lastCover=s=>{const ns=Object.keys(s.byNum).map(Number).sort((a,b)=>b-a);for(const n of ns){const d=s.byNum[n].find(x=>x.imagen||(x.fotos||[])[0]);if(d)return d.thumb||d.imagen||d.fotos[0]}return ""};
 
 /* ---------- 3. VOLUMEN Y FUNDIDOS ---------- */
 let VOL=.8;try{const v=parseFloat(localStorage.getItem("mc-vol"));if(v>=0&&v<=1)VOL=v}catch(_){}
@@ -3445,7 +3480,7 @@ function uniHeroExtras(hero,u){const pool=uniPool();if(!pool.length)return;const
   const star=(u.pics&&u.pics[0])||pool.find(d=>d.imagen);
   const last=pool.reduce((a,d)=>!a||d.id>a.id?d:a,null);
   const S=seriesAll().filter(s=>s.items.some(d=>set.has(d))&&s.have>=2).sort((a,b)=>(b.have/(b.span||b.upto))-(a.have/(a.span||a.upto))||b.have-a.have);
-  const best=S[0];const img=d=>d?(d.imagen||(d.fotos||[])[0]||""):"";
+  const best=S[0];const img=d=>d?(d.thumb||d.imagen||(d.fotos||[])[0]||""):"";
   const box=document.createElement("div");box.className="uh-side";
   box.innerHTML=`${star?`<button type="button" class="uhs-star" data-a="star">${img(star)?`<img src="${esc(img(star))}" alt="" loading="lazy" onerror="this.remove()">`:""}<span><small>Pieza estrella</small><b>${esc(star.titulo||star.nombre)}</b></span></button>`:""}
     <div class="uhs-chips">
@@ -3564,7 +3599,7 @@ function renderFirmaMap(){const box=document.getElementById("fMapBox");if(!box)r
   const show=g=>{const yr=s=>(String(s).match(/(19|20)\d{2}/)||[0])[0];
     panel.innerHTML=`<div class="fmp-h"><b>${esc(g.p?g.p.city:"Sin ubicar")}</b><span>${g.n} firma${g.n>1?"s":""}</span></div>`+[...g.ev.entries()].sort((a,b)=>yr(b[0])-yr(a[0])).map(([ev,L])=>{const pl=g.p&&g.p.venues?g.p.venues.find(v=>v.rx.test(norm(ev))):null;
       return `<div class="fmp-ev"><div class="fmp-evh">${PIN_SVG}<span><b>${esc(ev)}</b>${pl?`<small>${esc(pl.name)}</small>`:""}</span><em>${L.length}</em></div>
-        <div class="fmp-th">${L.map(d=>{const u=d.imagen||IMGW((d.fotos||[])[0],160);return `<button type="button" data-id="${d.id}" title="${esc(d.titulo||d.nombre)}">${u?`<img src="${esc(u)}" alt="" loading="lazy" decoding="async" onerror="this.remove()">`:""}</button>`}).join("")}</div></div>`}).join("");
+        <div class="fmp-th">${L.map(d=>{const u=d.thumb||d.imagen||IMGW((d.fotos||[])[0],160);return `<button type="button" data-id="${d.id}" title="${esc(d.titulo||d.nombre)}">${u?`<img src="${esc(u)}" alt="" loading="lazy" decoding="async" onerror="this.remove()">`:""}</button>`}).join("")}</div></div>`}).join("");
     panel.querySelectorAll("[data-id]").forEach(b=>b.onclick=()=>{const all=DATA.filter(x=>x.firmado);openModal(DATA.find(x=>x.id==b.dataset.id),all)});
     panel.scrollTop=0};
   const first=[...G.values()].sort((a,b)=>(!!b.p-!!a.p)||b.n-a.n)[0];show(first);
