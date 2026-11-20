@@ -1,0 +1,30 @@
+name: Copia de imágenes
+
+on:
+  schedule:
+    - cron: "17 4 * * 1"   # cada lunes a las 5:17 (hora de España en invierno)
+  workflow_dispatch:        # botón «Run workflow» para lanzarla a mano
+
+permissions:
+  contents: write
+
+concurrency:
+  group: copia-imagenes
+  cancel-in-progress: false
+
+jobs:
+  copia:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install pillow requests
+      - run: python .github/scripts/copia_imagenes.py
+      - name: Guardar en el repositorio
+        run: |
+          git config user.name "copia-imagenes"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add img imagenes.json
+          git diff --cached --quiet || (git commit -m "Copia de imágenes" && git push)
